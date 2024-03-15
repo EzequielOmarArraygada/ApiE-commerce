@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2daPreEntrega</title>
+                <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        {{{body}}}
+        <script>
+        const socket = io();
+
+        socket.on("addToCartResponse", function(response) {
+            console.log(response);
+            if (response.status === "success") {
+                alert("Producto agregado al carro exitosamente");
+            } else {
+                alert("Error al agregar producto al carro: " + response.message);
+            }
+        });
+
+        function addToCart(productId) {
+            socket.emit("addToCart", productId);
+        }
+    </script>
+    
+</body>
+</html>                                         
+
+
+
+
+
+
+
+

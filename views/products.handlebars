@@ -1,0 +1,83 @@
+
+{{#if session.user}}
+    {{#if session.loginSuccess}}
+    <script>
+        Swal.fire({
+            title: 'Inicio de sesión exitoso',
+            icon: 'success'
+        });
+    </script>
+{{/if}}
+    <div class="navbar">
+        <span>Bienvenido, {{session.user.first_name}}</span>
+        <a href="/logout">Logout</a>
+    </div>
+{{else}}
+    <div class="navbar">
+        <a href="/">Login</a>
+    </div>
+{{/if}}
+
+
+<h1>Lista de Productos</h1>
+
+<table>
+    <tr>
+        <th>Id:</th>
+        <th>Título:</th>
+        <th>Descripción:</th>
+        <th>Código:</th>
+        <th>Precio:</th>
+        <th>Estado:</th>
+        <th>Stock:</th>
+        <th>Categoría:</th>
+        <th>Imágen:</th>
+    </tr>
+
+    {{#each products}}
+        <tr>
+            <td>{{_id}}</td>
+            <td>{{title}}</td>
+            <td>{{description}}</td>
+            <td>{{code}}</td>
+            <td>${{price}}</td>
+            <td>{{status}}</td>
+            <td>{{stock}}</td>
+            <td>{{category}}</td>
+            <td>{{thumbnail}}</td>
+            <td>
+                <button class="addToCartButton" data-productId="{{_id}}">Agregar</button>
+                <button class="detailButton" data-productId="{{_id}}">Detalle</button> 
+            </td>
+        </tr>
+    {{/each}}
+</table>
+
+<div>
+    {{#if hasPrevPage}}
+    <a class="prevPageLink" href="/products?page={{prevPage}}&limit={{limit}}">Anterior</a>
+{{/if}}
+{{#if hasNextPage}}
+    <a class="nextPageLink" href="/products?page={{nextPage}}&limit={{limit}}">Siguiente</a>
+{{/if}}
+</div>
+
+
+<script>
+        document.querySelectorAll('.detailButton').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-productId');
+            window.location.href = `/products/details/${productId}`;
+        });
+    });
+
+    document.querySelectorAll('.addToCartButton').forEach(button => {
+    button.addEventListener('click', function() {
+        const productId = this.getAttribute('data-productId');
+        socket.emit("addToCart", productId);
+    });
+});
+</script>
+
+<script src="/socket.io/socket.io.js"></script>
+
