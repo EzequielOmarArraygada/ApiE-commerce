@@ -35,4 +35,11 @@ loginRouter.post("/logout", (req, res) => {
     res.redirect('/'); 
 });
 
+loginRouter.get('/login/ghcb', passport.authenticate('github'));
+
+loginRouter.get('/login/ghcb', passport.authenticate('github', {
+    successRedirect: '/products', 
+    failureRedirect: '/login', // 
+}));
+
 export default loginRouter;
