@@ -10,4 +10,17 @@ export const isValidPassword = (user,password) => bcrypt.compareSync(password,us
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+function generateRandomPassword(length) {
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let password = "";
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+    }
+    return password;
+}
+
+export const randomPassword = generateRandomPassword(10);
+console.log(randomPassword);
+
 export default __dirname;

@@ -1,12 +1,5 @@
 
-{{#if session.user}}
-    {{#if session.loginSuccess}}
-    <script>
-        Swal.fire({
-            title: 'Inicio de sesión exitoso',
-            icon: 'success'
-        });
-    </script>
+
 {{/if}}
     <div class="navbar">
         <span>Bienvenido, {{session.user.first_name}}</span>
@@ -16,7 +9,7 @@
     <div class="navbar">
         <a href="/">Login</a>
     </div>
-{{/if}}
+
 
 
 <h1>Lista de Productos</h1>

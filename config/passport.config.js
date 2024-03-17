@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GitHubStrategy } from 'passport-github2';
-import { createHash, isValidPassword } from '../utils.js';
+import { createHash, isValidPassword, randomPassword } from '../utils.js';
 import { LoginManagerMongo } from '../dao/manejadores/LoginManagerMongo.js';
 
 const userManager = new LoginManagerMongo();
@@ -15,6 +15,7 @@ passport.use('signup', new LocalStrategy({
         const { first_name, last_name } = req.body;
         const hashedPassword = createHash(password);
         const newUser = await userManager.newUser({ first_name, last_name, email, password: hashedPassword });
+        req.session.signupSuccess = true;
         return done(null, newUser); 
     } catch (error) {
         return done(error); 
@@ -33,41 +34,46 @@ passport.use('login', new LocalStrategy({
         if (!isValidPassword(user, password)) {
             return done(null, false, { message: 'Contraseña incorrecta' });
         }
+        req.session.loginSuccess = true;
         return done(null, user); 
     } catch (error) {
         return done(error); 
     }
 }));
 
-passport.use('github', new GitHubStrategy({
+passport.use(new GitHubStrategy({
     clientID: "Iv1.89f30c313d658d3b",
-    clientSecret: 'a5696230a38a7ac70fc29b5f43528ea0b22cf9c4',
-    callbackURL: "http://localhost:8080/login/ghcb"
+    clientSecret: 'd1671d6f951c255745d95f1577576dd1667087e5',
+    callbackURL: 'http://localhost:8080/login/ghcb'
 },
 async (accessToken, refreshToken, profile, done) => {
     try {
         console.log("Perfil de GitHub:", profile); 
-    let email;
-    if (profile.email && profile.email.length > 0) {
-        email = profile.emails[0].value;
-    } else {
-        throw new Error('Correo electrónico no proporcionado por GitHub');
-    }
-    let user = await userManager.byEmail(email);
-    if (!user) {
-        user = await userManager.newUser({
-        first_name: profile.displayName,
-        last_name: profile.company,
-        email: profile.email[0].value,
-        });
-    }
-    return done(null, user); 
-    } catch (error) {
-    return done(error); 
-    }
-}
-));
+        console.log(profile.emails[0].value); 
 
+        let email;
+        if (profile.emails && profile.emails.length > 0) {
+            email = profile.emails[0].value;
+        } else {
+            throw new Error('Correo electrónico no proporcionado por GitHub');
+        }
+        let user = await userManager.byEmailGH(email);
+        if (!user) {
+
+            user = await userManager.newUser({
+                first_name: profile._json.name,
+                last_name: profile._json.email, 
+                email: profile._json.email,
+                password: randomPassword, 
+                role: 'user' 
+            });
+            console.log(user);
+        }
+        return done(null, user);
+    } catch (error) {
+        return done(error);
+    }
+}));
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });

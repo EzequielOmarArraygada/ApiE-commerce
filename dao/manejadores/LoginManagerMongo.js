@@ -30,6 +30,10 @@ export class LoginManagerMongo {
         }
     }
 
+    async byEmailGH(email) {
+        return await this.model.findOne({ email });
+    }
+
     async newUser(userData) {
         const newUser = await this.model.create(userData);
         return newUser;
