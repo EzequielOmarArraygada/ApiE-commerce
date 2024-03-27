@@ -1,8 +1,13 @@
+
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GitHubStrategy } from 'passport-github2';
+import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt'; 
 import { createHash, isValidPassword, randomPassword } from '../utils.js';
 import { LoginManagerMongo } from '../dao/manejadores/LoginManagerMongo.js';
+import { jwtSecret } from '../config/jwt.config.js';
+import passportJWT from 'passport-jwt';
+
 
 const userManager = new LoginManagerMongo();
 
@@ -34,7 +39,6 @@ passport.use('login', new LocalStrategy({
         if (!isValidPassword(user, password)) {
             return done(null, false, { message: 'Contraseña incorrecta' });
         }
-        req.session.loginSuccess = true;
         return done(null, user); 
     } catch (error) {
         return done(error); 
@@ -86,5 +90,23 @@ passport.deserializeUser(async (id, done) => {
         done(error);
     }
 });
+
+const jwtOptions = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: jwtSecret
+  };
+  
+  passport.use(new JWTStrategy(jwtOptions, async (jwtPayload, done) => {
+    try {
+      const user = await userManager.byId(jwtPayload.id);
+      if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false);
+      }
+    } catch (error) {
+      return done(error, false);
+    }
+  }));
 
 export default passport;

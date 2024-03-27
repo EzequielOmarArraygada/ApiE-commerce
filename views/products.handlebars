@@ -1,6 +1,6 @@
 
 
-{{/if}}
+{{#if session.user}}
     <div class="navbar">
         <span>Bienvenido, {{session.user.first_name}}</span>
         <a href="/logout">Logout</a>
@@ -9,8 +9,7 @@
     <div class="navbar">
         <a href="/">Login</a>
     </div>
-
-
+{{/if}}
 
 <h1>Lista de Productos</h1>
 

@@ -2,6 +2,8 @@ import { Router } from "express";
 import { LoginManagerMongo } from "../dao/manejadores/LoginManagerMongo.js";
 import passport from "../config/passport.config.js"
 import Swal from 'sweetalert2';
+import jwt from 'jsonwebtoken';
+import { jwtSecret } from '../config/jwt.config.js';
 
 
 const loginRouter = Router();
@@ -17,56 +19,56 @@ loginRouter.get("/signup", async (req, res) => {
 });
 
 loginRouter.get("/login", async (req, res) => {
-    res.render('login');
-});
-
-loginRouter.post("/signup", passport.authenticate('signup', {
-    successRedirect: '/login', 
-    failureRedirect: '/signup', 
-    failureFlash: true 
-}));
-
-loginRouter.post("/login", passport.authenticate('login', {
-    successRedirect: '/products', 
-    failureRedirect: '/login', 
-    failureFlash: true 
-}));
-
-loginRouter.post("/logout", (req, res) => {
-    req.logout();  
-    res.redirect('/'); 
-});
-
-
-loginRouter.get('/login/ghcb', passport.authenticate('github', {
-    successRedirect: '/products', 
-    failureRedirect: '/login', // 
-}));
-
-loginRouter.get('/login', (req, res) => {
     if (req.session.signupSuccess) {
         Swal.fire({
             title: 'Usuario creado exitosamente',
             icon: 'success'
         });
-        req.session.signupSuccess = false; // Reiniciar la bandera después de mostrar el mensaje
+        req.session.signupSuccess = false;
     }
-    res.render('login');
-});
-
-// Mostrar cartel de "Inicio de sesión correcto"
-loginRouter.get('/products', (req, res) => {
     if (req.session.loginSuccess) {
         Swal.fire({
             title: 'Inicio de sesión correcto',
             icon: 'success'
         });
-        req.session.loginSuccess = false; // Reiniciar la bandera después de mostrar el mensaje
+        req.session.loginSuccess = false;
     }
-    // Renderizar la vista de productos
-    res.render('products');
+    res.render('login');
 });
 
+loginRouter.post("/signup", passport.authenticate('signup', {
+    successRedirect: '/login?signupSuccess=true', 
+    failureRedirect: '/signup', 
+    failureFlash: true 
+}));
+
+loginRouter.post("/login", passport.authenticate('login', { session: false }), (req, res) => {
+    try {
+
+        const token = jwt.sign({ id: req.user._id }, jwtSecret, { expiresIn: '1h' });
+
+
+        res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 }); 
+
+
+        res.redirect('/products?loginSuccess=true');
+    } catch (error) {
+        console.error("Error en el inicio de sesión:", error);
+        res.status(500).send({ message: 'Error en el servidor' });
+    }
+});
+
+loginRouter.post("/logout", (req, res) => {
+    req.logout();  
+    res.redirect('/'); 
+    res.clearCookie('jwt');
+});
+
+
+loginRouter.get('/login/ghcb', passport.authenticate('github', {
+    successRedirect: '/products', 
+    failureRedirect: '/login', 
+}));
 
 
 export default loginRouter;
