@@ -2,10 +2,10 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/***PRODUCTS*****/
 .welcome {
   font-size: 20px;
   font-weight: 700;
+  color: #333; /* Cambia el color del texto a un gris oscuro */
 }
 
 .right {
@@ -14,7 +14,7 @@
 }
 
 .green-btn {
-  background: #b9d19b;
+  background: #64C9CF; /* Cambia el color de fondo a un azul claro */
   margin: 12px;
   border-radius: 15px;
   justify-content: center;
@@ -22,18 +22,20 @@
   padding: 8px;
   font-size: 18px;
   font-weight: 700;
+  color: #FFFFFF; /* Cambia el color del texto a blanco */
   cursor: pointer;
 }
 
 .logout {
   margin: 12px;
-  background: #9c8673;
+  background: #5D737E; /* Cambia el color de fondo a un gris azulado */
   border-radius: 15px;
   justify-content: center;
   align-items: center;
   padding: 8px;
   font-size: 18px;
   font-weight: 700;
+  color: #FFFFFF; /* Cambia el color del texto a blanco */
   cursor: pointer;
 }
 
@@ -41,6 +43,7 @@
   display: flex;
   justify-content: center;
 }
+
 #products {
   display: flex;
   flex-direction: row;
@@ -48,30 +51,32 @@
 }
 
 .product {
-  margin: 15px;
+  margin: 10px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  width: 300px;
-  border: 1px solid black;
+  width: 250px;
+  border: 1px solid #5D737E; /* Cambia el color del borde a un gris azulado */
   align-items: center;
   padding: 15px 15px 0px 15px;
-  background-color: rgb(241, 240, 233);
+  background-color: #64C9CF; /* Cambia el color de fondo a un azul claro */
 }
 
 .product span {
   font-weight: 700;
+  color: #333; /* Cambia el color del texto a un gris oscuro */
 }
 
 .add-product {
   margin-bottom: 15px;
-  background: #9dd4bb;
-  border-radius: 15px;
+  background: #5D737E; /* Cambia el color de fondo a un gris azulado */
+  border-radius: 13px;
   justify-content: center;
   align-items: center;
   padding: 8px;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 700;
+  color: #FFFFFF; /* Cambia el color del texto a blanco */
   cursor: pointer;
 }
 
@@ -90,105 +95,23 @@
 .page {
   font-size: 18px;
   font-weight: 700;
+  color: #333; /* Cambia el color del texto a un gris oscuro */
 }
+
 .div-products-btn {
   margin-bottom: 1em;
 }
+
 .view-products {
   text-decoration: none;
-  border: 1px solid #333333;
-  background: #9dd4bb;
+  border: 1px solid #5D737E; /* Cambia el color del borde a un gris azulado */
+  background: #64C9CF; /* Cambia el color de fondo a un azul claro */
   border-radius: 15px;
   justify-content: center;
   align-items: center;
   padding: 0.5rem;
   font-size: 1em;
   font-weight: 700;
+  color: #FFFFFF; /* Cambia el color del texto a blanco */
   cursor: pointer;
-}
-/***--PRODUCTS---*****/
-
-/***CART*****/
-#cart-products {
-  border-collapse: collapse;
-}
-
-#cart-products td,
-#cart-products th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-#cart-products tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-#cart-products tr:hover {
-  background-color: #ddd;
-}
-
-#cart-products th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #7799e4;
-  color: white;
-}
-/****---CART---*****/
-
-/****LOGIN*****/
-.center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 75px;
-}
-
-.form {
-  border: 1px solid #333333;
-  border-radius: 16px;
-  padding: 1em;
-  background-color: #e5e9d48c;
-}
-
-.form button {
-  border-radius: 16px;
-  background-color: #779ae4b4;
-  font-weight: 700;
-  padding: 0.5em;
-}
-/****---LOGIN---*****/
-
-/****REGISTER*****/
-#register-form {
-  display: flex;
-  flex-direction: column;
-}
-#register-form input {
-  margin: 7px 0;
-}
-
-.goto-login {
-  width: 100%;
-}
-
-/****---REGISTER---*****/
-
-/****RESTORE*****/
-
-/****---RESTORE---*****/
-.perfil {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.user-table,
-.user-table td {
-  border: #333333 solid 1px;
-  border-collapse: collapse;
-}
-
-.perfil-btns {
-  display: flex;
 }
