@@ -16,6 +16,7 @@ import UserDTO from './dao/dto/user.dto.js';
 import { Server } from 'socket.io';
 import { chatMM } from './routes/chat.router.js';
 
+const mockingRoutes = require('./routes/api/mocking.routes');
 dotenv.config();
 
 const { passportCall } = utils;
@@ -33,6 +34,7 @@ app.set('view engine', "handlebars")
 app.use(express.static(__dirname + '/views'))
 app.use(express.static(path.join(__dirname, "public")))
 
+app.use('/api', mockingRoutes);
 app.use(express.json());
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
