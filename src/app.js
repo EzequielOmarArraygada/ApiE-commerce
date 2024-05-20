@@ -44,14 +44,14 @@ app.use((err, req, res, next) => {
 });
 
 
-const mongooseUrl = process.env.MONGOOSE_URL;
+const mongooseUrl = process.env.MONGOURL;
 
 app.use(session({
     store: MongoStore.create({
         mongoUrl: mongooseUrl,
         ttl: 60 * 60 
     }),
-    secret: "12345678",
+    secret: "12345679",
     resave: false,
     saveUninitialized: false
 }));
