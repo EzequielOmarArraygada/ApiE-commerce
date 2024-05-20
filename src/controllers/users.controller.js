@@ -23,7 +23,7 @@ export class UserController {
                     .send({ status: 'error', message: 'El usuario no existe' });
             }
             const isValid = utils.isValidatePassword(user, password);
-            console.log('Contraseña correcta, isValid);
+            console.log('Contraseña correcta', isValid);
     
             if (!isValid) {
                 return res

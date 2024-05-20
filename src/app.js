@@ -15,8 +15,7 @@ import dotenv from 'dotenv';
 import UserDTO from './dao/dto/user.dto.js';
 import { Server } from 'socket.io';
 import { chatMM } from './routes/chat.router.js';
-
-const mockingRoutes = require('./routes/api/mocking.routes');
+import mockingRoutes from './routes/api/mocking.routes.js';
 dotenv.config();
 
 const { passportCall } = utils;

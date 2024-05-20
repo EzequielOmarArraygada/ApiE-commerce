@@ -107,7 +107,7 @@ export class CartController {
             console.log("ID Carro:", cid); 
     
             const cart = await this.cartsService.getCartById(cid);
-            console.log("Detalles del carro:", cart); /
+            console.log("Detalles del carro:", cart); 
     
             const ticket = await this.cartsService.checkout(cart);
     
