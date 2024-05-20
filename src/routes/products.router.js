@@ -25,13 +25,13 @@ ProductsRouter.get("/signup", getSignup);
 
 ProductsRouter.get('/products',  passportCall('login', 'user'), getProducts);
 
-ProductsRouter.get('/:pid', getProductById);
+ProductsRouter.get('/products/:pid', getProductById);
 
 ProductsRouter.post("/products",addProduct);
 
-ProductsRouter.put("/:pid", updateProduct);
+ProductsRouter.put("/products/:pid", updateProduct);
 
-ProductsRouter.delete("/:pid", deleteProduct);
+ProductsRouter.delete("/products/:pid", deleteProduct);
 
 
 export default ProductsRouter;

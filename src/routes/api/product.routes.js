@@ -10,14 +10,14 @@ const {
   deleteProduct,
 } = new ProductController();
 
-router.get("/", getProducts);
+router.get("/products", getProducts);
 
-router.get("/:pid", getProductById);
+router.get("/products/:pid", getProductById);
 
-router.post("/", createProduct);
+router.post("/products", createProduct);
 
-router.put("/:pid", updateProduct);
+router.put("/products/:pid", updateProduct);
 
-router.delete("/:pid", deleteProduct);
+router.delete("/products/:pid", deleteProduct);
 
 export default router;
