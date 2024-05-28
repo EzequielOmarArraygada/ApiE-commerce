@@ -8,6 +8,26 @@ export class UserController {
         this.usersService = new UserManagerMongo();
     }
 
+    generatePasswordResetToken = async (email) => {
+        const user = await this.usersService.findByEmail(email);
+
+        if (!user) {
+            throw new Error('No se pudo encontrar este usuario');
+        }
+
+        const token = crypto.randomBytes(20).toString('hex');
+
+        const expires = new Date();
+        expires.setHours(expires.getHours() + 1);
+
+        user.passwordResetToken = token;
+        user.passwordResetExpires = expires;
+
+        await this.usersService.update(user);
+
+        return token;
+    }
+
     postSignup = async (req, res) => {
         res.redirect("/login"); 
     }

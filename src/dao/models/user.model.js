@@ -25,7 +25,9 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: "user"
-    }
+    },
+    passwordResetToken: String,
+    passwordResetExpires: Date
 });
 
 userSchema.post('save', async function (doc, next) {
