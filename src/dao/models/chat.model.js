@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const chatCollection = "chat";
+const chatCollection = "chats";
 
 const messageSchema = new mongoose.Schema({
     username: { type: String, required: true },

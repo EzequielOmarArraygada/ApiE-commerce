@@ -102,13 +102,15 @@
             
             const data = await response.json();
             if (data.result === "success") {
-                alert("Producto eliminado con éxito");
+                alert("Producto eliminado");
                 location.reload();
             } else {
-                alert("Error al eliminar el producto: " + data.error);
+                alert("Error al eliminar " + data.error);
             }
         } catch (error) {
-            console.error("Error al enviar la solicitud de eliminación:", error);
+            console.error(
+                "Error al enviar la solicitud", error
+            )
             alert("Error interno del servidor");
         }
     });
@@ -124,25 +126,26 @@
         const pid = document.getElementById("editProductId").value;
         
         try {
-            console.log("Datos del formulario:", jsonData); 
             const response = await fetch(`http://localhost:8080/${pid}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(jsonData) 
+                body: JSON.stringify(jsonData) // Enviar solo los campos que se desean actualizar
             });
-            console.log("Solicitud de actualización enviada."); 
             const data = await response.json();
-            console.log("Respuesta del servidor:", data); 
+            
             if (data.result === "success") {
-                alert("Producto actualizado con éxito");
+                alert("Producto actualizado");
+                // Recargar la página para mostrar los cambios
                 location.reload();
             } else {
-                alert("Error al actualizar el producto: " + data.error);
+                alert("Error al actualizar " + data.error);
             }
         } catch (error) {
-            console.error("Error al enviar datos del formulario:", error);
+            console.error(
+                "Error al enviar datos del formulario", error
+            )
             alert("Error interno del servidor");
         }
     });
@@ -174,7 +177,9 @@
                 alert("Error al agregar el producto: " + data.error);
             }
         } catch (error) {
-            console.error("Error al enviar datos del formulario:", error);
+            console.error(
+                "Error al enviar datos del formulario:", error 
+            )
             alert("Error interno del servidor");
         }
     });

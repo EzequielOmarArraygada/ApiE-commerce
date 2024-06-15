@@ -8,12 +8,16 @@ export class CartController {
         this.cartsService = new CartManagerMongo();
         this.userService = new UserRepository();
     }
+
     getCarts = async (req, res) => {
         try {
             let result = await this.cartsService.getCarts()
-            res.send ({result: "success", payload: result})
-        } catch (error){
-            console.error ("No se pudieron cargar los carros", error)
+            res.send({ result: "success", payload: result });
+        } catch (error) {
+            req.logger.error(
+                `Error al recuperar los carritos: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+            res.status(500).send({ error: "Ocurrió un error al obtener los carritos." });
         }
     }
 
@@ -21,10 +25,10 @@ export class CartController {
         try {
             const { cid } = req.params;
             const cart = await this.cartsService.getCartById(cid);
-            
+
             const productsDetails = [];
-            let totalPrice = 0; 
-            
+            let totalPrice = 0;
+
             for (const product of cart.products) {
                 const productDetails = await this.productsService.getProduct(product.productId);
                 const productWithQuantity = { ...productDetails, quantity: product.quantity }; 
@@ -33,32 +37,35 @@ export class CartController {
                 const subtotal = productDetails.price * product.quantity;
                 totalPrice += subtotal;
             }
-    
-            console.log(productsDetails);
+            req.logger.debug(
+                `${productsDetails}, Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
             
-            res.render("carts", { cart, productsDetails, totalPrice, cartId: cart._id }); // Pasamos el total a la vista
+            res.render("carts", { cart, productsDetails, totalPrice, cartId: cart._id });
         } catch (error) {
-            console.error("Error al obtener el carro:", error);
-            res.status(500).send({ error: error.message });
+            req.logger.error(
+                `Error al recuperar el carrito por ID: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+            res.status(500).send({ error: "Ocurrió un error al obtener el carrito." });
         }
     }
     
     addCart = async (req, res) => {
-        let result = await this.cartsService.addCart ()
-        res.send ({result: "success", payload: result})
+        let result = await this.cartsService.addCart();
+        res.send({ result: "success", payload: result });
     }
     
     addToCart = async (req, res) => {
         try {
             let { cid, pid } = req.params;
-            
-            let result = await this.cartsService.addToCart (cid, pid)
-            
-            res.send ({result: "success", payload: result})
+            let result = await this.cartsService.addToCart(cid, pid);
+            res.send({ result: "success", payload: result });
         } catch (error) {
-            console.error("Error al agregar producto al carro:", error);
+            req.logger.error(
+                `Error al agregar el producto al carrito: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+            res.status(500).send({ error: "Ocurrió un error al agregar el producto al carrito." });
         }
-        
     }
     
     updateProductQuantity = async (req, res) => {
@@ -68,8 +75,10 @@ export class CartController {
             const result = await this.cartsService.updateProductQuantity(cid, pid, quantity);
             res.send({ result: "success", payload: result });
         } catch (error) {
-            console.error("Error al actualizar la cantidad del producto en el carro:", error);
-            res.status(500).send({ error: error.message });
+            req.logger.error(
+                `Error al actualizar la cantidad del producto en el carrito: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+            res.status(500).send({ error: "Ocurrió un error al actualizar la cantidad del producto en el carrito." });
         }
     }
 
@@ -79,15 +88,17 @@ export class CartController {
             const result = await this.cartsService.updateCart(cid);
             res.send({ result: "success", payload: result });
         } catch (error) {
-            console.error("Error al actualizar el carro:", error);
-            res.status(500).send({ error: error.message });
+            req.logger.error(
+                `Error al actualizar el carrito: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+            res.status(500).send({ error: "Ocurrió un error al actualizar el carrito." });
         }
     }
 
     deleteProduct = async(req, res) => {
-        let {cid, pid} = req.params 
-        let result = await this.cartsService.deleteProduct(pid, cid) 
-        res.send ({result:"success", payload: result})
+        let { cid, pid } = req.params;
+        let result = await this.cartsService.deleteProduct(pid, cid);
+        res.send({ result: "success", payload: result });
     }
 
     deleteAllProducts = async(req, res) => {
@@ -96,53 +107,69 @@ export class CartController {
             const result = await this.cartsService.deleteAllProducts(cid);
             res.send({ result: "success", payload: result });
         } catch (error) {
-            console.error("Error al eliminar todos los productos del carro:", error);
-            res.status(500).send({ error: error.message });
+            req.logger.error(
+                `Error al eliminar todos los productos del carrito: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+            res.status(500).send({ error: "Ocurrió un error al eliminar todos los productos del carrito." });
         }
     }
 
     checkout = async(req, res) => {
         try {
             const { cid } = req.params;
-            console.log("ID Carro:", cid); 
-    
+            req.logger.debug(
+                `ID del carrito: ${cid}, Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+
             const cart = await this.cartsService.getCartById(cid);
-            console.log("Detalles del carro:", cart); 
-    
+            req.logger.debug(
+                `Detalles del carrito: ${cart}, Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+
             const ticket = await this.cartsService.checkout(cart);
-    
             res.redirect(`${cid}/purchase`);
         } catch (error) {
-            console.error("Error", error);
-            res.status(500).send({ error: error.message });
+            req.logger.error(
+                `Error al procesar la compra: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+            res.status(500).send({ error: "Ocurrió un error al procesar la compra." });
         }
     }
     
     getPurchase = async (req, res) => {
         try {
             const { cid } = req.params;
-            res.json({ message: `Compra exitosa` });
+            res.json({ message: `¡Compra exitosa para el carrito ${cid}!` });
         } catch (error){
-            console.error ("Error", error)
+            req.logger.error(
+                `Error en la confirmación de la compra: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+            res.status(500).send({ error: "Ocurrió un error en la confirmación de la compra." });
         }
     }
 
     getUserCartId = async (req, res) => {
         try {
             const userId = req.user._id;
-            console.log('ID de usuario:', userId);
-    
+            req.logger.debug(
+                `ID del usuario: ${userId}, Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+
             const user = await this.userService.findById(userId);
-    
+
             if (user) {
-                console.log('ID del carro del usuario:', user.cart);
+                req.logger.debug(
+                    `ID del carrito del usuario: ${user.cart}, Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+                );
                 res.status(200).json({ cartId: user.cart });
             } else {
-                res.status(404).json({ error: 'Not found' });
+                res.status(404).json({ error: 'Usuario no encontrado.' });
             }
         } catch (error) {
-            console.error('Error', error);
-            res.status(500).json({ error: 'Error del servidor' });
+            req.logger.error(
+                `Error al recuperar el ID del carrito del usuario: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+            res.status(500).json({ error: 'Error interno del servidor.' });
         }
     }
 

@@ -3,6 +3,9 @@ import jwt from "passport-jwt";
 import passportLocal from "passport-local";
 import utils from "../utils.js";
 import { UserManagerMongo } from '../dao/services/managers/UserManagerMongo.js';
+import CustomError from "../services/errors/CustomError.js";
+import EError from "../services/errors/enums.js";
+import { generateErrorInfo } from "../services/errors/info-user.js";
 
 const LocalStrategy = passportLocal.Strategy;
 const JWTStrategy = jwt.Strategy;
@@ -26,10 +29,23 @@ const initializePassport = () => {
         async (req, email, password, done) => {
             const { first_name, last_name, age } = req.body;
 
+            if (!first_name || !last_name || !age) {
+                const err = new CustomError(
+                    "Error al crear el usuario",
+                    generateErrorInfo({ first_name, last_name, age }),
+                    "Error al crear el usuario",
+                    EError.INVALID_TYPES_ERROR
+                );
+                return done(err);
+            }
+
             try {
                 let user = await u.findByEmail(email);
                 if (user) {
-                    console.log("Usuario existente");
+                    req.logger.fatal(
+                        `Usuario existente!, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+                    )
+                    
                     return done(null, false);
                 }
 
@@ -45,7 +61,7 @@ const initializePassport = () => {
                 return done(null, result);
 
             } catch (error) {
-                return done(`${error}`);
+                return done(`Error: ${error}`);
             }
         }
     ));
@@ -56,7 +72,7 @@ const initializePassport = () => {
         new JWTStrategy(
             {
                 jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-                secretOrKey: '12345679',
+                secretOrKey: '12345678',
             }, 
     
             (jwt_payload, done) => {

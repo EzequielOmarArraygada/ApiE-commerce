@@ -1,31 +1,11 @@
 import { UserManagerMongo } from '../dao/services/managers/UserManagerMongo.js';
 import jwt from "jsonwebtoken";
 import utils from "../utils.js";
-import UserDTO from '../dao/dto/user.dto.js'; 
+import UserDTO from '../dao/dto/user.dto.js';
 
 export class UserController {
     constructor(){
         this.usersService = new UserManagerMongo();
-    }
-
-    generatePasswordResetToken = async (email) => {
-        const user = await this.usersService.findByEmail(email);
-
-        if (!user) {
-            throw new Error('No se pudo encontrar este usuario');
-        }
-
-        const token = crypto.randomBytes(20).toString('hex');
-
-        const expires = new Date();
-        expires.setHours(expires.getHours() + 1);
-
-        user.passwordResetToken = token;
-        user.passwordResetExpires = expires;
-
-        await this.usersService.update(user);
-
-        return token;
     }
 
     postSignup = async (req, res) => {
@@ -36,16 +16,27 @@ export class UserController {
         const { email, password } = req.body;
         try {
             let user = await this.usersService.findByEmail(email);
-            console.log('Usuario encontrado exitosamente:', user);
+            req.logger.debug(
+                `Usuario encontrado: ${user ? user.email : 'No encontrado'}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+            
             if (!user) {
+                req.logger.warn(
+                    `Intento de inicio de sesión con un usuario no existente: ${email}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+                );
                 return res
                     .status(401)
-                    .send({ status: 'error', message: 'El usuario no existe' });
+                    .send({ status: 'error', message: 'El usuario no existe.' });
             }
             const isValid = utils.isValidatePassword(user, password);
-            console.log('Contraseña correcta', isValid);
+            req.logger.debug(
+                `Verificación de contraseña: ${isValid ? 'exitosa' : 'fallida'}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+            );
     
             if (!isValid) {
+                req.logger.warn(
+                    `Intento de inicio de sesión fallido para el usuario: ${email}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+                );
                 return res
                     .status(401)
                     .redirect('/faillogin');
@@ -58,30 +49,40 @@ export class UserController {
                 first_name: user.first_name,
                 role: user.role,
                 cart: user.cart,
-                password: user.password
-            }
+            };
     
-            const token = jwt.sign(tokenUser, "12345679", {expiresIn: "1d"});
-            console.log('Token JWT generado:', token);
+            const token = jwt.sign(tokenUser, "12345678", { expiresIn: "1d" });
+            req.logger.debug(
+                `Token JWT generado exitosamente: ${token}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+            );
     
             res
                 .cookie("coderCookieToken", token, {
                     maxAge: 60 * 60 * 1000 * 24,
                     httpOnly: true,
                 })
-                .send({status: "success", user: userDTO});
+                .send({ status: "success", user: userDTO });
                 
         } catch (error) {
-            console.error(error); 
-            res.status(500).send({ status: "error", message: "Error en el servidor" });
+            req.logger.error(
+                `Error al procesar el inicio de sesión: ${error.message}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+            res.status(500).send({ status: "error", message: "Error interno del servidor." });
         }
     }
     
     getSignOut = async (req, res) => {
-        req.session.destroy(() => {
+        req.session.destroy((err) => {
+            if (err) {
+                req.logger.error(
+                    `Error al cerrar sesión: ${err.message}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+                );
+                return res.status(500).send({ status: "error", message: "Error al cerrar sesión." });
+            }
+            req.logger.info(
+                `Sesión cerrada exitosamente, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+            );
             res.redirect("/login");
         });
     }
-
 }
-

@@ -56,13 +56,15 @@ document.querySelectorAll('.addToCartButton').forEach(button => {
         })
         .then(response => {
             if (response.ok) {
-                alert("Producto agregado al carrito exitosamente");
+                alert("Producto agregado  exitosamente");
             } else {
-                alert("Error al agregar el producto al carrito");
+                alert("Error al agregar el producto");
             }
         })
         .catch(error => {
-            console.error("Error al agregar el producto al carrito:", error);
+            console.error(
+                "Error al agregar el producto", error
+            )
             alert("Error interno del servidor");
         });
     });
@@ -71,7 +73,7 @@ document.querySelectorAll('.addToCartButton').forEach(button => {
 <script>
     document.getElementById('goToCartButton').addEventListener('click', () => {
         const cartId = "{{user.cart}}"; 
-                window.location.href = `/carts/${cartId}`;
+        window.location.href = `/carts/${cartId}`;
     });
 </script>
 

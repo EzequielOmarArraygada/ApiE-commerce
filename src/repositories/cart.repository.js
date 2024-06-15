@@ -15,7 +15,7 @@ export class CartRepository {
         try {
             return await this.model.find({}).populate('products');
         } catch (error) {
-            console.error("Error al mostrar carros", error);
+            console.error("Error al obtener todos los carritos:", error);
             throw error;
         }
     }
@@ -24,7 +24,7 @@ export class CartRepository {
         try {
             return await this.model.findById(cid).populate('products');
         } catch (error) {
-            console.error("Error al obtener el carro:", error);
+            console.error(`Error al obtener el carrito con ID ${cid}:`, error);
             throw error;
         }
     }
@@ -32,21 +32,26 @@ export class CartRepository {
     async addCart(userEmail) {
         const newCart = {
             products: [],
-            userEmail: userEmail 
+            userEmail: userEmail
         };
-        return await this.model.create(newCart)
+        try {
+            return await this.model.create(newCart);
+        } catch (error) {
+            console.error("Error al agregar un nuevo carrito:", error);
+            throw error;
+        }
     }
 
     async addToCart(cid, pid) {
         try {
             const cartExists = await this.model.findOne({ _id: cid });
             if (!cartExists) {
-                throw new Error(`No se encontró el carro ID: ${cid}`);
+                throw new Error(`No se encontró el carrito con ID ${cid}`);
             }
     
             const productExists = await productModel.findOne({ _id: pid });
             if (!productExists) {
-                throw new Error(`No se encontró el producto ID: ${pid}`);
+                throw new Error(`No se encontró el producto con ID ${pid}`);
             }
     
             const existingProduct = cartExists.products.find(product => product.productId.toString() === pid.toString());
@@ -62,9 +67,9 @@ export class CartRepository {
             }
     
             await cartExists.save(); 
-            return "Producto agregado exitosamente";
+            return "Producto agregado exitosamente al carrito";
         } catch (error) {
-            console.error("Error al agregar el producto al carro:", error);
+            console.error("Error al agregar el producto al carrito:", error);
             throw error;
         }
     }
@@ -74,7 +79,7 @@ export class CartRepository {
             await this.model.findByIdAndUpdate(cart._id, cart);
             return "Carrito actualizado exitosamente";
         } catch (error) {
-            console.error("Error al actualizar el carro:", error);
+            console.error("Error al actualizar el carrito:", error);
             throw error;
         }
     }
@@ -83,21 +88,21 @@ export class CartRepository {
         try {
             const cart = await this.model.findById(cid);
             if (!cart) {
-                throw new Error(`No se encontró el carro de ID ${cid}`);
+                throw new Error(`No se encontró el carrito con ID ${cid}`);
             }
     
             const productIndex = cart.products.findIndex(product => product.productId.toString() === pid.toString());
             if (productIndex === -1) {
-                throw new Error(`No se encontró el producto con id ${pid} en el carro`);
+                throw new Error(`No se encontró el producto con ID ${pid} en el carrito`);
             }
     
             cart.products.splice(productIndex, 1); 
 
             await this.updateCart(cart);
 
-            return "Producto eliminado exitosamente del carro";
+            return "Producto eliminado exitosamente del carrito";
         } catch (error) {
-            console.error("Error al eliminar el producto del carro:", error);
+            console.error("Error al eliminar el producto del carrito:", error);
             throw error;
         }
     }
@@ -106,22 +111,22 @@ export class CartRepository {
         try {
             const cart = await this.model.findById(cid);
             if (!cart) {
-                throw new Error(`No se encontró el carro de ID: ${cid}`);
+                throw new Error(`No se encontró el carrito con ID ${cid}`);
             }
 
             const productIndex = cart.products.findIndex(product => product.productId.toString() === pid.toString());
             if (productIndex === -1) {
-                throw new Error(`No se encontró el producto de ID ${pid} en el carro`);
+                throw new Error(`No se encontró el producto con ID ${pid} en el carrito`);
             }
 
             cart.products[productIndex].quantity = quantity;
 
             await this.updateCart(cart);
 
-            return "Cantidad de producto actualizada exitosamente";
+            return "Cantidad de producto actualizada exitosamente en el carrito";
 
         } catch (error) {
-            console.error("Error al actualizar la cantidad del producto", error);
+            console.error("Error al actualizar la cantidad del producto en el carrito:", error);
             throw error;
         }
     }
@@ -130,16 +135,16 @@ export class CartRepository {
         try {
             const cart = await this.model.findById(cid);
             if (!cart) {
-                throw new Error(`No se encontró el carro de ID: ${cid}`);
+                throw new Error(`No se encontró el carrito con ID ${cid}`);
             }
     
             cart.products = []; 
     
             await this.updateCart(cart);
     
-            return "Todos los productos fueron eliminados del carro exitosamente";
+            return "Todos los productos fueron eliminados del carrito exitosamente";
         } catch (error) {
-            console.error("Error al eliminar todos los productos del carro:", error);
+            console.error("Error al eliminar todos los productos del carrito:", error);
             throw error;
         }
     }
@@ -148,7 +153,7 @@ export class CartRepository {
         try {
             function generateUniqueCode() {
                 const timestamp = new Date().getTime();
-                const random = Math.floor(Math.random() * 1000); 
+                const random = Math.floor(Math.random() * 1000);
                 return `${timestamp}-${random}`;
             }            
     
@@ -163,18 +168,18 @@ export class CartRepository {
     
             const productsInTicket = [];
             const productsInCart = [];
-            let totalAmount = 0; 
+            let totalAmount = 0;
             for (const product of cart.products) {
                 const productDetails = await productModel.findById(product.productId);
-                console.log("Product details:", productDetails); 
+    
                 if (productDetails.stock >= product.quantity) {
-                    const subtotal = productDetails.price * product.quantity; 
-                    totalAmount += subtotal; 
+                    const subtotal = productDetails.price * product.quantity;
+                    totalAmount += subtotal;
                     productsInTicket.push({
                         productId: productDetails._id,
                         quantity: product.quantity,
                         price: productDetails.price,
-                        subtotal: subtotal 
+                        subtotal: subtotal
                     });
     
                     productDetails.stock -= product.quantity;
@@ -182,9 +187,9 @@ export class CartRepository {
                 } else {
                     productsInCart.push({
                         productId: productDetails._id,
-                        quantity: 0, 
+                        quantity: 0,
                         price: productDetails.price,
-                        subtotal: 0 
+                        subtotal: 0
                     });
                 }
             }
@@ -193,10 +198,10 @@ export class CartRepository {
             await cart.save();
     
             const ticket = new Ticket({
-                code: generateUniqueCode(), 
-                purchaser: userEmail, 
-                products: productsInTicket, 
-                totalAmount: totalAmount 
+                code: generateUniqueCode(),
+                purchaser: userEmail,
+                products: productsInTicket,
+                totalAmount: totalAmount
             });
     
             await ticket.save();

@@ -27,7 +27,6 @@
     document.getElementById("checkoutButton").addEventListener("click", async function() {
         try {
             const cartId = "{{cartId}}"; 
-            console.log("Cart ID:", cartId);
 
             const response = await fetch(`/carts/${cartId}`, { 
                 method: 'POST',
@@ -35,23 +34,20 @@
                     'Content-Type': 'application/json'
                 }
             });
-
-            console.log("Response status:", response.status); // 
+            
             const data = await response.json();
-            console.log("Response data:", data); 
 
             if (response.ok) {
-                console.log("Mensaje de compra exitosa:", data.message);
+                console.log("Compra exitosa:", data.message);
                 window.location.href = `/carts/${cartId}/purchase`;
             } else {
-                console.error('Error al procesar la compra:', data.error);
+                console.error("Error al procesar la compra:", data.error);
                 alert('Error al procesar la compra. Por favor, inténtelo de nuevo más tarde.');
             }
 
         } catch (error) {
-            console.error('Error al procesar la compra:', error);
+            console.error("Error al procesar la compra:", error);
             alert('Error al procesar la compra. Por favor, inténtelo de nuevo más tarde.');
         }
     });
 </script>
-

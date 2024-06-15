@@ -11,6 +11,7 @@ chatRouter.get('/', passportCall('login', 'user'), (req, res) => {
     if (req.isAuthenticated()) {
         res.render('index.handlebars');
     } else {
+
         res.redirect('/login');
     }
 });
@@ -21,7 +22,9 @@ chatRouter.post("/", async (req, res) => {
         const result = await chatMM.addChat(username, message); 
         res.json({ result: "success", payload: result }); 
     } catch (error) {
-        console.error("Error al guardar el mensaje en la base de datos:", error);
+        console.error(
+            "Error al guardar el mensaje.", error
+        )
         
     }
 });

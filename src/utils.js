@@ -16,11 +16,17 @@ const passportCall = (strategy, role) => {
                     .send({ error: info.messages ? info.messages : info.toString()});
             }
 
-            console.log('Usuario autenticado:', user);
-            console.log('Rol del usuario:', user.role); 
+            req.logger.info(
+                `Usuario autenticado: ${user}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+            )
+            req.logger.debug(
+                `Rol de usuario: ${user.role}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+            ) 
 
             if (user.role !== role) {
-                console.log('Acceso denegado. Rol de usuario incorrecto.');
+                req.logger.warning(
+                    `Acceso denegado. Rol de usuario incorrecto, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+                )
                 return res.status(403).send({ error: 'Acceso denegado. Rol de usuario incorrecto.' });
             }
 

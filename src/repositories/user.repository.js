@@ -8,10 +8,12 @@ export class UserRepository {
     async findById(id) {
         try {
             const user = await this.model.findById(id);
-            console.log("Usuario encontrado por ID:", user);
+            if (!user) {
+                throw new Error(`No se encontró ningún usuario con el ID ${id}`);
+            }
             return user;
         } catch (error) {
-            console.error("Error al buscar usuario por ID:", error);
+            console.error(`Error al buscar usuario por ID ${id}:`, error);
             throw error;
         }
     }
@@ -19,10 +21,12 @@ export class UserRepository {
     async findByEmail(email) {
         try {
             const user = await this.model.findOne({ email });
-            console.log("Usuario encontrado por email:", user);
+            if (!user) {
+                throw new Error(`No se encontró ningún usuario con el email '${email}'`);
+            }
             return user;
         } catch (error) {
-            console.error("Error al buscar usuario por email:", error);
+            console.error(`Error al buscar usuario por email '${email}':`, error);
             throw error;
         }
     }
@@ -30,7 +34,6 @@ export class UserRepository {
     async createOne(obj) {
         try {
             const user = await this.model.create(obj);
-            console.log("Usuario creado:", user);
             return user;
         } catch (error) {
             console.error("Error al crear un usuario:", error);
@@ -38,16 +41,4 @@ export class UserRepository {
         }
     }
 
-    async update(user) {
-        try {
-            const updatedUser = await this.model.findByIdAndUpdate(user._id, user, { new: true });
-            console.log("Usuario actualizado:", updatedUser);
-            return updatedUser;
-        } catch (error) {
-            console.error("Error al actualizar un usuario:", error);
-            throw error;
-        }
-    }
-
 }
-

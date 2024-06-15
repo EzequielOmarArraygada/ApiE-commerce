@@ -18,7 +18,7 @@ form.addEventListener("submit", (event) => {
       if (result.success) window.location.href = "/products";
       else {
         Swal.fire({
-          title: "Error al iniciar sesion",
+          title: "No se ah podido iniciar sesión",
           icon: "error",
           text: result.message,
         });

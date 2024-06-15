@@ -25,18 +25,17 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: "user"
-    },
-    passwordResetToken: String,
-    passwordResetExpires: Date
+    }
 });
 
 userSchema.post('save', async function (doc, next) {
     try {
+
         if (doc.role === 'user' && !doc.cart) {
             const cartManager = new CartManagerMongo();
             const newCart = await cartManager.addCart();
             doc.cart = newCart._id;
-            await doc.save(); 
+            await doc.save();
         }
         next();
     } catch (error) {

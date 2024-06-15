@@ -16,8 +16,4 @@ export class UserManagerMongo {
     async createOne(obj) {
         return await this.repository.createOne(obj);
     }
-
-    async update(user) {
-        return await this.repository.update(user);
-    }
 }

@@ -5,6 +5,7 @@ export default class ViewsController {
   constructor() {
     this.productController = new ProductController();
   }
+
   renderInicio = (req, res) => {
     res.redirect("/login");
   };
@@ -30,7 +31,7 @@ export default class ViewsController {
       res.render("current", { title: "Perfil de usuario", user: req.user });
     } else {
       res.status(401).json({
-        error: "Invalid jwt",
+        error: "Token de autenticación inválido.",
       });
     }
   };
@@ -45,7 +46,7 @@ export default class ViewsController {
     const url = `http://localhost:8080/api/products?${urlParams.toString()}`;
 
     fetch(url)
-      .then((res) => res.json())
+      .then((response) => response.json())
       .then((data) => {
         if (data.success) {
           res.render("products", {
@@ -54,12 +55,18 @@ export default class ViewsController {
             user,
           });
         } else {
-          res.status(500).send("Error al obtener los productos");
+          req.logger.error(
+            `Error al obtener los productos: ${data.error || "Datos no disponibles"}. ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+          );
+          res.status(500).send("Hubo un problema al obtener la lista de productos.");
         }
       })
-      .catch((err) =>
-        res.status(500).send(`Error en el fetch de productos. ${err}`)
-      );
+      .catch((error) => {
+        req.logger.error(
+          `Error al realizar la solicitud de productos: ${error.message}. ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+        );
+        res.status(500).send(`Error en la solicitud de productos. ${error.message}`);
+      });
   };
 
   renderCart = (req, res) => {
@@ -68,17 +75,23 @@ export default class ViewsController {
     }
     const cid = req.params.cid;
     fetch(`http://localhost:8080/api/carts/${cid}`)
-      .then((res) => res.json())
+      .then((response) => response.json())
       .then((data) => {
         if (data.success) {
           const products = data.payload.products;
           res.render("carts", { products, title: "Carrito" });
         } else {
-          res.status(500).send("Error al acceder al carrito");
+          req.logger.error(
+            `Error al acceder al carrito: ${data.error || "Datos no disponibles"}. ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+          );
+          res.status(500).send("Hubo un problema al acceder al carrito.");
         }
       })
-      .catch((err) =>
-        res.status(500).send(`Error. ${err}`)
-      );
+      .catch((error) => {
+        req.logger.error(
+          `Error al realizar la solicitud del carrito: ${error.message}. ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+        );
+        res.status(500).send(`Error en la solicitud del carrito. ${error.message}`);
+      });
   };
 }

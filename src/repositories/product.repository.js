@@ -2,7 +2,7 @@ import productModel from "../dao/models/product.model.js";
 
 export class ProductRepository {
     constructor(){
-        this.model = productModel
+        this.model = productModel;
     }
     
     async getProducts(page, limit, sortOrder, category, status) {
@@ -19,30 +19,44 @@ export class ProductRepository {
 
             return await this.model.paginate({ ...query, ...queryStatus }, options);
         } catch (error) {
-            console.error("Error al mostrar los productos", error);
+            console.error("Error al obtener los productos:", error);
+            throw error;
         }
     }
 
     async getProductById(pid){
-        return await this.model.findById(pid).lean(); 
-    }
-    
-    async addProduct(newProduct){
         try {
-            console.log("Datos recibidos para agregar el producto en el repositorio:", newProduct); 
-            return await this.model.create(newProduct);
+            return await this.model.findById(pid).lean(); 
         } catch (error) {
-            console.error("Error al agregar el producto en el repositorio:", error); 
+            console.error(`Error al obtener el producto con ID ${pid}:`, error);
             throw error;
         }
     }
     
+    async addProduct(newProduct){
+        try {
+            return await this.model.create(newProduct);
+        } catch (error) {
+            console.error("Error al agregar el producto:", error);
+            throw error;
+        }
+    }
     
     async updateProduct(pid, updatedProduct){
-        return await this.model.findByIdAndUpdate(pid, updatedProduct, { new: true });
+        try {
+            return await this.model.findByIdAndUpdate(pid, updatedProduct, { new: true });
+        } catch (error) {
+            console.error(`Error al actualizar el producto con ID ${pid}:`, error);
+            throw error;
+        }
     }
     
     async deleteProduct(pid){
-        return await this.model.findByIdAndDelete(pid);
+        try {
+            return await this.model.findByIdAndDelete(pid);
+        } catch (error) {
+            console.error(`Error al eliminar el producto con ID ${pid}:`, error);
+            throw error;
+        }
     }
 }
