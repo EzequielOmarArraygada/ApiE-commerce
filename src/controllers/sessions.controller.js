@@ -73,6 +73,7 @@ export default class SessionsController {
     }
   };
 
+
   restore = async (req, res) => {
     try {
       const { email, password } = req.body;

@@ -30,7 +30,6 @@ const PORT = 8080
 
 app.use(addLogger)
 
-//Handlebars
 app.engine("handlebars", handlebars.engine())
 app.set("views", __dirname + '/views') 
 app.set('view engine', "handlebars")
@@ -50,7 +49,7 @@ app.use((err, req, res, next) => {
 });
 
 
-const mongooseUrl = process.env.MONGOOSE_URL;
+const mongooseUrl = process.env.MONGO_URL;
 
 app.use(session({
     store: MongoStore.create({
@@ -65,6 +64,13 @@ app.use(session({
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+app.use((req, res, next) => {
+    if (req.url === '/favicon.ico') {
+        res.status(204).end(); 
+    } else {
+        next();  
+    }
+});
 
 
 app.get("/logout", (req, res) => {
@@ -98,6 +104,7 @@ app.get("/faillogin", (req, res) => {
 });
 
 app.use(router);
+
 
 const httpServer = app.listen(PORT, () => {
     console.log (`Server is running on port ${PORT}`)

@@ -1,0 +1,3 @@
+2024-06-15 15:46:55 [ERROR]: Error al procesar la compra para el carrito con ID 6618649fee1413a3837125be y usuario undefined: products validation failed: status: Cast to Boolean failed for value "No disponible" (type string) at path "status" because of "CastError"
+2024-06-15 16:20:03 [ERROR]: Error al agregar el producto con ID 666de8dad3078e605d21ef65 al carrito con ID 6618649fee1413a3837125be: No se encontró el carrito con ID 6618649fee1413a3837125be
+2024-06-15 16:20:06 [ERROR]: Error al agregar el producto con ID 666de8dad3078e605d21ef64 al carrito con ID 6618649fee1413a3837125be: No se encontró el carrito con ID 6618649fee1413a3837125be
