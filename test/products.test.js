@@ -11,11 +11,11 @@ describe("test products", ()=>{
             const productMock = {
                 title: "test", 
                 description: "test", 
-                price: "10", 
+                price: "100", 
                 thumbnail: "test.jpg", 
-                code: "1111", 
-                stock: "10", 
-                category: "Lego",
+                code: "1", 
+                stock: "100", 
+                category: "Alimento",
                 status: "Disponible"
             }
 
@@ -31,11 +31,11 @@ describe("test products", ()=>{
 
             const productMock = {
                 description: "test", 
-                price: "10", 
+                price: "111", 
                 thumbnail: "test.jpg", 
-                code: "1111", 
-                stock: "10", 
-                category: "Lego",
+                code: "2", 
+                stock: "111", 
+                category: "Higiene",
                 status: "Disponible"
             }
 
@@ -52,11 +52,11 @@ describe("test products", ()=>{
             const productMock = {
                 title: "test", 
                 description: "test", 
-                price: "10", 
+                price: "222", 
                 thumbnail: "test.jpg", 
-                code: "1111", 
-                stock: "10", 
-                category: "Lego",
+                code: "3", 
+                stock: "222", 
+                category: "Higiene",
                 status: "Disponible"
             }
 
@@ -69,11 +69,11 @@ describe("test products", ()=>{
             const productMockUpdate = {
                 title: "testUpdate", 
                 description: "test", 
-                price: "10", 
+                price: "333", 
                 thumbnail: "test.jpg", 
-                code: "1111", 
-                stock: "10", 
-                category: "Lego",
+                code: "4", 
+                stock: "333", 
+                category: "Meedicación",
                 status: "Disponible"
             }
 
