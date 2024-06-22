@@ -17,6 +17,7 @@ import { Server } from 'socket.io';
 import { chatMM } from './routes/chat.router.js';
 import errorHandler from './middlewares/errors/index.js';
 import { addLogger } from './utils/logger.js';
+import swaggerConfig from "./config/swagger.js";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ const PORT = 8080
 
 app.use(addLogger)
 
+
 app.engine("handlebars", handlebars.engine())
 app.set("views", __dirname + '/views') 
 app.set('view engine', "handlebars")
@@ -39,6 +41,8 @@ app.use(express.static(path.join(__dirname, "public")))
 app.use(express.json());
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
+
+swaggerConfig(app);
 
 app.use((err, req, res, next) => {
     req.logger.fatal(
@@ -103,8 +107,13 @@ app.get("/faillogin", (req, res) => {
     res.status(400).send({ error: "Fallo en el login" })
 });
 
-app.use(router);
+app.use((req, res, next) => {
+    res.status(404).json({
+        error: "Ruta no encontrada",
+    });
+});
 
+app.use(router);
 
 const httpServer = app.listen(PORT, () => {
     console.log (`Server is running on port ${PORT}`)
