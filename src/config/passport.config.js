@@ -23,8 +23,7 @@ const initializePassport = () => {
         return token;
     };
 
-    //Local
-    passport.use("singup", new LocalStrategy(
+    passport.use("signup", new LocalStrategy(
         { passReqToCallback: true, usernameField: "email" },
         async (req, email, password, done) => {
             const { first_name, last_name, age } = req.body;
@@ -44,9 +43,8 @@ const initializePassport = () => {
                 if (user) {
                     req.logger.fatal(
                         `Usuario existente!, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
-                    )
-                    
-                    return done(null, false);
+                    );
+                    return done(null, false, { message: "Usuario ya existe" });
                 }
 
                 const newUser = {
@@ -61,39 +59,38 @@ const initializePassport = () => {
                 return done(null, result);
 
             } catch (error) {
-                return done(`Error: ${error}`);
+                req.logger.error(`Error al registrar usuario: ${error.message}`);
+                return done(error);
             }
         }
     ));
-    
-    //JWT
-    passport.use(
-        'login', 
-        new JWTStrategy(
-            {
-                jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-                secretOrKey: '12345678',
-            }, 
-    
-            (jwt_payload, done) => {
-                try {
-                    return done(null, jwt_payload);
-                } catch (error) {
-                    return done(error);
-                }
-            }   
-        )
-    )
+
+    passport.use('login', new JWTStrategy(
+        {
+            jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+            secretOrKey: '12345678',
+        },
+        (jwt_payload, done) => {
+            try {
+                return done(null, jwt_payload);
+            } catch (error) {
+                return done(error);
+            }
+        }
+    ));
 
     passport.serializeUser((user, done) => {
         done(null, user._id);
     });
 
     passport.deserializeUser(async (id, done) => {
-        let user = await u.findById(id);
-        done(null, user);
+        try {
+            let user = await u.findById(id);
+            done(null, user);
+        } catch (error) {
+            done(error);
+        }
     });
 };
-
 
 export default initializePassport;

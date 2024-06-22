@@ -1,7 +1,7 @@
 import { UserRepository } from "../../../repositories/user.repository.js";
 
 export class UserManagerMongo {
-    constructor(){
+    constructor() {
         this.repository = new UserRepository();
     }
 
@@ -10,7 +10,12 @@ export class UserManagerMongo {
     }
 
     async findByEmail(email) {
-        return await this.repository.findByEmail(email);
+        const user = await this.repository.findByEmail(email);
+        if (!user) {
+            console.warn(`No se encontró ningún usuario con el email '${email}'`);
+            return null; 
+        }
+        return user;
     }
 
     async createOne(obj) {

@@ -10,7 +10,8 @@ const {
 } = new UserController();
 
 UsersRouter.post("/signup", passport.authenticate("signup", { 
-    failureRedirect: "/failregister" 
+    failureRedirect: "/failregister", 
+    failureMessage: true 
 }), postSignup);
 UsersRouter.post('/login', postLogin);
 UsersRouter.get("/signout", getSignOut);
