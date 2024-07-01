@@ -1,0 +1,17 @@
+2024-06-15 15:46:55 [ERROR]: Error al procesar la compra para el carrito con ID 6618649fee1413a3837125be y usuario undefined: products validation failed: status: Cast to Boolean failed for value "No disponible" (type string) at path "status" because of "CastError"
+2024-06-15 16:20:03 [ERROR]: Error al agregar el producto con ID 666de8dad3078e605d21ef65 al carrito con ID 6618649fee1413a3837125be: No se encontró el carrito con ID 6618649fee1413a3837125be
+2024-06-15 16:20:06 [ERROR]: Error al agregar el producto con ID 666de8dad3078e605d21ef64 al carrito con ID 6618649fee1413a3837125be: No se encontró el carrito con ID 6618649fee1413a3837125be
+2024-06-23 22:56:34 [ERROR]: Error al agregar el producto con ID products al carrito con ID undefined: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+2024-06-23 22:56:34 [ERROR]: Error al agregar el producto con ID products al carrito con ID undefined: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+2024-06-23 22:56:34 [ERROR]: Error al eliminar el producto con ID undefined del carrito con ID undefined: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+2024-06-25 23:20:20 [ERROR]: Error al agregar el producto con ID products al carrito con ID undefined: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+2024-06-25 23:20:20 [ERROR]: Error al agregar el producto con ID products al carrito con ID undefined: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+2024-06-25 23:20:20 [ERROR]: Error al eliminar el producto con ID undefined del carrito con ID undefined: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+2024-06-25 23:24:35 [ERROR]: Error al agregar el producto con ID 666de8dad3078e605d21ef65 al carrito con ID 667716e4551eaba464f83599: No se encontró el carrito con ID 667716e4551eaba464f83599
+2024-06-25 23:25:01 [ERROR]: Error al agregar el producto con ID products al carrito con ID undefined: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+2024-06-25 23:25:01 [ERROR]: Error al agregar el producto con ID products al carrito con ID undefined: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+2024-06-25 23:25:01 [ERROR]: Error al eliminar el producto con ID undefined del carrito con ID undefined: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+2024-06-26 20:36:12 [ERROR]: Error al agregar el producto con ID products al carrito con ID undefined: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+2024-06-26 20:36:12 [ERROR]: Error al agregar el producto con ID products al carrito con ID undefined: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+2024-06-26 20:36:12 [ERROR]: Error al eliminar el producto con ID undefined del carrito con ID undefined: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+2024-06-27 19:31:38 [ERROR]: Error al agregar el producto con ID 666de8dad3078e605d21ef64 al carrito con ID 667716e4551eaba464f83599: No se encontró el carrito con ID 667716e4551eaba464f83599

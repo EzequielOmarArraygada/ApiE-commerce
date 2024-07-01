@@ -1,14 +1,26 @@
 {
+    "scripts": {
+        "start": "node ./src/app.js",
+        "dev": "concurrently --kill-others-on-fail \"npm start\" \"wait-on http://localhost:8080 && npm run test\"",
+        "test": "mocha --require esm 'tests/**/*.test.js'"
+    },
     "type": "module",
     "main": "app.js",
     "dependencies": {
         "bcrypt": "^5.1.1",
+        "bcryptjs": "^2.4.3",
         "connect-mongo": "^5.1.0",
         "cookie-parser": "^1.4.6",
         "dotenv": "^16.4.5",
         "express": "^4.19.2",
         "express-handlebars": "^7.1.2",
         "express-session": "^1.18.0",
+<<<<<<< Updated upstream
+=======
+        "faker": "^5.5.3",
+        "jest": "^29.7.0",
+        "logger": "^0.0.1",
+>>>>>>> Stashed changes
         "mongodb": "^6.3.0",
         "mongoose": "^8.2.0",
         "mongoose-paginate-v2": "^1.8.0",
@@ -20,6 +32,36 @@
         "passport-oauth2": "^1.8.0",
         "session-file-store": "^1.5.0",
         "socket.io": "^4.7.4",
+<<<<<<< Updated upstream
         "sweetalert2": "^11.10.6"
+=======
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.1",
+        "sweetalert2": "^11.6.13",
+        "winston": "^3.13.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.24.7",
+        "@babel/preset-env": "^7.24.7",
+        "@babel/preset-react": "^7.24.7",
+        "@babel/preset-typescript": "^7.24.7",
+        "@babel/register": "^7.24.6",
+        "@swc-node/register": "^1.9.2",
+        "@swc/core": "^1.6.5",
+        "@types/chai": "^4.3.16",
+        "@types/mocha": "^10.0.7",
+        "@types/node": "^20.14.8",
+        "@types/supertest": "^6.0.2",
+        "chai": "^5.1.1",
+        "concurrently": "^8.2.2",
+        "esm": "^3.2.25",
+        "mocha": "^10.4.0",
+        "supertest": "^7.0.0",
+        "ts-mocha": "^10.0.0",
+        "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
+        "typescript": "^5.5.2",
+        "wait-on": "^7.2.0"
+>>>>>>> Stashed changes
     }
 }
