@@ -72,17 +72,12 @@ export class UserController {
     }
     
     getSignOut = async (req, res) => {
-        req.session.destroy((err) => {
-            if (err) {
-                req.logger.error(
-                    `Error al cerrar sesión: ${err.message}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
-                );
-                return res.status(500).send({ status: "error", message: "Error al cerrar sesión." });
-            }
-            req.logger.info(
-                `Sesión cerrada exitosamente, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
-            );
-            res.redirect("/login");
-        });
+        try {
+            req.logout(); 
+            res.clearCookie('coderCookieToken').redirect('/login');
+        } catch (error) {
+            console.error(`Error al cerrar sesión: ${error.message}`);
+            res.status(500).send({ status: 'error', message: 'Error al cerrar sesión.' });
+        }
     }
 }

@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 import UserService from "../services/user.service.js";
 import { createHash } from "../utils.js";
+import passport from 'passport';
+
 
 export default class SessionsController {
   constructor() {
@@ -51,28 +53,21 @@ export default class SessionsController {
 
   logout = (req, res) => {
     try {
-      if (req.cookies[config.tokenCookieName]) {
+        req.logout(); // Asegúrate de llamar a req.logout() para cerrar sesión correctamente
         res.clearCookie(config.tokenCookieName).status(200).json({
-          success: true,
-          message: "Sesión cerrada exitosamente.",
+            success: true,
+            message: "Sesión cerrada exitosamente.",
         });
-      } else {
-        res.status(401).json({
-          success: false,
-          message: "No se encontró una sesión activa.",
-        });
-      }
     } catch (error) {
-      req.logger.error(
-        `Error al cerrar sesión: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
-      );
-      res.status(500).json({
-        success: false,
-        message: "Ocurrió un error al cerrar la sesión.",
-      });
+        req.logger.error(
+            `Error al cerrar sesión: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+        );
+        res.status(500).json({
+            success: false,
+            message: "Ocurrió un error al cerrar la sesión.",
+        });
     }
-  };
-
+};
 
   restore = async (req, res) => {
     try {
