@@ -16,17 +16,17 @@
     {{/each}}
 
     <tr>
-        <td colspan="2"><strong>Total:</strong></td>
+        <td colspan='2'><strong>Total:</strong></td>
         <td>${{totalPrice}}</td>
     </tr>
 </table>
 
-<button id="checkoutButton">Finalizar Compra</button>
+<button id='checkoutButton'>Finalizar Compra</button>
 
 <script>
-    document.getElementById("checkoutButton").addEventListener("click", async function() {
+    document.getElementById('checkoutButton').addEventListener('click', async function() {
         try {
-            const cartId = "{{cartId}}"; 
+            const cartId = '{{cartId}}'; 
 
             const response = await fetch(`/carts/${cartId}`, { 
                 method: 'POST',
@@ -38,15 +38,15 @@
             const data = await response.json();
 
             if (response.ok) {
-                console.log("Compra exitosa:", data.message);
+                console.log('Compra exitosa:', data.message);
                 window.location.href = `/carts/${cartId}/purchase`;
             } else {
-                console.error("Error al procesar la compra:", data.error);
+                console.error('Error al procesar la compra:', data.error);
                 alert('Error al procesar la compra. Por favor, inténtelo de nuevo más tarde.');
             }
 
         } catch (error) {
-            console.error("Error al procesar la compra:", error);
+            console.error('Error al procesar la compra:', error);
             alert('Error al procesar la compra. Por favor, inténtelo de nuevo más tarde.');
         }
     });

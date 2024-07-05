@@ -1,4 +1,4 @@
-import chatModel from "../../models/chat.model.js";
+import chatModel from '../../models/chat.model.js';
 import logger from '../../../config/logger.js'; 
 
 export class ChatManagerMongo {
@@ -18,7 +18,7 @@ export class ChatManagerMongo {
             }
         } catch (error) {
             logger.error(`Error al añadir mensaje al chat: ${error.message}`, { username, message, error });
-            throw new Error("No se pudo añadir el mensaje al chat. Por favor, inténtelo de nuevo más tarde.");
+            throw new Error('No se pudo añadir el mensaje al chat. Por favor, inténtelo de nuevo más tarde.');
         }
     }
 }

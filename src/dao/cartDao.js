@@ -1,4 +1,4 @@
-import cartModel from "./models/cart.model.js";
+import cartModel from './models/cart.model.js';
 
 export default class CartDao {
   constructor() {
@@ -6,7 +6,7 @@ export default class CartDao {
   }
 
   async get(id) {
-    return await this.cartModel.findById(id).populate("products.productId");
+    return await this.cartModel.findById(id).populate('products.productId');
   }
 
   async create() {
@@ -17,9 +17,9 @@ export default class CartDao {
     const updatedCart = await this.cartModel.findOneAndUpdate(
       {
         _id: cid,
-        "products.productId": product.id,
+        'products.productId': product.id,
       },
-      { $inc: { "products.$.quantity": product.quantity } }
+      { $inc: { 'products.$.quantity': product.quantity } }
     );
 
     if (updatedCart) return updatedCart;
@@ -49,9 +49,9 @@ export default class CartDao {
     const updatedCart = await this.cartModel.findOneAndUpdate(
       {
         _id: cid,
-        "products.productId": product.id,
+        'products.productId': product.id,
       },
-      { $set: { "products.$.quantity": product.quantity } },
+      { $set: { 'products.$.quantity': product.quantity } },
       { new: true }
     );
 

@@ -1,4 +1,4 @@
-import { fakerES as faker } from "@faker-js/faker"
+import { fakerES as faker } from '@faker-js/faker'
 
 export const generateProducts = () => {
     try {
@@ -15,7 +15,7 @@ export const generateProducts = () => {
         };
     } catch (error) {
         console.error(
-            "Error al generar", error
+            'Error al generar', error
         )
         throw error;
     }

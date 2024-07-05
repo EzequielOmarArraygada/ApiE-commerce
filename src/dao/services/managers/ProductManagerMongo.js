@@ -1,4 +1,4 @@
-import { ProductRepository } from "../../../repositories/product.repository.js";
+import { ProductRepository } from '../../../repositories/product.repository.js';
 
 export class ProductManagerMongo {
     constructor(){

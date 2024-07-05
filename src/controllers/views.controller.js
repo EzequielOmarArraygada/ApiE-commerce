@@ -1,5 +1,5 @@
-import config from "../config/config.js";
-import ProductController from "./product.controller.js";
+import config from '../config/config.js';
+import ProductController from './product.controller.js';
 
 export default class ViewsController {
   constructor() {
@@ -7,38 +7,38 @@ export default class ViewsController {
   }
 
   renderInicio = (req, res) => {
-    res.redirect("/login");
+    res.redirect('/login');
   };
 
   renderChat = (req, res) => {
-    res.render("chat", { title: "Chat" });
+    res.render('chat', { title: 'Chat' });
   };
 
   renderLogin = (req, res) => {
-    res.render("login", { title: "Login" });
+    res.render('login', { title: 'Login' });
   };
 
   renderRegister = (req, res) => {
-    res.render("register", { title: "Registro" });
+    res.render('register', { title: 'Registro' });
   };
 
   renderRestore = (req, res) => {
-    res.render("restore");
+    res.render('restore');
   };
 
   renderCurrent = (req, res) => {
     if (req.cookies[config.tokenCookieName]) {
-      res.render("current", { title: "Perfil de usuario", user: req.user });
+      res.render('current', { title: 'Perfil de usuario', user: req.user });
     } else {
       res.status(401).json({
-        error: "Token de autenticación inválido.",
+        error: 'Token de autenticación inválido.',
       });
     }
   };
 
   renderProducts = (req, res) => {
     if (!req.cookies[config.tokenCookieName]) {
-      return res.redirect("/login");
+      return res.redirect('/login');
     }
     const params = req.query;
     const user = req.user;
@@ -49,16 +49,16 @@ export default class ViewsController {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          res.render("products", {
+          res.render('products', {
             data,
-            title: "Listado de productos",
+            title: 'Listado de productos',
             user,
           });
         } else {
           req.logger.error(
-            `Error al obtener los productos: ${data.error || "Datos no disponibles"}. ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+            `Error al obtener los productos: ${data.error || 'Datos no disponibles'}. ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
           );
-          res.status(500).send("Hubo un problema al obtener la lista de productos.");
+          res.status(500).send('Hubo un problema al obtener la lista de productos.');
         }
       })
       .catch((error) => {
@@ -71,7 +71,7 @@ export default class ViewsController {
 
   renderCart = (req, res) => {
     if (!req.cookies[config.tokenCookieName]) {
-      return res.redirect("/login");
+      return res.redirect('/login');
     }
     const cid = req.params.cid;
     fetch(`http://localhost:8080/api/carts/${cid}`)
@@ -79,12 +79,12 @@ export default class ViewsController {
       .then((data) => {
         if (data.success) {
           const products = data.payload.products;
-          res.render("carts", { products, title: "Carrito" });
+          res.render('carts', { products, title: 'Carrito' });
         } else {
           req.logger.error(
-            `Error al acceder al carrito: ${data.error || "Datos no disponibles"}. ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+            `Error al acceder al carrito: ${data.error || 'Datos no disponibles'}. ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
           );
-          res.status(500).send("Hubo un problema al acceder al carrito.");
+          res.status(500).send('Hubo un problema al acceder al carrito.');
         }
       })
       .catch((error) => {

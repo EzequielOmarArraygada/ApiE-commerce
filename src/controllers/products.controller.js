@@ -13,11 +13,11 @@ export class ProductController {
     }
 
     getLogin = (req, res) => {
-        res.render("login");
+        res.render('login');
     }
 
     getSignup = (req, res) => {
-        res.render("signup");
+        res.render('signup');
     }
 
     getProducts = async (req, res) => {
@@ -46,7 +46,7 @@ export class ProductController {
             req.logger.error(
                 `Error al obtener los productos: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
             );
-            res.status(500).send({ error: "Ocurrió un error al obtener los productos." });
+            res.status(500).send({ error: 'Ocurrió un error al obtener los productos.' });
         }
     }    
     
@@ -54,12 +54,12 @@ export class ProductController {
         try {
             let { pid } = req.params;
             let result = await this.productsService.getProduct(pid);
-            res.send({ result: "success", payload: result });
+            res.send({ result: 'success', payload: result });
         } catch (error) {
             req.logger.error(
                 `Error al obtener el producto por ID: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
             );
-            res.status(500).send({ error: "Ocurrió un error al obtener el producto." });
+            res.status(500).send({ error: 'Ocurrió un error al obtener el producto.' });
         }
     }
     
@@ -72,9 +72,9 @@ export class ProductController {
             
             if (!title || !description || !price || !thumbnail || !code || !stock || !category || !status) {
                 const err = new CustomError(
-                    "Error al crear el producto",
+                    'Error al crear el producto',
                     generateErrorInfo({ title, description, price, thumbnail, code, stock, category, status }),
-                    "Error al intentar crear el producto",
+                    'Error al intentar crear el producto',
                     EError.INVALID_TYPES_ERROR
                 );
                 return next(err);
@@ -84,12 +84,12 @@ export class ProductController {
                 `Producto agregado con éxito: ${JSON.stringify(result)}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
             );
             
-            res.send({ result: "success", payload: result });
+            res.send({ result: 'success', payload: result });
         } catch (error) {
             req.logger.error(
                 `Error al agregar el producto: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
             );
-            res.status(500).send({ error: "Error interno del servidor." });
+            res.status(500).send({ error: 'Error interno del servidor.' });
         }
     }
     
@@ -98,12 +98,12 @@ export class ProductController {
             let { pid } = req.params;
             let updatedProduct = req.body;
             let result = await this.productsService.updateProduct(pid, updatedProduct);
-            res.send({ result: "success", payload: result });
+            res.send({ result: 'success', payload: result });
         } catch (error) {
             req.logger.error(
                 `Error al actualizar el producto: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
             );
-            res.status(500).send({ error: "Ocurrió un error al actualizar el producto." });
+            res.status(500).send({ error: 'Ocurrió un error al actualizar el producto.' });
         }
     }
     
@@ -111,12 +111,12 @@ export class ProductController {
         try {
             let { pid } = req.params;
             let result = await this.productsService.deleteProduct(pid);
-            res.send({ result: "success", payload: result });
+            res.send({ result: 'success', payload: result });
         } catch (error) {
             req.logger.error(
                 `Error al eliminar el producto: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
             );
-            res.status(500).send({ error: "Ocurrió un error al eliminar el producto." });
+            res.status(500).send({ error: 'Ocurrió un error al eliminar el producto.' });
         }
     }   
 }

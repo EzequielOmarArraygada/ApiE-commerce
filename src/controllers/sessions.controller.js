@@ -1,7 +1,7 @@
-import jwt from "jsonwebtoken";
-import config from "../config/config.js";
-import UserService from "../services/user.service.js";
-import { createHash } from "../utils.js";
+import jwt from 'jsonwebtoken';
+import config from '../config/config.js';
+import UserService from '../services/user.service.js';
+import { createHash } from '../utils.js';
 import passport from 'passport';
 
 
@@ -13,7 +13,7 @@ export default class SessionsController {
   register = (req, res, next) => {
     res.status(200).send({
       success: true,
-      message: "Usuario creado exitosamente.",
+      message: 'Usuario creado exitosamente.',
     });
   };
 
@@ -28,7 +28,7 @@ export default class SessionsController {
         cart: req.user.cart,
       };
       const token = jwt.sign(userToken, config.privateKey, {
-        expiresIn: "24h",
+        expiresIn: '24h',
       });
 
       res
@@ -38,7 +38,7 @@ export default class SessionsController {
         })
         .send({
           success: true,
-          message: "Inicio de sesión exitoso.",
+          message: 'Inicio de sesión exitoso.',
         });
     } catch (error) {
       req.logger.error(
@@ -46,7 +46,7 @@ export default class SessionsController {
       );
       res.status(500).send({
         success: false,
-        message: "Ocurrió un error al iniciar sesión.",
+        message: 'Ocurrió un error al iniciar sesión.',
       });
     }
   };
@@ -56,7 +56,7 @@ export default class SessionsController {
         req.logout(); // Asegúrate de llamar a req.logout() para cerrar sesión correctamente
         res.clearCookie(config.tokenCookieName).status(200).json({
             success: true,
-            message: "Sesión cerrada exitosamente.",
+            message: 'Sesión cerrada exitosamente.',
         });
     } catch (error) {
         req.logger.error(
@@ -64,7 +64,7 @@ export default class SessionsController {
         );
         res.status(500).json({
             success: false,
-            message: "Ocurrió un error al cerrar la sesión.",
+            message: 'Ocurrió un error al cerrar la sesión.',
         });
     }
 };
@@ -75,7 +75,7 @@ export default class SessionsController {
       if (!email || !password) {
         return res.status(400).send({
           success: false,
-          message: "Todos los campos son obligatorios.",
+          message: 'Todos los campos son obligatorios.',
         });
       }
 
@@ -84,7 +84,7 @@ export default class SessionsController {
       if (!user) {
         return res.status(401).send({
           success: false,
-          message: "Usuario no encontrado.",
+          message: 'Usuario no encontrado.',
         });
       }
 
@@ -93,7 +93,7 @@ export default class SessionsController {
 
       res.status(200).send({
         success: true,
-        message: "Contraseña actualizada exitosamente.",
+        message: 'Contraseña actualizada exitosamente.',
       });
     } catch (error) {
       req.logger.error(

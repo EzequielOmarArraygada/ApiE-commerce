@@ -11,7 +11,7 @@ export class CartManagerMongo {
             return await this.cartRepository.getCarts();
         } catch (error) {
             logger.error(`Error al mostrar los carritos: ${error.message}`, { error });
-            throw new Error("No se pudieron obtener los carritos. Por favor, inténtelo de nuevo más tarde.");
+            throw new Error('No se pudieron obtener los carritos. Por favor, inténtelo de nuevo más tarde.');
         }
     }
 
@@ -20,7 +20,7 @@ export class CartManagerMongo {
             return await this.cartRepository.getCartById(cid);
         } catch (error) {
             logger.error(`Error al obtener el carrito con ID ${cid}: ${error.message}`, { cid, error });
-            throw new Error("No se pudo obtener el carrito especificado. Por favor, verifique el ID y vuelva a intentarlo.");
+            throw new Error('No se pudo obtener el carrito especificado. Por favor, verifique el ID y vuelva a intentarlo.');
         }
     }
 
@@ -29,7 +29,7 @@ export class CartManagerMongo {
             return await this.cartRepository.addCart();
         } catch (error) {
             logger.error(`Error al agregar un nuevo carrito: ${error.message}`, { error });
-            throw new Error("No se pudo crear un nuevo carrito. Por favor, inténtelo de nuevo más tarde.");
+            throw new Error('No se pudo crear un nuevo carrito. Por favor, inténtelo de nuevo más tarde.');
         }
     }
 
@@ -38,7 +38,7 @@ export class CartManagerMongo {
             return await this.cartRepository.addToCart(cid, pid);
         } catch (error) {
             logger.error(`Error al agregar el producto con ID ${pid} al carrito con ID ${cid}: ${error.message}`, { cid, pid, error });
-            throw new Error("No se pudo agregar el producto al carrito. Por favor, verifique los IDs e inténtelo de nuevo.");
+            throw new Error('No se pudo agregar el producto al carrito. Por favor, verifique los IDs e inténtelo de nuevo.');
         }
     }
 
@@ -47,7 +47,7 @@ export class CartManagerMongo {
             return await this.cartRepository.updateCart(cart);
         } catch (error) {
             logger.error(`Error al actualizar el carrito con ID ${cart.id}: ${error.message}`, { cart, error });
-            throw new Error("No se pudo actualizar el carrito. Por favor, verifique los datos del carrito e inténtelo de nuevo.");
+            throw new Error('No se pudo actualizar el carrito. Por favor, verifique los datos del carrito e inténtelo de nuevo.');
         }
     }
 
@@ -56,7 +56,7 @@ export class CartManagerMongo {
             return await this.cartRepository.deleteProduct(pid, cid);
         } catch (error) {
             logger.error(`Error al eliminar el producto con ID ${pid} del carrito con ID ${cid}: ${error.message}`, { cid, pid, error });
-            throw new Error("No se pudo eliminar el producto del carrito. Por favor, verifique los IDs e inténtelo de nuevo.");
+            throw new Error('No se pudo eliminar el producto del carrito. Por favor, verifique los IDs e inténtelo de nuevo.');
         }
     }
 
@@ -65,7 +65,7 @@ export class CartManagerMongo {
             return await this.cartRepository.updateProductQuantity(cid, pid, quantity);
         } catch (error) {
             logger.error(`Error al actualizar la cantidad del producto con ID ${pid} en el carrito con ID ${cid}: ${error.message}`, { cid, pid, quantity, error });
-            throw new Error("No se pudo actualizar la cantidad del producto en el carrito. Por favor, verifique los IDs y la cantidad.");
+            throw new Error('No se pudo actualizar la cantidad del producto en el carrito. Por favor, verifique los IDs y la cantidad.');
         }
     }
 
@@ -74,7 +74,7 @@ export class CartManagerMongo {
             return await this.cartRepository.deleteAllProducts(cid);
         } catch (error) {
             logger.error(`Error al eliminar todos los productos del carrito con ID ${cid}: ${error.message}`, { cid, error });
-            throw new Error("No se pudieron eliminar todos los productos del carrito. Por favor, inténtelo de nuevo más tarde.");
+            throw new Error('No se pudieron eliminar todos los productos del carrito. Por favor, inténtelo de nuevo más tarde.');
         }
     }
 
@@ -83,7 +83,7 @@ export class CartManagerMongo {
             return await this.cartRepository.checkout(cart, userEmail);
         } catch (error) {
             logger.error(`Error al procesar la compra para el carrito con ID ${cart.id} y usuario ${userEmail}: ${error.message}`, { cart, userEmail, error });
-            throw new Error("No se pudo completar la compra. Por favor, inténtelo de nuevo más tarde.");
+            throw new Error('No se pudo completar la compra. Por favor, inténtelo de nuevo más tarde.');
         }
     }
 }

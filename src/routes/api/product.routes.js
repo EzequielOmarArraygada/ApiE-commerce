@@ -1,5 +1,5 @@
-import express from "express";
-import ProductController from "../../controllers/product.controller.js";
+import express from 'express';
+import ProductController from '../../controllers/product.controller.js';
 
 const router = express.Router();
 const {
@@ -27,7 +27,7 @@ const {
  *       200:
  *         description: Lista de productos obtenida exitosamente
  */
-router.get("/products", getProducts);
+router.get('/products', getProducts);
 
 /**
  * @swagger
@@ -46,7 +46,7 @@ router.get("/products", getProducts);
  *       200:
  *         description: Producto obtenido exitosamente
  */
-router.get("/products/:pid", getProductById);
+router.get('/products/:pid', getProductById);
 
 /**
  * @swagger
@@ -63,10 +63,10 @@ router.get("/products/:pid", getProductById);
  *             properties:
  *               name:
  *                 type: string
- *                 example: "Nombre del producto"
+ *                 example: 'Nombre del producto'
  *               description:
  *                 type: string
- *                 example: "Descripción del producto"
+ *                 example: 'Descripción del producto'
  *               price:
  *                 type: number
  *                 example: 100
@@ -77,7 +77,7 @@ router.get("/products/:pid", getProductById);
  *       201:
  *         description: Producto creado exitosamente
  */
-router.post("/products", createProduct);
+router.post('/products', createProduct);
 
 /**
  * @swagger
@@ -101,10 +101,10 @@ router.post("/products", createProduct);
  *             properties:
  *               name:
  *                 type: string
- *                 example: "Nombre del producto actualizado"
+ *                 example: 'Nombre del producto actualizado'
  *               description:
  *                 type: string
- *                 example: "Descripción del producto actualizada"
+ *                 example: 'Descripción del producto actualizada'
  *               price:
  *                 type: number
  *                 example: 120
@@ -115,7 +115,7 @@ router.post("/products", createProduct);
  *       200:
  *         description: Producto actualizado exitosamente
  */
-router.put("/products/:pid", updateProduct);
+router.put('/products/:pid', updateProduct);
 
 /**
  * @swagger
@@ -134,6 +134,6 @@ router.put("/products/:pid", updateProduct);
  *       200:
  *         description: Producto eliminado exitosamente
  */
-router.delete("/products/:pid", deleteProduct);
+router.delete('/products/:pid', deleteProduct);
 
 export default router;

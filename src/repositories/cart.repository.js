@@ -1,8 +1,8 @@
-import cartModel from "../dao/models/cart.model.js";
-import productModel from "../dao/models/product.model.js";
-import Ticket from "../dao/models/ticket.model.js";
-import { ProductManagerMongo } from "../dao/services/managers/ProductManagerMongo.js";
-import User from "../dao/models/user.model.js";
+import cartModel from '../dao/models/cart.model.js';
+import productModel from '../dao/models/product.model.js';
+import Ticket from '../dao/models/ticket.model.js';
+import { ProductManagerMongo } from '../dao/services/managers/ProductManagerMongo.js';
+import User from '../dao/models/user.model.js';
 
 export class CartRepository {
     constructor(){
@@ -15,7 +15,7 @@ export class CartRepository {
         try {
             return await this.model.find({}).populate('products');
         } catch (error) {
-            console.error("Error al obtener todos los carritos:", error);
+            console.error('Error al obtener todos los carritos:', error);
             throw error;
         }
     }
@@ -37,7 +37,7 @@ export class CartRepository {
         try {
             return await this.model.create(newCart);
         } catch (error) {
-            console.error("Error al agregar un nuevo carrito:", error);
+            console.error('Error al agregar un nuevo carrito:', error);
             throw error;
         }
     }
@@ -67,9 +67,9 @@ export class CartRepository {
             }
     
             await cartExists.save(); 
-            return "Producto agregado exitosamente al carrito";
+            return 'Producto agregado exitosamente al carrito';
         } catch (error) {
-            console.error("Error al agregar el producto al carrito:", error);
+            console.error('Error al agregar el producto al carrito:', error);
             throw error;
         }
     }
@@ -77,9 +77,9 @@ export class CartRepository {
     async updateCart(cart) {
         try {
             await this.model.findByIdAndUpdate(cart._id, cart);
-            return "Carrito actualizado exitosamente";
+            return 'Carrito actualizado exitosamente';
         } catch (error) {
-            console.error("Error al actualizar el carrito:", error);
+            console.error('Error al actualizar el carrito:', error);
             throw error;
         }
     }
@@ -100,9 +100,9 @@ export class CartRepository {
 
             await this.updateCart(cart);
 
-            return "Producto eliminado exitosamente del carrito";
+            return 'Producto eliminado exitosamente del carrito';
         } catch (error) {
-            console.error("Error al eliminar el producto del carrito:", error);
+            console.error('Error al eliminar el producto del carrito:', error);
             throw error;
         }
     }
@@ -123,10 +123,10 @@ export class CartRepository {
 
             await this.updateCart(cart);
 
-            return "Cantidad de producto actualizada exitosamente en el carrito";
+            return 'Cantidad de producto actualizada exitosamente en el carrito';
 
         } catch (error) {
-            console.error("Error al actualizar la cantidad del producto en el carrito:", error);
+            console.error('Error al actualizar la cantidad del producto en el carrito:', error);
             throw error;
         }
     }
@@ -142,9 +142,9 @@ export class CartRepository {
     
             await this.updateCart(cart);
     
-            return "Todos los productos fueron eliminados del carrito exitosamente";
+            return 'Todos los productos fueron eliminados del carrito exitosamente';
         } catch (error) {
-            console.error("Error al eliminar todos los productos del carrito:", error);
+            console.error('Error al eliminar todos los productos del carrito:', error);
             throw error;
         }
     }
@@ -208,7 +208,7 @@ export class CartRepository {
     
             return ticket;
         } catch (error) {
-            console.error("Error al procesar la compra:", error);
+            console.error('Error al procesar la compra:', error);
             throw error;
         }
     }    

@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { CartManagerMongo } from "../services/managers/CartManagerMongo.js";
+import mongoose from 'mongoose';
+import { CartManagerMongo } from '../services/managers/CartManagerMongo.js';
 
 const userSchema = new mongoose.Schema({
     first_name: {
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        default: "user"
+        default: 'user'
     }
 });
 
@@ -43,7 +43,7 @@ userSchema.post('save', async function (doc, next) {
     }
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 export default User;
 

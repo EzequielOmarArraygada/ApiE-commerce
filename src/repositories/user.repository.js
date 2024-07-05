@@ -1,4 +1,4 @@
-import User from "../dao/models/user.model.js";
+import User from '../dao/models/user.model.js';
 
 export class UserRepository {
     constructor() {
@@ -36,7 +36,7 @@ export class UserRepository {
             const user = await this.model.create(obj);
             return user;
         } catch (error) {
-            console.error("Error al crear un usuario:", error);
+            console.error('Error al crear un usuario:', error);
             throw error; 
         }
     }

@@ -45,7 +45,7 @@ ProductsRouter.get('/', getHome);
  *       200:
  *         description: Página de login
  */
-ProductsRouter.get("/login", getLogin);
+ProductsRouter.get('/login', getLogin);
 
 /**
  * @swagger
@@ -57,7 +57,7 @@ ProductsRouter.get("/login", getLogin);
  *       200:
  *         description: Página de registro
  */
-ProductsRouter.get("/signup", getSignup);
+ProductsRouter.get('/signup', getSignup);
 
 /**
  * @swagger
@@ -105,10 +105,10 @@ ProductsRouter.get('/:pid', getProductById);
  *             properties:
  *               name:
  *                 type: string
- *                 example: "Nombre del producto"
+ *                 example: 'Nombre del producto'
  *               description:
  *                 type: string
- *                 example: "Descripción del producto"
+ *                 example: 'Descripción del producto'
  *               price:
  *                 type: number
  *                 example: 100
@@ -119,7 +119,7 @@ ProductsRouter.get('/:pid', getProductById);
  *       201:
  *         description: Producto agregado exitosamente
  */
-ProductsRouter.post("/products", addProduct);
+ProductsRouter.post('/products', addProduct);
 
 /**
  * @swagger
@@ -143,10 +143,10 @@ ProductsRouter.post("/products", addProduct);
  *             properties:
  *               name:
  *                 type: string
- *                 example: "Nombre actualizado"
+ *                 example: 'Nombre actualizado'
  *               description:
  *                 type: string
- *                 example: "Descripción actualizada"
+ *                 example: 'Descripción actualizada'
  *               price:
  *                 type: number
  *                 example: 120
@@ -157,7 +157,7 @@ ProductsRouter.post("/products", addProduct);
  *       200:
  *         description: Producto actualizado exitosamente
  */
-ProductsRouter.put("/:pid", updateProduct);
+ProductsRouter.put('/:pid', updateProduct);
 
 /**
  * @swagger
@@ -176,6 +176,6 @@ ProductsRouter.put("/:pid", updateProduct);
  *       200:
  *         description: Producto eliminado exitosamente
  */
-ProductsRouter.delete("/:pid", deleteProduct);
+ProductsRouter.delete('/:pid', deleteProduct);
 
 export default ProductsRouter;

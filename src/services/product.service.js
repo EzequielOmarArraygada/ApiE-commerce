@@ -1,4 +1,4 @@
-import ProductDao from "../dao/productDao.js";
+import ProductDao from '../dao/productDao.js';
 
 export default class ProductService {
   constructor() {
@@ -19,7 +19,7 @@ export default class ProductService {
     try {
       return await this.dao.gets(filter, options);
     } catch (error) {
-      return Promise.reject("Error al obtener los productos: " + error);
+      return Promise.reject('Error al obtener los productos: ' + error);
     }
   };
 
@@ -27,14 +27,14 @@ export default class ProductService {
     let productDB = await this.dao.getByCode(newProduct.code);
     if (productDB) {
       return Promise.reject(
-        `El producto con el código "${newProduct.code}" ya existe, no se agregará a la base de datos".`
+        `El producto con el código '${newProduct.code}' ya existe, no se agregará a la base de datos'.`
       );
     }
 
     try {
       return await this.dao.create(newProduct);
     } catch (error) {
-      return Promise.reject("Error al crear el producto en la BD: " + error);
+      return Promise.reject('Error al crear el producto en la BD: ' + error);
     }
   };
 
@@ -50,7 +50,7 @@ export default class ProductService {
     try {
       return await this.dao.update(id, productUpdated);
     } catch (error) {
-      return Promise.reject("Error al actualizar el producto: " + error);
+      return Promise.reject('Error al actualizar el producto: ' + error);
     }
   };
 
@@ -58,7 +58,7 @@ export default class ProductService {
     try {
       return await this.dao.delete(id);
     } catch (error) {
-      return Promise.reject("Error al eliminar el producto: " + error);
+      return Promise.reject('Error al eliminar el producto: ' + error);
     }
   };
 }

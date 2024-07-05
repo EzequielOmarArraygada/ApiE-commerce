@@ -1,4 +1,4 @@
-import productModel from "../dao/models/product.model.js";
+import productModel from '../dao/models/product.model.js';
 
 export class ProductRepository {
     constructor(){
@@ -19,7 +19,7 @@ export class ProductRepository {
 
             return await this.model.paginate({ ...query, ...queryStatus }, options);
         } catch (error) {
-            console.error("Error al obtener los productos:", error);
+            console.error('Error al obtener los productos:', error);
             throw error;
         }
     }
@@ -37,7 +37,7 @@ export class ProductRepository {
         try {
             return await this.model.create(newProduct);
         } catch (error) {
-            console.error("Error al agregar el producto:", error);
+            console.error('Error al agregar el producto:', error);
             throw error;
         }
     }

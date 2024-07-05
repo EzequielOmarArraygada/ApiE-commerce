@@ -1,5 +1,5 @@
-import { Router } from "express";
-import passport from "passport";
+import { Router } from 'express';
+import passport from 'passport';
 import { UserController } from '../controllers/users.controller.js';
 
 const UsersRouter = Router();
@@ -9,11 +9,11 @@ const {
     getSignOut,
 } = new UserController();
 
-UsersRouter.post("/signup", passport.authenticate("signup", { 
-    failureRedirect: "/failregister", 
+UsersRouter.post('/signup', passport.authenticate('signup', { 
+    failureRedirect: '/failregister', 
     failureMessage: true 
 }), postSignup);
 UsersRouter.post('/login', postLogin);
-UsersRouter.get("/signout", getSignOut);
+UsersRouter.get('/signout', getSignOut);
 
 export default UsersRouter;

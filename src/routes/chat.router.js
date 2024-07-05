@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { ChatManagerMongo } from "../dao/services/managers/ChatManagerMongo.js";
-import utils from "../utils.js";
+import { Router } from 'express';
+import { ChatManagerMongo } from '../dao/services/managers/ChatManagerMongo.js';
+import utils from '../utils.js';
 
 const { passportCall } = utils;
 
@@ -16,14 +16,14 @@ chatRouter.get('/', passportCall('login', 'user'), (req, res) => {
     }
 });
 
-chatRouter.post("/", async (req, res) => {
+chatRouter.post('/', async (req, res) => {
     const { username, message } = req.body; 
     try {
         const result = await chatMM.addChat(username, message); 
-        res.json({ result: "success", payload: result }); 
+        res.json({ result: 'success', payload: result }); 
     } catch (error) {
         console.error(
-            "Error al guardar el mensaje.", error
+            'Error al guardar el mensaje.', error
         )
         
     }

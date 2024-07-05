@@ -1,5 +1,5 @@
-import mailer from "nodemailer";
-import config from "../config/config.js";
+import mailer from 'nodemailer';
+import config from '../config/config.js';
 
 export default class MailingService {
   constructor() {

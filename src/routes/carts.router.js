@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router } from 'express';
 import { CartController } from '../controllers/carts.controller.js';
 
 const cartRouter = Router()
@@ -33,7 +33,7 @@ const {
  *       200:
  *         description: Lista de carritos obtenida exitosamente
  */
-cartRouter.get("/", getCarts);
+cartRouter.get('/', getCarts);
 
 /**
  * @swagger
@@ -52,7 +52,7 @@ cartRouter.get("/", getCarts);
  *       200:
  *         description: Carrito obtenido exitosamente
  */
-cartRouter.get("/:cid", getCartById);
+cartRouter.get('/:cid', getCartById);
 
 /**
  * @swagger
@@ -64,7 +64,7 @@ cartRouter.get("/:cid", getCartById);
  *       201:
  *         description: Carrito creado exitosamente
  */
-cartRouter.post("/", addCart);
+cartRouter.post('/', addCart);
 
 /**
  * @swagger
@@ -89,7 +89,7 @@ cartRouter.post("/", addCart);
  *       200:
  *         description: Producto agregado exitosamente
  */
-cartRouter.post("/:cid/:pid", addToCart);
+cartRouter.post('/:cid/:pid', addToCart);
 
 /**
  * @swagger
@@ -114,7 +114,7 @@ cartRouter.post("/:cid/:pid", addToCart);
  *       200:
  *         description: Cantidad actualizada exitosamente
  */
-cartRouter.put("/:cid/products/:pid", updateProductQuantity);
+cartRouter.put('/:cid/products/:pid', updateProductQuantity);
 
 /**
  * @swagger
@@ -133,7 +133,7 @@ cartRouter.put("/:cid/products/:pid", updateProductQuantity);
  *       200:
  *         description: Carrito actualizado exitosamente
  */
-cartRouter.put("/:cid", updateCart);
+cartRouter.put('/:cid', updateCart);
 
 /**
  * @swagger
@@ -158,7 +158,7 @@ cartRouter.put("/:cid", updateCart);
  *       200:
  *         description: Producto eliminado exitosamente
  */
-cartRouter.delete("/:cid/products/:pid", deleteProduct);
+cartRouter.delete('/:cid/products/:pid', deleteProduct);
 
 /**
  * @swagger
@@ -177,7 +177,7 @@ cartRouter.delete("/:cid/products/:pid", deleteProduct);
  *        200:
  *         description: Todos los productos eliminados del carrito exitosamente
  */
-cartRouter.delete("/:cid", deleteAllProducts);
+cartRouter.delete('/:cid', deleteAllProducts);
 
 /**
  * @swagger
@@ -196,7 +196,7 @@ cartRouter.delete("/:cid", deleteAllProducts);
  *       200:
  *         description: Estado de la compra obtenido exitosamente
  */
-cartRouter.get("/:cid/purchase", getPurchase);
+cartRouter.get('/:cid/purchase', getPurchase);
 
 /**
  * @swagger
@@ -215,6 +215,6 @@ cartRouter.get("/:cid/purchase", getPurchase);
  *       200:
  *         description: Compra finalizada exitosamente
  */
-cartRouter.post("/:cid", checkout);
+cartRouter.post('/:cid', checkout);
 
 export default cartRouter;

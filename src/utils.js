@@ -1,5 +1,5 @@
-import bcrypt from "bcrypt"
-import passport from "passport"
+import bcrypt from 'bcrypt'
+import passport from 'passport'
 
 const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 const isValidatePassword = (user, password) => bcrypt.compareSync(password, user.password)

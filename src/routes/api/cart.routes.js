@@ -1,5 +1,5 @@
-import express from "express";
-import CartController from "../../controllers/cart.controller.js";
+import express from 'express';
+import CartController from '../../controllers/cart.controller.js';
 
 const router = express.Router();
 const {
@@ -29,7 +29,7 @@ const {
  *       201:
  *         description: Carrito creado exitosamente
  */
-router.post("/", createCart);
+router.post('/', createCart);
 
 /**
  * @swagger
@@ -48,7 +48,7 @@ router.post("/", createCart);
  *       200:
  *         description: Carrito obtenido exitosamente
  */
-router.get("/:cid", getCart);
+router.get('/:cid', getCart);
 
 /**
  * @swagger
@@ -73,7 +73,7 @@ router.get("/:cid", getCart);
  *       200:
  *         description: Producto agregado exitosamente
  */
-router.post("/:cid/product/:pid", addProductToCart);
+router.post('/:cid/product/:pid', addProductToCart);
 
 /**
  * @swagger
@@ -98,7 +98,7 @@ router.post("/:cid/product/:pid", addProductToCart);
  *       200:
  *         description: Producto eliminado exitosamente
  */
-router.delete("/:cid/product/:pid", deleteProductFromCart);
+router.delete('/:cid/product/:pid', deleteProductFromCart);
 
 /**
  * @swagger
@@ -117,7 +117,7 @@ router.delete("/:cid/product/:pid", deleteProductFromCart);
  *       200:
  *         description: Carrito actualizado exitosamente
  */
-router.put("/:cid", updateCart);
+router.put('/:cid', updateCart);
 
 /**
  * @swagger
@@ -142,7 +142,7 @@ router.put("/:cid", updateCart);
  *       200:
  *         description: Cantidad actualizada exitosamente
  */
-router.put("/:cid/product/:pid", updateProductQuantity);
+router.put('/:cid/product/:pid', updateProductQuantity);
 
 /**
  * @swagger
@@ -161,7 +161,7 @@ router.put("/:cid/product/:pid", updateProductQuantity);
  *       200:
  *         description: Todos los productos eliminados del carrito exitosamente
  */
-router.delete("/:cid", deleteAllProductsFromCart);
+router.delete('/:cid', deleteAllProductsFromCart);
 
 export default router;
 

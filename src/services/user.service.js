@@ -1,4 +1,4 @@
-import UserDao from "../dao/userDao.js";
+import UserDao from '../dao/userDao.js';
 
 export default class UserService {
   constructor() {
@@ -9,7 +9,7 @@ export default class UserService {
     try {
       return await this.userDao.get();
     } catch (error) {
-      return Promise.reject("Error " + error);
+      return Promise.reject('Error ' + error);
     }
   };
 
@@ -17,7 +17,7 @@ export default class UserService {
     try {
       return await this.userDao.getBy(email);
     } catch (error) {
-      return Promise.reject("Error " + error);
+      return Promise.reject('Error ' + error);
     }
   };
 
@@ -25,7 +25,7 @@ export default class UserService {
     try {
       return await this.userDao.create(newUser);
     } catch (error) {
-      return Promise.reject("Error " + error);
+      return Promise.reject('Error ' + error);
     }
   };
 
@@ -33,7 +33,7 @@ export default class UserService {
     try {
       return await this.userDao.updatePassword(user);
     } catch (error) {
-      return Promise.reject("Error" + error);
+      return Promise.reject('Error' + error);
     }
   };
 }

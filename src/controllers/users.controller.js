@@ -1,6 +1,6 @@
 import { UserManagerMongo } from '../dao/services/managers/UserManagerMongo.js';
-import jwt from "jsonwebtoken";
-import utils from "../utils.js";
+import jwt from 'jsonwebtoken';
+import utils from '../utils.js';
 import UserDTO from '../dao/dto/user.dto.js';
 
 export class UserController {
@@ -9,7 +9,7 @@ export class UserController {
     }
 
     postSignup = async (req, res) => {
-        res.redirect("/login"); 
+        res.redirect('/login'); 
     }
     
     postLogin = async (req, res) => {
@@ -51,23 +51,23 @@ export class UserController {
                 cart: user.cart,
             };
     
-            const token = jwt.sign(tokenUser, "12345678", { expiresIn: "1d" });
+            const token = jwt.sign(tokenUser, '12345678', { expiresIn: '1d' });
             req.logger.debug(
                 `Token JWT generado exitosamente: ${token}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
             );
     
             res
-                .cookie("coderCookieToken", token, {
+                .cookie('coderCookieToken', token, {
                     maxAge: 60 * 60 * 1000 * 24,
                     httpOnly: true,
                 })
-                .send({ status: "success", user: userDTO });
+                .send({ status: 'success', user: userDTO });
                 
         } catch (error) {
             req.logger.error(
                 `Error al procesar el inicio de sesión: ${error.message}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
             );
-            res.status(500).send({ status: "error", message: "Error interno del servidor." });
+            res.status(500).send({ status: 'error', message: 'Error interno del servidor.' });
         }
     }
     

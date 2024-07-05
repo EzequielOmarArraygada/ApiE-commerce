@@ -1,4 +1,4 @@
-import ProductModel from "../../dao/models/product.model.js"
+import ProductModel from '../../dao/models/product.model.js'
 
 const product = new ProductModel();
 

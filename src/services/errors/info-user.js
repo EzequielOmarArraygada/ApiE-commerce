@@ -1,4 +1,4 @@
-import User from "../../dao/models/user.model.js"
+import User from '../../dao/models/user.model.js'
 
 const user = new User();
 

@@ -1,11 +1,11 @@
-import passport from "passport";
-import jwt from "passport-jwt";
-import passportLocal from "passport-local";
-import utils from "../utils.js";
+import passport from 'passport';
+import jwt from 'passport-jwt';
+import passportLocal from 'passport-local';
+import utils from '../utils.js';
 import { UserManagerMongo } from '../dao/services/managers/UserManagerMongo.js';
-import CustomError from "../services/errors/CustomError.js";
-import EError from "../services/errors/enums.js";
-import { generateErrorInfo } from "../services/errors/info-user.js";
+import CustomError from '../services/errors/CustomError.js';
+import EError from '../services/errors/enums.js';
+import { generateErrorInfo } from '../services/errors/info-user.js';
 
 const LocalStrategy = passportLocal.Strategy;
 const JWTStrategy = jwt.Strategy;
@@ -18,21 +18,21 @@ const initializePassport = () => {
     const cookieExtractor = (req) => {
         let token = null;
         if (req && req.cookies) {
-            token = req.cookies["coderCookieToken"];
+            token = req.cookies['coderCookieToken'];
         }
         return token;
     };
 
-    passport.use("signup", new LocalStrategy(
-        { passReqToCallback: true, usernameField: "email" },
+    passport.use('signup', new LocalStrategy(
+        { passReqToCallback: true, usernameField: 'email' },
         async (req, email, password, done) => {
             const { first_name, last_name, age } = req.body;
 
             if (!first_name || !last_name || !age) {
                 const err = new CustomError(
-                    "Error al crear el usuario",
+                    'Error al crear el usuario',
                     generateErrorInfo({ first_name, last_name, age }),
-                    "Error al crear el usuario",
+                    'Error al crear el usuario',
                     EError.INVALID_TYPES_ERROR
                 );
                 return done(err);
@@ -44,7 +44,7 @@ const initializePassport = () => {
                     req.logger.fatal(
                         `Usuario existente!, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
                     );
-                    return done(null, false, { message: "Usuario ya existe" });
+                    return done(null, false, { message: 'Usuario ya existe' });
                 }
 
                 const newUser = {
