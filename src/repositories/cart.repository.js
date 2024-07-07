@@ -55,21 +55,19 @@ export class CartRepository {
             }
     
             const existingProduct = cartExists.products.find(product => product.productId.toString() === pid.toString());
-           
             if (existingProduct) {
                 existingProduct.quantity++;
             } else {
                 cartExists.products.push({
                     productId: pid,
-                    product: productExists,
                     quantity: 1
                 });
             }
     
-            await cartExists.save(); 
-            return 'Producto agregado exitosamente al carrito';
+            await cartExists.save();
+            return cartExists;
         } catch (error) {
-            console.error('Error al agregar el producto al carrito:', error);
+            console.error(`Error al agregar el producto al carrito:`, error);
             throw error;
         }
     }
