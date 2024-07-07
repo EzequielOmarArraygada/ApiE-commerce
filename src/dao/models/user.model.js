@@ -22,10 +22,7 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Cart'
     },
-    role: {
-        type: String,
-        default: 'user'
-    }
+    role: { type: String, enum: ['user', 'premium','admin'], default: 'user' }
 });
 
 userSchema.post('save', async function (doc, next) {

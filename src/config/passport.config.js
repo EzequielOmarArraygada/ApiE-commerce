@@ -52,7 +52,7 @@ const initializePassport = () => {
                     last_name,
                     email,
                     age,
-                    password: utils.createHash(password),
+                    password: utils.createHash(password), 
                 };
 
                 let result = await u.createOne(newUser);
@@ -68,7 +68,7 @@ const initializePassport = () => {
     passport.use('login', new JWTStrategy(
         {
             jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-            secretOrKey: '12345678',
+            secretOrKey: process.env.JWT_SECRET,
         },
         (jwt_payload, done) => {
             try {
@@ -82,7 +82,7 @@ const initializePassport = () => {
     passport.serializeUser((user, done) => {
         done(null, user._id);
     });
-
+    
     passport.deserializeUser(async (id, done) => {
         try {
             let user = await u.findById(id);

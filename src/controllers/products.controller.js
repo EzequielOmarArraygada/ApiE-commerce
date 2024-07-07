@@ -65,11 +65,13 @@ export class ProductController {
     
     addProduct = async (req, res, next) => {
         try {
-            let { title, description, price, thumbnail, code, stock, category, status } = req.body;
-            req.logger.debug(
-                `Datos recibidos para agregar el producto: ${JSON.stringify(req.body)}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
-            );
-            
+            const { title, description, price, thumbnail, code, stock, category, status } = req.body;
+            const user = req.user; 
+
+            if (user.role !== 'premium') {
+                return res.status(403).send('Solo los usuarios premium pueden agregar productos.');
+            }
+
             if (!title || !description || !price || !thumbnail || !code || !stock || !category || !status) {
                 const err = new CustomError(
                     'Error al crear el producto',
@@ -79,11 +81,19 @@ export class ProductController {
                 );
                 return next(err);
             }
-            let result = await this.productsService.addProduct({ title, description, price, thumbnail, code, stock, category, status });
-            req.logger.info(
-                `Producto agregado con éxito: ${JSON.stringify(result)}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
-            );
-            
+
+            const result = await this.productsService.addProduct({
+                title,
+                description,
+                price,
+                thumbnail,
+                code,
+                stock,
+                category,
+                status,
+                owner: user._id, 
+            });
+
             res.send({ result: 'success', payload: result });
         } catch (error) {
             req.logger.error(
@@ -109,8 +119,20 @@ export class ProductController {
     
     deleteProduct = async (req, res) => {
         try {
-            let { pid } = req.params;
-            let result = await this.productsService.deleteProduct(pid);
+            const { pid } = req.params;
+            const user = req.user; 
+
+            const product = await this.productsService.getProduct(pid);
+
+            if (!product) {
+                return res.status(404).send('Producto no encontrado');
+            }
+
+            if (product.owner.toString() !== user._id && user.role !== 'admin') {
+                return res.status(403).send('No tienes permiso para eliminar este producto');
+            }
+
+            const result = await this.productsService.deleteProduct(pid);
             res.send({ result: 'success', payload: result });
         } catch (error) {
             req.logger.error(
@@ -118,5 +140,5 @@ export class ProductController {
             );
             res.status(500).send({ error: 'Ocurrió un error al eliminar el producto.' });
         }
-    }   
+    }
 }

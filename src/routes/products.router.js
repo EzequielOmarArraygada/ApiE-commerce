@@ -2,7 +2,7 @@ import express from 'express';
 import { ProductController } from '../controllers/products.controller.js';
 import utils from '../utils.js';
 
-const { passportCall } = utils;
+const { passportCall, requireOwnershipOrAdmin,requirePremium } = utils;
 const ProductsRouter = express.Router()
 
 const {
@@ -88,7 +88,7 @@ ProductsRouter.get('/products', passportCall('login', 'user'), getProducts);
  *       200:
  *         description: Producto obtenido exitosamente
  */
-ProductsRouter.get('/:pid', getProductById);
+ProductsRouter.get('/products/:pid', passportCall('login', 'user'), getProductById);
 
 /**
  * @swagger
@@ -119,7 +119,7 @@ ProductsRouter.get('/:pid', getProductById);
  *       201:
  *         description: Producto agregado exitosamente
  */
-ProductsRouter.post('/products', addProduct);
+ProductsRouter.post('/products', passportCall('login', 'premium'), requirePremium, addProduct);
 
 /**
  * @swagger
@@ -157,7 +157,7 @@ ProductsRouter.post('/products', addProduct);
  *       200:
  *         description: Producto actualizado exitosamente
  */
-ProductsRouter.put('/:pid', updateProduct);
+ProductsRouter.put('/products/:pid', passportCall('login', 'premium'), requireOwnershipOrAdmin, updateProduct);
 
 /**
  * @swagger
@@ -176,6 +176,6 @@ ProductsRouter.put('/:pid', updateProduct);
  *       200:
  *         description: Producto eliminado exitosamente
  */
-ProductsRouter.delete('/:pid', deleteProduct);
+ProductsRouter.put('/products/:pid', passportCall('login', 'premium'), requireOwnershipOrAdmin, updateProduct);
 
 export default ProductsRouter;
