@@ -58,7 +58,7 @@ export class CartController {
     addToCart = async (req, res) => {
         try {
             let { cid, pid } = req.params;
-            let userId = req.session.clienId;
+            let userId = req.session.clientId;
 
             
         if (!cid || !pid) {
@@ -73,7 +73,7 @@ export class CartController {
         }
         req.logger.debug(`Producto encontrado: ${JSON.stringify(product)}. ID del usuario: ${userId}.`);
 
-        if (req.session.role === 'premium' && product.owner && product.owner === userId) {
+        if (req.session.role === 'premium' && product.owner && product.owner.toString() === userId.toString()) {
             req.logger.warning(
                 `Usuarios premium no pueden agregar sus propios productos. Producto: ${product._id}, Usuario: ${userId}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
             );
