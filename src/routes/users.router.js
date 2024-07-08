@@ -2,7 +2,7 @@ import { Router } from 'express';
 import passport from 'passport';
 import { UserController } from '../controllers/users.controller.js';
 import utils from '../utils.js';
-import upload from '../middlewares/upload.js'
+import upload from '../middlewares/upload.js';
 
 const { passportCall } = utils;
 const UsersRouter = Router();
@@ -12,6 +12,8 @@ const {
     getSignOut,
     togglePremium,
     uploadDocuments,
+    getAllUsers,
+    deleteInactiveUsers,
 } = new UserController();
 
 /**
@@ -159,8 +161,56 @@ UsersRouter.put('/premium/:uid', passportCall('login', 'user'), togglePremium);
  *       401:
  *         description: Usuario no autenticado
  */
-
 UsersRouter.post('/:uid/documents', passportCall('login', 'user'), upload.array('documents', 10), uploadDocuments);
 
+/**
+ * @swagger
+ * /api/sessions:
+ *   get:
+ *     summary: Obtiene todos los usuarios con sus datos principales
+ *     tags: [Usuarios]
+ *     responses:
+ *       200:
+ *         description: Lista de usuarios obtenida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   nombre:
+ *                     type: string
+ *                   correo:
+ *                     type: string
+ *                   rol:
+ *                     type: string
+ *       500:
+ *         description: Error interno del servidor
+ */
+UsersRouter.get('/', getAllUsers);
+
+/**
+ * @swagger
+ * /api/sessions:
+ *   delete:
+ *     summary: Elimina todos los usuarios que no hayan tenido conexión en los últimos días
+ *     tags: [Usuarios]
+ *     responses:
+ *       200:
+ *         description: Usuarios inactivos eliminados exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Error interno del servidor
+ */
+UsersRouter.delete('/', deleteInactiveUsers);
 
 export default UsersRouter;

@@ -40,4 +40,39 @@ export class UserRepository {
             throw error; 
         }
     }
+
+    async getAllUsers() {
+        try {
+            // Retornamos solo los campos necesarios
+            return await this.model.find({}, 'first_name email role');
+        } catch (error) {
+            console.error('Error al obtener todos los usuarios:', error);
+            throw error;
+        }
+    }
+
+    async deleteInactiveUsers() {
+        try {
+            // Obtener la fecha límite para la inactividad
+            const inactivityDate = new Date(Date.now() - 30 * 60 * 1000); 
+            const users = await this.model.find({ last_connection: { $lt: inactivityDate } });
+
+            if (users.length > 0) {
+                // Enviar correos a los usuarios inactivos (puedes ajustar el método de envío de correo aquí)
+                for (const user of users) {
+                    // Lógica para enviar correo (esto es un pseudocódigo, ajusta con tu método de envío real)
+                    console.log(`Enviando correo a ${user.email} para notificar la eliminación por inactividad.`);
+                }
+
+                // Eliminar usuarios inactivos
+                await this.model.deleteMany({ _id: { $in: users.map(user => user._id) } });
+            }
+
+            return { status: 'success', message: 'Usuarios inactivos eliminados', count: users.length };
+        } catch (error) {
+            console.error('Error al eliminar usuarios inactivos:', error);
+            throw error;
+        }
+    }
+    
 }

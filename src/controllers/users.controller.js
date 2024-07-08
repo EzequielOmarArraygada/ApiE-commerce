@@ -153,4 +153,25 @@ export class UserController {
             res.status(500).send({ status: 'error', message: 'Error interno del servidor.' });
         }
     }
+
+    getAllUsers = async (req, res) => {
+        try {
+            const users = await this.usersService.getAllUsers();
+            res.status(200).json(users);
+        } catch (error) {
+            req.logger.error(`Error al obtener usuarios: ${error.message}`);
+            res.status(500).send({ status: 'error', message: 'Error interno del servidor.' });
+        }
+    }
+
+    deleteInactiveUsers = async (req, res) => {
+        try {
+            const result = await this.usersService.deleteInactiveUsers();
+            res.status(200).json(result);
+        } catch (error) {
+            req.logger.error(`Error al eliminar usuarios inactivos: ${error.message}`);
+            res.status(500).send({ status: 'error', message: 'Error interno del servidor.' });
+        }
+    }
+    
 }

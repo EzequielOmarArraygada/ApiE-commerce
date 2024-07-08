@@ -21,4 +21,13 @@ export class UserManagerMongo {
     async createOne(obj) {
         return await this.repository.createOne(obj);
     }
+
+    async getAllUsers() {
+        return await this.repository.getAllUsers();
+    }
+    
+    async deleteInactiveUsers() {
+        return await this.repository.deleteInactiveUsers();
+    }
+    
 }
