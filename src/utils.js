@@ -15,7 +15,7 @@ const requirePremium = (req, res, next) => {
 
 const requireOwnershipOrAdmin = async (req, res, next) => {
     const { pid } = req.params;
-    const user = req.session;
+    const user = req.user;
 
     try {
         const product = await ProductManagerMongo.getProduct(pid);
