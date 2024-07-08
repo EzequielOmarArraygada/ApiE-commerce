@@ -2,6 +2,7 @@ import { Router } from 'express';
 import passport from 'passport';
 import { UserController } from '../controllers/users.controller.js';
 import utils from '../utils.js';
+import upload from '../middlewares/upload.js'
 
 const { passportCall } = utils;
 const UsersRouter = Router();
@@ -10,6 +11,7 @@ const {
     postLogin,
     getSignOut,
     togglePremium,
+    uploadDocuments,
 } = new UserController();
 
 /**
@@ -114,5 +116,51 @@ UsersRouter.get('/signout', passportCall('login', 'user'), getSignOut);
  *         description: Usuario no encontrado
  */
 UsersRouter.put('/premium/:uid', passportCall('login', 'user'), togglePremium);
+
+/**
+ * @swagger
+ * /api/sessions/{uid}/documents:
+ *   post:
+ *     summary: Subir documentos del usuario
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: uid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID del usuario
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               documents:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *     responses:
+ *       200:
+ *         description: Documentos subidos exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *       400:
+ *         description: Error al subir documentos
+ *       401:
+ *         description: Usuario no autenticado
+ */
+
+UsersRouter.post('/:uid/documents', passportCall('login', 'user'), upload.array('documents', 10), uploadDocuments);
+
 
 export default UsersRouter;

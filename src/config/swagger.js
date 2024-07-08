@@ -7,7 +7,7 @@ const options = {
         info: {
             title: 'API de Ecommerce',
             version: '1.0.0',
-            description: 'Documentación de la API para los módulos de productos y carrito.',
+            description: 'Documentación de la API para los módulos de productos, carrito, usuarios y sesiones.',
         },
         servers: [
             {
