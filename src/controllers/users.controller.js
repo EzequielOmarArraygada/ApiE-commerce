@@ -127,24 +127,24 @@ export class UserController {
         try {
             const { uid } = req.params;
             const user = await this.usersService.findById(uid);
-
+    
             if (!user) {
                 return res.status(404).send({ status: 'error', message: 'Usuario no encontrado' });
             }
-
+    
             // Validar documentos antes de cambiar a premium
-            const requiredDocs = ['Identificacion.txt', 'Comprobante de domicilio.txt', 'Comprobante de estado de cuenta.txt'];
-            const hasAllDocuments = requiredDocs.every(docName =>
-                user.documents.some(doc => doc.name === docName)
+            const requiredDocsKeywords = ['Identificacion', 'Comprobante de domicilio', 'Comprobante de estado de cuenta'];
+            const hasAllRequiredDocs = requiredDocsKeywords.every(keyword =>
+                user.documents.some(doc => doc.name.includes(keyword))
             );
-
-            if (!hasAllDocuments && user.role !== 'premium') {
+    
+            if (!hasAllRequiredDocs && user.role !== 'premium') {
                 return res.status(400).send({ status: 'error', message: 'Faltan documentos para cambiar a premium' });
             }
-
+    
             user.role = user.role === 'premium' ? 'user' : 'premium';
             await user.save();
-
+    
             res.send({ status: 'success', message: `El rol del usuario ha sido cambiado a ${user.role}` });
         } catch (error) {
             req.logger.error(
