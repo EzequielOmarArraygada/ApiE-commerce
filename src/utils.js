@@ -6,7 +6,7 @@ const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 const isValidatePassword = (user, password) => bcrypt.compareSync(password, user.password);
 
 const requirePremium = (req, res, next) => {
-    if (req.user.role !== 'premium') {
+    if (req.session.role !== 'premium') {
         req.logger.warning(`Acceso denegado: Solo usuarios premium. ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`);
         return res.status(403).send('Acceso denegado: Solo usuarios premium');
     }
@@ -15,7 +15,7 @@ const requirePremium = (req, res, next) => {
 
 const requireOwnershipOrAdmin = async (req, res, next) => {
     const { pid } = req.params;
-    const user = req.user;
+    const user = req.session;
 
     try {
         const product = await ProductManagerMongo.getProduct(pid);

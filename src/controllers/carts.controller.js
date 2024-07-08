@@ -60,28 +60,37 @@ export class CartController {
             let { cid, pid } = req.params;
             const userId = req.session.clienId;
 
-            const product = await this.productsService.getProduct(pid);
-            if (!product) {
-                return res.status(404).send({ error: 'Producto no encontrado' });
-            }
-
-            if (req.session.role === 'premium' && product.owner.toString() === userId.toString()) {
-                req.logger.warning(
-                    `Usuarios premium no pueden agregar sus propios productos. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
-                );
-                return res.status(403).send({ error: 'No puedes agregar tus propios productos al carrito.' });
-            }
-
-            let result = await this.cartsService.addToCart(cid, pid);
-            res.send({ result: 'success', payload: result });
-        } catch (error) {
-            req.logger.error(
-                `Error al agregar el producto al carrito: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
-            );
-            res.status(500).send({ error: 'Ocurrió un error al agregar el producto al carrito.' });
+            
+        if (!cid || !pid) {
+            req.logger.error(`Faltan parámetros: cid (${cid}), pid (${pid}).`);
+            return res.status(400).send({ error: 'Faltan el ID del carrito o el ID del producto.' });
         }
+
+        const product = await this.productsService.getProduct(pid);
+        if (!product) {
+            req.logger.error(`Producto no encontrado: pid (${pid}).`);
+            return res.status(404).send({ error: 'Producto no encontrado.' });
+        }
+        req.logger.debug(`Producto encontrado: ${JSON.stringify(product)}. ID del usuario: ${userId}.`);
+
+        if (req.session.role === 'premium' && product.owner && product.owner.toString() === userId.toString()) {
+            req.logger.warning(
+                `Usuarios premium no pueden agregar sus propios productos. Producto: ${product._id}, Usuario: ${userId}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+            return res.status(403).send({ error: 'No puedes agregar tus propios productos al carrito.' });
+        }
+
+        const result = await this.cartsService.addToCart(cid, pid);
+        req.logger.debug(`Producto agregado al carrito: ${result}`);
+        res.send({ result: 'success', payload: result });
+    } catch (error) {
+        req.logger.error(
+            `Error al agregar el producto al carrito: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+        );
+        res.status(500).send({ error: 'Ocurrió un error al agregar el producto al carrito.' });
     }
-    
+    }
+
     updateProductQuantity = async (req, res) => {
         try {
             const { cid, pid } = req.params;

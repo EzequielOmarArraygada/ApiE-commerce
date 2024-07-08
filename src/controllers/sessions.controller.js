@@ -24,7 +24,7 @@ export default class SessionsController {
         lastname: req.user.lastname,
         email: req.user.email,
         age: req.user.age,
-        role: req.user.role,
+        role: req.session.role,
         cart: req.user.cart,
       };
       const token = jwt.sign(userToken, config.privateKey, {
