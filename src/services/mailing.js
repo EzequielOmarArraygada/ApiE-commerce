@@ -26,3 +26,21 @@ export function sendPasswordResetEmail(email, token) {
         }
     });
 }
+
+export async function sendEmail(emailDetails) {
+    const mailOptions = {
+        from: config.mailing.USER,
+        to: emailDetails.to,
+        subject: emailDetails.subject,
+        text: emailDetails.text
+    };
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Correo enviado:', info.response);
+        return info;
+    } catch (error) {
+        console.error('Error al enviar correo:', error);
+        throw error;
+    }
+}

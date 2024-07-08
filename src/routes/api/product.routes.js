@@ -7,7 +7,6 @@ const {
   getProductById,
   createProduct,
   updateProduct,
-  deleteProduct,
 } = new ProductController();
 
 /**
@@ -31,7 +30,7 @@ router.get('/products', getProducts);
 
 /**
  * @swagger
- * /api/products/{pid}:
+ * /products/{pid}:
  *   get:
  *     summary: Obtener un producto por ID
  *     tags: [Productos]
@@ -50,7 +49,7 @@ router.get('/products/:pid', getProductById);
 
 /**
  * @swagger
- * /api/products:
+ * /products:
  *   post:
  *     summary: Crear un nuevo producto
  *     tags: [Productos]
@@ -81,7 +80,7 @@ router.post('/products', createProduct);
 
 /**
  * @swagger
- * /api/products/{pid}:
+ * /products/{pid}:
  *   put:
  *     summary: Actualizar un producto
  *     tags: [Productos]
@@ -117,23 +116,5 @@ router.post('/products', createProduct);
  */
 router.put('/products/:pid', updateProduct);
 
-/**
- * @swagger
- * /api/products/{pid}:
- *   delete:
- *     summary: Eliminar un producto
- *     tags: [Productos]
- *     parameters:
- *       - in: path
- *         name: pid
- *         schema:
- *           type: string
- *         required: true
- *         description: ID del producto
- *     responses:
- *       200:
- *         description: Producto eliminado exitosamente
- */
-router.delete('/products/:pid', deleteProduct);
 
 export default router;

@@ -2,6 +2,8 @@ import { ProductManagerMongo } from '../dao/services/managers/ProductManagerMong
 import CustomError from '../services/errors/CustomError.js';
 import EError from '../services/errors/enums.js';
 import { generateErrorInfo } from '../services/errors/info-products.js';
+import { sendEmail } from '../services/mailing.js';
+
 
 export class ProductController {
     constructor(){
@@ -117,35 +119,11 @@ export class ProductController {
         }
     }
     
+
     deleteProduct = async (req, res) => {
         try {
             const { pid } = req.params;
-            const user = req.user; 
-
             const product = await this.productsService.getProduct(pid);
-
-            if (!product) {
-                return res.status(404).send('Producto no encontrado');
-            }
-
-            if (product.owner.toString() !== user._id && user.role !== 'admin') {
-                return res.status(403).send('No tienes permiso para eliminar este producto');
-            }
-
-            const result = await this.productsService.deleteProduct(pid);
-            res.send({ result: 'success', payload: result });
-        } catch (error) {
-            req.logger.error(
-                `Error al eliminar el producto: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
-            );
-            res.status(500).send({ error: 'Ocurrió un error al eliminar el producto.' });
-        }
-    }
-
-    deleteProduct = async (req, res) => {
-        try {
-            const { pid } = req.params;
-            const product = await this.productsService.findById(pid);
 
             if (!product) {
                 return res.status(404).send({ status: 'error', message: 'Producto no encontrado' });
@@ -158,7 +136,7 @@ export class ProductController {
 
             // Enviar correo si el usuario es premium
             if (user && user.role === 'premium') {
-                await utils.sendEmail({
+                await sendEmail({
                     to: user.email,
                     subject: 'Producto eliminado',
                     text: `Tu producto con ID ${pid} ha sido eliminado.`
