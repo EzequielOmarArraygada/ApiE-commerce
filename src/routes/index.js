@@ -9,7 +9,7 @@ const router = Router()
 
 router.use('/api/sessions', usersRouter);
 router.use('/', ProductsRouter);
-router.use('/carts', cartRouter);
+router.use('/api/carts', cartRouter);
 router.use('/api/chat', chatRouter);
 router.use('/api/mockingproducts', MockRouter);
 

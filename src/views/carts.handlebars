@@ -28,7 +28,7 @@
         try {
             const cartId = '{{cartId}}'; 
 
-            const response = await fetch(`/carts/${cartId}`, { 
+            const response = await fetch(`/api/carts/${cartId}`, { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -39,7 +39,7 @@
 
             if (response.ok) {
                 console.log('Compra exitosa:', data.message);
-                window.location.href = `/carts/${cartId}/purchase`;
+                window.location.href = `/api/carts/${cartId}/purchase`;
             } else {
                 console.error('Error al procesar la compra:', data.error);
                 alert('Error al procesar la compra. Por favor, inténtelo de nuevo más tarde.');

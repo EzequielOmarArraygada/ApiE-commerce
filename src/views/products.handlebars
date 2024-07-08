@@ -48,7 +48,7 @@ document.querySelectorAll('.addToCartButton').forEach(button => {
     button.addEventListener('click', () => {
         const productId = button.dataset.productid;
 
-        fetch(`/carts/${cartId}/${productId}`, {
+        fetch(`/api/carts/${cartId}/${productId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -73,7 +73,7 @@ document.querySelectorAll('.addToCartButton').forEach(button => {
 <script>
     document.getElementById('goToCartButton').addEventListener('click', () => {
         const cartId = '{{user.cart}}'; 
-        window.location.href = `/carts/${cartId}`;
+        window.location.href = `/api/carts/${cartId}`;
     });
 </script>
 
