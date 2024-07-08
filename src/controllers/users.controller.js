@@ -82,7 +82,7 @@ export class UserController {
 
             res.send({ status: 'success', message: `El rol del usuario ha sido cambiado a ${user.role}` });
         } catch (error) {
-            req.logger.error(
+            req.logger.error(   
                 `Error al cambiar el rol del usuario: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
             );
             res.status(500).send({ status: 'error', message: 'Error interno del servidor.' });
