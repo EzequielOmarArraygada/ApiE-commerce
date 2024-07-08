@@ -113,6 +113,6 @@ UsersRouter.get('/signout', passportCall('login', 'user'), getSignOut);
  *       404:
  *         description: Usuario no encontrado
  */
-UsersRouter.put('/premium/:uid', passportCall('login', 'admin'), togglePremium);
+UsersRouter.put('/premium/:uid', passportCall('login', 'user'), togglePremium);
 
 export default UsersRouter;

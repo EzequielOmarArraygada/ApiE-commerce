@@ -58,9 +58,14 @@ export class UserController {
         }
     }
     
-    getSignOut = async (req, res) => {
+    getSignOut = async (req, res, next) => {
         try {
-            req.logout(); 
+            req.logout((err) => {
+                if (err) {
+                    return next(err);
+                }
+                res.redirect('/login');
+            });
             res.clearCookie('coderCookieToken').redirect('/login');
         } catch (error) {
             console.error(`Error al cerrar sesión: ${error.message}`);
@@ -71,7 +76,7 @@ export class UserController {
     togglePremium = async (req, res) => {
         try {
             const { uid } = req.params;
-            const user = await this.usersService.getUserById(uid);
+            const user = await this.usersService.findById(uid);
 
             if (!user) {
                 return res.status(404).send({ status: 'error', message: 'Usuario no encontrado' });
