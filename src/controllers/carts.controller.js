@@ -58,14 +58,14 @@ export class CartController {
     addToCart = async (req, res) => {
         try {
             let { cid, pid } = req.params;
-            const userId = req.user._id;
+            const userId = req.session.clienId;
 
             const product = await this.productsService.getProduct(pid);
             if (!product) {
                 return res.status(404).send({ error: 'Producto no encontrado' });
             }
 
-            if (req.user.role === 'premium' && product.owner.toString() === userId.toString()) {
+            if (req.session.role === 'premium' && product.owner.toString() === userId.toString()) {
                 req.logger.warning(
                     `Usuarios premium no pueden agregar sus propios productos. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
                 );

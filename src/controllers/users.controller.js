@@ -19,6 +19,8 @@ export class UserController {
         const { email, password } = req.body;
         try {
             let user = await this.usersService.findByEmail(email);
+            req.session.clientId = user._id;
+            req.session.role = user.role;
             req.logger.debug(`Usuario encontrado: ${user ? user.email : 'No encontrado'}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`);
             
             if (!user) {
