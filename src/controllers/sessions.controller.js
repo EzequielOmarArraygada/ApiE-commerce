@@ -24,7 +24,7 @@ export default class SessionsController {
         lastname: req.user.lastname,
         email: req.user.email,
         age: req.user.age,
-        role: req.session.role,
+        role: req.user.role,
         cart: req.user.cart,
       };
       const token = jwt.sign(userToken, config.privateKey, {
@@ -53,7 +53,7 @@ export default class SessionsController {
 
   logout = (req, res) => {
     try {
-        req.logout(); // Asegúrate de llamar a req.logout() para cerrar sesión correctamente
+        req.logout(); 
         res.clearCookie(config.tokenCookieName).status(200).json({
             success: true,
             message: 'Sesión cerrada exitosamente.',
