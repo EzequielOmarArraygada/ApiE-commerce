@@ -24,4 +24,9 @@ export class ProductManagerMongo {
     async deleteProduct(pid){
         return await this.repository.deleteProduct(pid);
     }
+
+    async findUserByProductId(pid) {
+        return await this.repository.findUserByProductId(pid);
+    }
+    
 }

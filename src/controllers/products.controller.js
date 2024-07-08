@@ -141,4 +141,36 @@ export class ProductController {
             res.status(500).send({ error: 'Ocurrió un error al eliminar el producto.' });
         }
     }
+
+    deleteProduct = async (req, res) => {
+        try {
+            const { pid } = req.params;
+            const product = await this.productsService.findById(pid);
+
+            if (!product) {
+                return res.status(404).send({ status: 'error', message: 'Producto no encontrado' });
+            }
+
+            // Encuentra el usuario dueño del producto
+            const user = await this.productsService.findUserByProductId(pid);
+
+            await this.productsService.deleteProduct(pid);
+
+            // Enviar correo si el usuario es premium
+            if (user && user.role === 'premium') {
+                await utils.sendEmail({
+                    to: user.email,
+                    subject: 'Producto eliminado',
+                    text: `Tu producto con ID ${pid} ha sido eliminado.`
+                });
+                req.logger.info(`Correo enviado a ${user.email} sobre la eliminación del producto ${pid}`);
+            }
+
+            res.send({ status: 'success', message: 'Producto eliminado exitosamente' });
+        } catch (error) {
+            req.logger.error(`Error al eliminar producto: ${error.message}, ${req.method} en ${req.url}`);
+            res.status(500).send({ status: 'error', message: 'Error interno del servidor' });
+        }
+    }
+    
 }

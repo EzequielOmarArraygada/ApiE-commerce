@@ -59,4 +59,15 @@ export class ProductRepository {
             throw error;
         }
     }
+
+    async findUserByProductId(pid) {
+        try {
+            const product = await this.model.findById(pid).populate('owner');
+            return product ? product.owner : null;
+        } catch (error) {
+            console.error(`Error al buscar usuario por ID de producto ${pid}:`, error);
+            throw error;
+        }
+    }
+    
 }
