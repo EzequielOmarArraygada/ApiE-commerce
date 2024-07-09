@@ -14,6 +14,9 @@ const {
     uploadDocuments,
     getAllUsers,
     deleteInactiveUsers,
+    requestPasswordReset,
+    getPasswordReset,
+    postPasswordReset,
 } = new UserController();
 
 /**
@@ -212,5 +215,11 @@ UsersRouter.get('/', getAllUsers);
  *         description: Error interno del servidor
  */
 UsersRouter.delete('/', deleteInactiveUsers);
+
+UsersRouter.post('/password-reset-request', requestPasswordReset);
+
+UsersRouter.get('/reset-password', getPasswordReset);
+
+UsersRouter.post('/reset-password', postPasswordReset);
 
 export default UsersRouter;
