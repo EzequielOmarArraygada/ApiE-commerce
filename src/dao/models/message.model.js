@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const messagesCollection = "messages";
+const messagesCollection = 'messages';
 
 const messageSchema = new mongoose.Schema({
   user: { type: String, required: true, max: 50 },

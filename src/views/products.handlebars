@@ -1,0 +1,79 @@
+<h1>Lista Productos</h1>
+<button id='goToCartButton'>Ir al Carrito</button>
+
+<table>
+    <tr>
+        <th>Id:</th>
+        <th>Título:</th>
+        <th>Descripción:</th>
+        <th>Código:</th>
+        <th>Precio:</th>
+        <th>Estado:</th>
+        <th>Stock:</th>
+        <th>Categoría:</th>
+        <th>Imágenes:</th>
+    </tr>
+
+    {{#each products}}
+        <tr>
+            <td>{{_id}}</td>
+            <td>{{title}}</td>
+            <td>{{description}}</td>
+            <td>{{code}}</td>
+            <td>${{price}}</td>
+            <td>{{status}}</td>
+            <td>{{stock}}</td>
+            <td>{{category}}</td>
+            <td>{{thumbnail}}</td>
+            <td>
+                <button class='addToCartButton' data-productid='{{_id}}'>Agregar al Carrito</button> 
+            </td>
+        </tr>
+    {{/each}}
+</table>
+
+<div>
+    {{#if hasPrevPage}}
+        <a href={{this.prevLink}}><< Anterior</a>
+    {{/if}}
+    &nbsp; {{this.page}} &nbsp;
+    {{#if hasNextPage}}
+        <a href={{this.nextLink}}>Siguiente >></a>
+    {{/if}}
+</div>
+
+<script>
+const cartId = '{{user.cart}}';
+document.querySelectorAll('.addToCartButton').forEach(button => {
+    button.addEventListener('click', () => {
+        const productId = button.dataset.productid;
+
+        fetch(`/api/carts/${cartId}/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Producto agregado  exitosamente');
+            } else {
+                alert('Error al agregar el producto');
+            }
+        })
+        .catch(error => {
+            console.error(
+                'Error al agregar el producto', error
+            )
+            alert('Error interno del servidor');
+        });
+    });
+});
+</script>
+<script>
+    document.getElementById('goToCartButton').addEventListener('click', () => {
+        const cartId = '{{user.cart}}'; 
+        window.location.href = `/api/carts/${cartId}`;
+    });
+</script>
+

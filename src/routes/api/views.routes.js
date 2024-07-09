@@ -1,6 +1,6 @@
-import express from "express";
-import { passportCall } from "../../utils.js";
-import ViewsController from "../../controllers/views.controller.js";
+import express from 'express';
+import { passportCall } from '../../utils.js';
+import ViewsController from '../../controllers/views.controller.js';
 
 const {
   renderInicio,
@@ -15,20 +15,20 @@ const {
 
 const router = express.Router();
 
-router.get("/", renderInicio);
+router.get('/', renderInicio);
 
-router.get("/chat", renderChat);
+router.get('/chat', renderChat);
 
-router.get("/login", renderLogin);
+router.get('/login', renderLogin);
 
-router.get("/register", renderRegister);
+router.get('/register', renderRegister);
 
-router.get("/restore", renderRestore);
+router.get('/restore', renderRestore);
 
-router.get("/current", passportCall("jwt"), renderCurrent);
+router.get('/current', passportCall('jwt'), renderCurrent);
 
-router.get("/products", passportCall("jwt"), renderProducts);
+router.get('/products', passportCall('jwt'), renderProducts);
 
-router.get("/carts/:cid", passportCall("jwt"), renderCart);
+router.get('/carts/:cid', passportCall('jwt'), renderCart);
 
 export default router;

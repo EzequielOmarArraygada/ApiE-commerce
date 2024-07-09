@@ -1,19 +1,19 @@
 async function addProduct(pid) {
-  const cid = document.querySelector("#cartId").textContent;
+  const cid = document.querySelector('#cartId').textContent;
   fetch(`/api/carts/${cid}/product/${pid}`, {
-    method: "POST",
+    method: 'POST',
   })
     .then((res) => res.json())
     .then((result) => {
       if (result.success) {
         Swal.fire({
-          title: "Producto añadido al carrito",
-          icon: "success",
+          title: 'Producto añadido al carrito',
+          icon: 'success',
         });
       } else {
         Swal.fire({
-          title: "Error al añadir el producto",
-          icon: "error",
+          title: 'Error al añadir el producto',
+          icon: 'error',
         });
       }
     })

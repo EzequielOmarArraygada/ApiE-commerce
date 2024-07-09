@@ -1,5 +1,5 @@
-import CartDao from "../dao/cartDao.js";
-import ProductDao from "../dao/productDao.js";
+import CartDao from '../dao/cartDao.js';
+import ProductDao from '../dao/productDao.js';
 
 export default class CartService {
   constructor() {
@@ -11,7 +11,7 @@ export default class CartService {
     try {
       return await this.cartDao.create();
     } catch (error) {
-      return Promise.reject("Error" + error);
+      return Promise.reject('Error' + error);
     }
   };
 
@@ -19,7 +19,7 @@ export default class CartService {
     try {
       return this.cartDao.get(id);
     } catch (error) {
-      return Promise.reject("Error " + error);
+      return Promise.reject('Error ' + error);
     }
   };
 
@@ -28,9 +28,9 @@ export default class CartService {
       const cart = this.cartDao.get(cid);
       const productExists = this.productDao.getById(pid);
       if (!cart) {
-        return Promise.reject("El carro no existe");
+        return Promise.reject('El carro no existe');
       } else if (!productExists) {
-        return Promise.reject("El producto no existe");
+        return Promise.reject('El producto no existe');
       }
       const product = {
         id: pid,
@@ -45,7 +45,7 @@ export default class CartService {
     try {
       return this.cartDao.deleteItem(cid, pid);
     } catch (error) {
-      return Promise.reject("Error al eliminar producto " + error);
+      return Promise.reject('Error al eliminar producto ' + error);
     }
   };
 
@@ -53,7 +53,7 @@ export default class CartService {
     try {
       const cart = await this.cartDao.get(cid);
       if (!cart) {
-        return Promise.reject("El carro no existe");
+        return Promise.reject('El carro no existe');
       }
 
       products.forEach((product) => {
@@ -67,7 +67,7 @@ export default class CartService {
 
       return await this.cartDao.updateCart(cid, products);
     } catch (error) {
-      return Promise.reject("Error al actualizar el carro: " + error);
+      return Promise.reject('Error al actualizar el carro: ' + error);
     }
   };
 
@@ -76,9 +76,9 @@ export default class CartService {
       const cart = await this.cartDao.get(cid);
       const productExists = await this.productDao.getById(pid);
       if (!cart) {
-        return Promise.reject("El carro no existe");
+        return Promise.reject('El carro no existe');
       } else if (!productExists) {
-        return Promise.reject("El producto no existe");
+        return Promise.reject('El producto no existe');
       }
 
       const product = {
@@ -88,7 +88,7 @@ export default class CartService {
 
       return await this.cartDao.updateProductQuantity(cid, product);
     } catch (error) {
-      return Promise.reject("Error " + error);
+      return Promise.reject('Error ' + error);
     }
   };
 
@@ -97,7 +97,7 @@ export default class CartService {
       return this.cartDao.delete(cid);
     } catch (error) {
       return Promise.reject(
-        "Error al borrar los productos del carro " + error
+        'Error al borrar los productos del carro ' + error
       );
     }
   };

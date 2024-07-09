@@ -1,4 +1,4 @@
-import messageModel from "../dao/models/message.model.js";
+import messageModel from '../dao/models/message.model.js';
 
 
 export default class MessageManager {
@@ -7,7 +7,7 @@ export default class MessageManager {
     try {
       return await messageModel.create({ user: userEmail, message: message });
     } catch (error) {
-      console.log("Error al guardar el mensaje en la BD.");
+      console.log('Error al guardar el mensaje.');
     }
   }
 
@@ -16,7 +16,7 @@ export default class MessageManager {
     try {
       return await messageModel.find();
     } catch (error) {
-      console.log("Error al obtener los mensajes de la BD.");
+      console.log('Error al obtener los mensajes.');
     }
   }
 }

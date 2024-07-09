@@ -5,7 +5,7 @@
 .welcome {
   font-size: 20px;
   font-weight: 700;
-  color: #333; /* Cambia el color del texto a un gris oscuro */
+  color: #2c3e50; 
 }
 
 .right {
@@ -14,7 +14,7 @@
 }
 
 .green-btn {
-  background: #64C9CF; /* Cambia el color de fondo a un azul claro */
+  background: #27ae60; 
   margin: 12px;
   border-radius: 15px;
   justify-content: center;
@@ -22,20 +22,20 @@
   padding: 8px;
   font-size: 18px;
   font-weight: 700;
-  color: #FFFFFF; /* Cambia el color del texto a blanco */
+  color: #FFFFFF; 
   cursor: pointer;
 }
 
 .logout {
   margin: 12px;
-  background: #5D737E; /* Cambia el color de fondo a un gris azulado */
+  background: #c0392b; 
   border-radius: 15px;
   justify-content: center;
   align-items: center;
   padding: 8px;
   font-size: 18px;
   font-weight: 700;
-  color: #FFFFFF; /* Cambia el color del texto a blanco */
+  color: #FFFFFF;
   cursor: pointer;
 }
 
@@ -56,27 +56,27 @@
   flex-direction: column;
   flex-wrap: wrap;
   width: 250px;
-  border: 1px solid #5D737E; /* Cambia el color del borde a un gris azulado */
+  border: 1px solid #bdc3c7; 
   align-items: center;
   padding: 15px 15px 0px 15px;
-  background-color: #64C9CF; /* Cambia el color de fondo a un azul claro */
+  background-color: #ecf0f1; 
 }
 
 .product span {
   font-weight: 700;
-  color: #333; /* Cambia el color del texto a un gris oscuro */
+  color: #2c3e50; 
 }
 
 .add-product {
   margin-bottom: 15px;
-  background: #5D737E; /* Cambia el color de fondo a un gris azulado */
+  background: #2980b9; 
   border-radius: 13px;
   justify-content: center;
   align-items: center;
   padding: 8px;
   font-size: 15px;
   font-weight: 700;
-  color: #FFFFFF; /* Cambia el color del texto a blanco */
+  color: #FFFFFF;
   cursor: pointer;
 }
 
@@ -95,7 +95,7 @@
 .page {
   font-size: 18px;
   font-weight: 700;
-  color: #333; /* Cambia el color del texto a un gris oscuro */
+  color: #2c3e50; 
 }
 
 .div-products-btn {
@@ -104,14 +104,14 @@
 
 .view-products {
   text-decoration: none;
-  border: 1px solid #5D737E; /* Cambia el color del borde a un gris azulado */
-  background: #64C9CF; /* Cambia el color de fondo a un azul claro */
+  border: 1px solid #2980b9; 
+  background: #3498db; 
   border-radius: 15px;
   justify-content: center;
   align-items: center;
   padding: 0.5rem;
   font-size: 1em;
   font-weight: 700;
-  color: #FFFFFF; /* Cambia el color del texto a blanco */
+  color: #FFFFFF; 
   cursor: pointer;
 }

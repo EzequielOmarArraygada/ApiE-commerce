@@ -1,126 +1,98 @@
-import jwt from "passport-jwt";
-import local from "passport-local";
-import GitHubStrategy from "passport-github2";
-import userModel from "../dao/models/user.model.js";
-import config from "./config.js";
-import { createHash, isValidPassword } from "../utils.js";
-import CartService from "../services/cart.service.js";
-import UserService from "../services/user.service.js";
+import passport from 'passport';
+import jwt from 'passport-jwt';
+import passportLocal from 'passport-local';
+import utils from '../utils.js';
+import { UserManagerMongo } from '../dao/services/managers/UserManagerMongo.js';
+import CustomError from '../services/errors/CustomError.js';
+import EError from '../services/errors/enums.js';
+import { generateErrorInfo } from '../services/errors/info-user.js';
 
+const LocalStrategy = passportLocal.Strategy;
+const JWTStrategy = jwt.Strategy;
 const ExtractJwt = jwt.ExtractJwt;
-const JwtStrategy = jwt.Strategy;
-const LocalStrategy = local.Strategy;
 
-const userService = new UserService();
-const cartService = new CartService();
+const u = new UserManagerMongo();
 
-const initializePassport = (passport) => {
-  const cookieExtractor = (req) => {
-    let token = null;
-    if (req && req.cookies) {
-      token = req.cookies[config.tokenCookieName];
-    }
+const initializePassport = () => {
 
-    return token;
-  };
-
-  const options = {
-    jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-    secretOrKey: config.privateKey,
-  };
-
-  passport.use(
-    "jwt",
-    new JwtStrategy(options, (jwt_payload, done) => {
-      try {
-        return done(null, jwt_payload, { message: "Concedido" });
-      } catch (error) {
-        return done(null, null, {
-          message: "No se pudo autentificar" + error,
-        });
-      }
-    })
-  );
-
-  passport.use(
-    "register",
-    new LocalStrategy(
-      { passReqToCallback: true, usernameField: "email" },
-      async (req, username, password, done) => {
-        const { name, lastname, email, age } = req.body;
-        //si faltan campos, se manda un mensaje de error
-        if (!name || !lastname || !email || !age || !password) {
-          return done(null, false, {
-            message: "Todos los campos son obligatorios",
-          });
+    const cookieExtractor = (req) => {
+        let token = null;
+        if (req && req.cookies) {
+            token = req.cookies['coderCookieToken'];
         }
+        return token;
+    };
 
+    passport.use('signup', new LocalStrategy(
+        { passReqToCallback: true, usernameField: 'email' },
+        async (req, email, password, done) => {
+            const { first_name, last_name, age } = req.body;
+
+            if (!first_name || !last_name || !age) {
+                const err = new CustomError(
+                    'Error al crear el usuario',
+                    generateErrorInfo({ first_name, last_name, age }),
+                    'Error al crear el usuario',
+                    EError.INVALID_TYPES_ERROR
+                );
+                return done(err);
+            }
+
+            try {
+                let user = await u.findByEmail(email);
+                if (user) {
+                    req.logger.fatal(
+                        `Usuario existente!, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`
+                    );
+                    return done(null, false, { message: 'Usuario ya existe' });
+                }
+
+                const newUser = {
+                    first_name,
+                    last_name,
+                    email,
+                    age,
+                    password: utils.createHash(password), 
+                };
+
+                let result = await u.createOne(newUser);
+                return done(null, result);
+
+            } catch (error) {
+                req.logger.error(`Error al registrar usuario: ${error.message}`);
+                return done(error);
+            }
+        }
+    ));
+
+    passport.use('login', new JWTStrategy(
+        {
+            jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+            secretOrKey: process.env.JWT_SECRET,
+        },
+        (jwt_payload, done) => {
+            try {
+                return done(null, jwt_payload);
+            } catch (error) {
+                return done(error);
+            }
+        }
+    ));
+
+    passport.serializeUser((user, done) => {
+        done(null, user._id);
+    });
+    
+    passport.deserializeUser(async (id, done) => {
         try {
-          let user = await userService.getUserByEmail(username);
-          if (user) {
-            return done(null, false, { message: "Usuario existente" });
-          }
-
-          const cart = await cartService.createCart();
-          user = {
-            name,
-            lastname,
-            age,
-            email,
-            cart: cart._id,
-            password: createHash(password),
-          };
-          if (
-            username === config.adminName &&
-            password === config.adminPassword
-          ) {
-            user.role = "admin";
-          }
-          const userCreated = await userService.createUser(user);
-          return done(null, userCreated);
+            let user = await u.findById(id);
+            done(null, user);
         } catch (error) {
-          return done(null, false, {
-            message: "No se pudo crear el usuario " + error,
-          });
+            done(error);
         }
-      }
-    )
-  );
-
-  passport.use(
-    "login",
-    new LocalStrategy(
-      { usernameField: "email" },
-      async (username, password, done) => {
-        try {
-          const user = await userService.getUserByEmail(username);
-          if (!user) {
-            return done(null, false, { message: "Usuario inexistente" });
-          }
-          if (!isValidPassword(user, password)) {
-            return done(null, false, { message: "Contraseña incorrecta" });
-          }
-          return done(null, user);
-        } catch (error) {
-          return done(null, false, { message: "No se pudo logear" + error });
-        }
-      }
-    )
-  );
-
-
-  passport.serializeUser(async (user, done) => {
-    done(null, user._id);
-  });
-
-  passport.deserializeUser(async (id, done) => {
-    try {
-      let user = await userModel.findById(id);
-      done(null, user);
-    } catch (error) {
-      done("Error " + error);
-    }
-  });
+    });
 };
+
+
 
 export default initializePassport;
