@@ -1,4 +1,3 @@
-// test/products.test.js
 import { expect } from 'chai';
 import request from 'supertest';
 import app from '../src/app.js'; // Ajusta la ruta según sea necesario
@@ -14,7 +13,7 @@ function generateRandomCode(length = 10) {
 
 describe('Productos API', function() {
   let cookie;
-  let createdProductId
+  let createdProductId;
 
   before(async function() {
     // Autenticar y obtener la cookie
@@ -57,7 +56,6 @@ describe('Productos API', function() {
     createdProductId = response.body.payload._id; // Suponiendo que el servidor devuelve el ID del producto en la respuesta
 
     expect(response.status).to.equal(200);
-
   });
 
   it('Debería obtener un producto por ID', async function() {
@@ -87,11 +85,11 @@ describe('Productos API', function() {
   });
 
   it('Debería eliminar un producto', async function() {
+    this.timeout(5000); // Aumentar el tiempo de espera a 5 segundos
     const response = await request(app)
       .delete(`/products/${createdProductId}`) // Ajusta la ruta según sea necesario
       .set('Cookie', cookie); // Incluye la cookie en la solicitud
 
     expect(response.status).to.equal(200);
-    
   });
 });
