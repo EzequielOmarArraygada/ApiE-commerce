@@ -216,9 +216,64 @@ UsersRouter.get('/', getAllUsers);
  */
 UsersRouter.delete('/', deleteInactiveUsers);
 
+/**
+ * @swagger
+ * /api/sessions/password-reset-request:
+ *   post:
+ *     summary: Solicitud de restablecimiento de contraseña
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *             example:
+ *               email: "user@example.com"
+ *     responses:
+ *       200:
+ *         description: Correo de restablecimiento de contraseña enviado exitosamente
+ *       404:
+ *         description: Usuario no encontrado
+ *       500:
+ *         description: Error interno del servidor
+ */
+
 UsersRouter.post('/password-reset-request', requestPasswordReset);
 
 UsersRouter.get('/reset-password', getPasswordReset);
+
+/**
+ * @swagger
+ * /api/sessions/reset-password:
+ *   post:
+ *     summary: Restablecer la contraseña del usuario
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               token:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *             example:
+ *               token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *               newPassword: "newPassword123"
+ *     responses:
+ *       200:
+ *         description: Contraseña actualizada exitosamente
+ *       400:
+ *         description: Error al restablecer la contraseña
+ *       500:
+ *         description: Error interno del servidor
+ */
 
 UsersRouter.post('/reset-password', postPasswordReset);
 
