@@ -159,24 +159,6 @@ ProductsRouter.post('/products', passportCall('login', 'premium'), requirePremiu
  */
 ProductsRouter.put('/products/:pid', passportCall('login', 'premium'), requireOwnershipOrAdmin, updateProduct);
 
-/**
- * @swagger
- * /products/{pid}:
- *   delete:
- *     summary: Eliminar un producto
- *     tags: [Productos]
- *     parameters:
- *       - in: path
- *         name: pid
- *         schema:
- *           type: string
- *         required: true
- *         description: ID del producto
- *     responses:
- *       200:
- *         description: Producto eliminado exitosamente
- */
-ProductsRouter.put('/products/:pid', passportCall('login', 'premium'), requireOwnershipOrAdmin, updateProduct);
 
 /**
  * @swagger

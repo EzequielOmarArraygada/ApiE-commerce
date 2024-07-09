@@ -3,16 +3,26 @@ import { expect } from 'chai';
 import request from 'supertest';
 import app from '../src/app.js'; // Ajusta la ruta según sea necesario
 
+function generateRandomCode(length = 10) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+
 describe('Productos API', function() {
   let cookie;
+  let createdProductId
 
   before(async function() {
     // Autenticar y obtener la cookie
     const response = await request(app)
       .post('/api/sessions/login') // Ajusta la ruta de login según tu configuración
       .send({
-        email: 'test@example.com',
-        password: 'password123' // Usa credenciales válidas para obtener la cookie
+        email: 'tr.ezequiel@gmail.com',
+        password: '123456' // Usa credenciales válidas para obtener la cookie
       });
 
     // Obtén la cookie del encabezado 'set-cookie'
@@ -29,26 +39,30 @@ describe('Productos API', function() {
   });
 
   it('Debería crear un nuevo producto', async function() {
+    const randomCode = generateRandomCode(); // Generar un código aleatorio
     const response = await request(app)
       .post('/products') // Ajusta la ruta según sea necesario
       .set('Cookie', cookie) // Incluye la cookie en la solicitud
       .send({
-        title: 'Nuevo Producto Nuevo Nuevo 2',
+        title: randomCode,
         description: 'Descripción del nuevo producto',
         price: 100,
         thumbnail: [],
-        code: 'lal12ddd1af2433a',
+        code: randomCode,
         stock: 50,
         category: "PRUEBAS",
         status: true
       });
 
+    createdProductId = response.body.payload._id; // Suponiendo que el servidor devuelve el ID del producto en la respuesta
+
     expect(response.status).to.equal(200);
+
   });
 
   it('Debería obtener un producto por ID', async function() {
     const response = await request(app)
-      .get(`/products/668d653bd3054e73c7963a0a`) // Ajusta la ruta según sea necesario
+      .get(`/products/${createdProductId}`) // Ajusta la ruta según sea necesario
       .set('Cookie', cookie); // Incluye la cookie en la solicitud
 
     expect(response.status).to.equal(200);
@@ -56,14 +70,14 @@ describe('Productos API', function() {
 
   it('Debería actualizar un producto', async function() {
     const response = await request(app)
-      .put(`/products/668d653bd3054e73c7963a0a`) // Ajusta la ruta según sea necesario
+      .put(`/products/${createdProductId}`) // Ajusta la ruta según sea necesario
       .set('Cookie', cookie) // Incluye la cookie en la solicitud
       .send({
-        title: 'Nuevo Producto 34',
+        title: 'Nuevo Producto 1515',
         description: 'Descripción del nuevo producto',
         price: 100,
         thumbnail: [],
-        code: 'lalaaaaaaaaaa',
+        code: 'lalaaaaaaasssaaa',
         stock: 50,
         category: "PRUEBAS",
         status: true
@@ -74,9 +88,10 @@ describe('Productos API', function() {
 
   it('Debería eliminar un producto', async function() {
     const response = await request(app)
-      .delete(`/products/668d67aa47215d4f2806e366`) // Ajusta la ruta según sea necesario
+      .delete(`/products/${createdProductId}`) // Ajusta la ruta según sea necesario
       .set('Cookie', cookie); // Incluye la cookie en la solicitud
 
     expect(response.status).to.equal(200);
+    
   });
 });

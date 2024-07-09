@@ -4,6 +4,7 @@ import { ProductManagerMongo } from './dao/services/managers/ProductManagerMongo
 
 const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 const isValidatePassword = (user, password) => bcrypt.compareSync(password, user.password);
+const productManager = new ProductManagerMongo();
 
 const requirePremium = (req, res, next) => {
     if (req.session.role !== 'premium') {
@@ -18,7 +19,7 @@ const requireOwnershipOrAdmin = async (req, res, next) => {
     const user = req.user;
 
     try {
-        const product = await ProductManagerMongo.getProduct(pid);
+        const product = await productManager .getProduct(pid);
 
         if (!product) {
             req.logger.warning(`Producto no encontrado. ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`);
