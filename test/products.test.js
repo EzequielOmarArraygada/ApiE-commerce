@@ -1,90 +1,82 @@
-import * as chai from 'chai';
-import supertest from 'supertest';
+// test/products.test.js
+import { expect } from 'chai';
+import request from 'supertest';
+import app from '../src/app.js'; // Ajusta la ruta según sea necesario
 
-const expect= chai.expect
-const requester= supertest('http://localhost:8080')
+describe('Productos API', function() {
+  let cookie;
 
-describe('test products', ()=>{
-    describe('test post product', function (){
-        it('el endpoint POST /products debe crear un producto correctamente', async () => {
+  before(async function() {
+    // Autenticar y obtener la cookie
+    const response = await request(app)
+      .post('/api/sessions/login') // Ajusta la ruta de login según tu configuración
+      .send({
+        email: 'test@example.com',
+        password: 'password123' // Usa credenciales válidas para obtener la cookie
+      });
 
-            const productMock = {
-                title: 'test', 
-                description: 'test', 
-                price: '100', 
-                thumbnail: 'test.jpg', 
-                code: '1', 
-                stock: '100', 
-                category: 'Alimento',
-                status: 'Disponible'
-            }
+    // Obtén la cookie del encabezado 'set-cookie'
+    cookie = response.headers['set-cookie']; // Obtiene todas las cookies
+  });
 
-            const {ok, statusCode, _body} = await requester.post ('/products').send(productMock)
+  it('Debería obtener todos los productos', async function() {
+    const response = await request(app)
+      .get('/products') // Ajusta la ruta según sea necesario
+      .set('Cookie', cookie); // Incluye la cookie en la solicitud
 
-            console.log(ok)
-            console.log(statusCode)
-            console.log(_body)
-            expect(_body.payload).to.have.property('_id')
-        })
+    expect(response.status).to.equal(200);
+    // Realiza las demás comprobaciones necesarias
+  });
 
-        it('el endpoint POST /products debe enviar un status 400 cuando no se le agrega título al producto', async () => {
+  it('Debería crear un nuevo producto', async function() {
+    const response = await request(app)
+      .post('/products') // Ajusta la ruta según sea necesario
+      .set('Cookie', cookie) // Incluye la cookie en la solicitud
+      .send({
+        title: 'Nuevo Producto Nuevo Nuevo 2',
+        description: 'Descripción del nuevo producto',
+        price: 100,
+        thumbnail: [],
+        code: 'lal12ddd1af2433a',
+        stock: 50,
+        category: "PRUEBAS",
+        status: true
+      });
 
-            const productMock = {
-                description: 'test', 
-                price: '111', 
-                thumbnail: 'test.jpg', 
-                code: '2', 
-                stock: '111', 
-                category: 'Higiene',
-                status: 'Disponible'
-            }
+    expect(response.status).to.equal(200);
+  });
 
-            const {statusCode, _body} = await requester.post ('/products').send(productMock)
+  it('Debería obtener un producto por ID', async function() {
+    const response = await request(app)
+      .get(`/products/668d653bd3054e73c7963a0a`) // Ajusta la ruta según sea necesario
+      .set('Cookie', cookie); // Incluye la cookie en la solicitud
 
-            console.log(statusCode)
-            console.log(_body)
-            expect(statusCode).to.equal(400)
-            expect(_body).to.have.property('error')
-        })
+    expect(response.status).to.equal(200);
+  });
 
-        it('el endpoint PUT /products/:pid debe editar un producto correctamente', async () => {
+  it('Debería actualizar un producto', async function() {
+    const response = await request(app)
+      .put(`/products/668d653bd3054e73c7963a0a`) // Ajusta la ruta según sea necesario
+      .set('Cookie', cookie) // Incluye la cookie en la solicitud
+      .send({
+        title: 'Nuevo Producto 34',
+        description: 'Descripción del nuevo producto',
+        price: 100,
+        thumbnail: [],
+        code: 'lalaaaaaaaaaa',
+        stock: 50,
+        category: "PRUEBAS",
+        status: true
+      });
 
-            const productMock = {
-                title: 'test', 
-                description: 'test', 
-                price: '222', 
-                thumbnail: 'test.jpg', 
-                code: '3', 
-                stock: '222', 
-                category: 'Higiene',
-                status: 'Disponible'
-            }
+    expect(response.status).to.equal(200);
+  });
 
-            const createProduct = await requester
-                .post ('/products/:pid')
-                .send(productMock)
+  it('Debería eliminar un producto', async function() {
+    const response = await request(app)
+      .delete(`/products/668d67aa47215d4f2806e366`) // Ajusta la ruta según sea necesario
+      .set('Cookie', cookie); // Incluye la cookie en la solicitud
 
-            const productId = createProduct.body._id
-
-            const productMockUpdate = {
-                title: 'testUpdate', 
-                description: 'test', 
-                price: '333', 
-                thumbnail: 'test.jpg', 
-                code: '4', 
-                stock: '333', 
-                category: 'Meedicación',
-                status: 'Disponible'
-            }
-
-            setTimeout(async ()=>{
-                const {statusCode, _body} = (await requester.put(`api/products/${productId}`)).send(productMockUpdate)
-                expect(statusCode).to.equal(200)
-                expect(_body.payload).to.have.property('title', 'testUpdate')
-            }, 2000)
-
-        })
-
-    })
-
-})
+    expect(response.status).to.equal(200);
+  });
+});

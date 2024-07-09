@@ -18,10 +18,7 @@ import { chatMM } from './routes/chat.router.js';
 import errorHandler from './middlewares/errors/index.js';
 import { addLogger } from './utils/logger.js';
 import swaggerConfig from './config/swagger.js';
-import User from './dao/models/user.model.js';
-import { sendPasswordResetEmail } from './services/mailing.js';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+
 
 
 
@@ -175,4 +172,5 @@ app.use(errorHandler);
 
 environment ();
 
+export default app;
 
