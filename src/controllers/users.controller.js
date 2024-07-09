@@ -5,6 +5,8 @@ import UserDTO from '../dao/dto/user.dto.js';
 import dotenv from 'dotenv';
 import User from '../dao/models/user.model.js';
 import path from 'path';
+import { sendPasswordResetEmail } from '../services/mailing.js';
+import bcrypt from 'bcrypt';
 
 
 dotenv.config();
@@ -195,7 +197,7 @@ export class UserController {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             res.send(`
-                <form action="/reset-password" method="POST">
+                <form action="/api/sessions/reset-password" method="POST">
                     <input type="hidden" name="token" value="${token}" />
                     <input type="password" name="newPassword" placeholder="Nueva Contraseña" required />
                     <button type="submit">Restablecer Contraseña</button>
@@ -216,7 +218,7 @@ export class UserController {
                 return res.status(400).send('La nueva contraseña no puede ser igual a la anterior');
             }
 
-            user.password = await user.hashPassword(newPassword);
+            user.password = user.password === newPassword;
             await user.save();
             
             res.send('Contraseña actualizada');

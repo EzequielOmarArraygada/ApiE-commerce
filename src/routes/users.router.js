@@ -242,7 +242,7 @@ UsersRouter.delete('/', deleteInactiveUsers);
  *         description: Error interno del servidor
  */
 
-UsersRouter.post('/password-reset-request', requestPasswordReset);
+UsersRouter.post('/password-reset-request', passportCall('login', 'user'), requestPasswordReset);
 
 UsersRouter.get('/reset-password', getPasswordReset);
 

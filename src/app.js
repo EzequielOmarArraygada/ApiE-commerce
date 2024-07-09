@@ -117,54 +117,6 @@ app.get('/faillogin', (req, res) => {
     res.status(400).send({ error: 'Fallo en el login' })
 });
 
-app.post('/password-reset-request', async (req, res) => {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-        return res.status(404).send('Usuario no encontrado');
-    }
-
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    sendPasswordResetEmail(user.email, token);
-    res.send('Correo enviado');
-});
-
-app.get('/reset-password', (req, res) => {
-    const { token } = req.query;
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        res.send(`
-            <form action="/reset-password" method="POST">
-                <input type="hidden" name="token" value="${token}" />
-                <input type="password" name="newPassword" placeholder="Nueva Contraseña" required />
-                <button type="submit">Restablecer Contraseña</button>
-            </form>
-        `);
-    } catch (error) {
-        res.status(400).send('El enlace ha expirado');
-    }
-});
-
-app.post('/reset-password', async (req, res) => {
-    const { token, newPassword } = req.body;
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(decoded.userId);
-        
-        if (await bcrypt.compare(newPassword, user.password)) {
-            return res.status(400).send('La nueva contraseña no puede ser igual a la anterior');
-        }
-
-        user.password = await bcrypt.hash(newPassword, 10);
-        await user.save();
-        
-        res.send('Contraseña actualizada');
-    } catch (error) {
-        console.error('Error al restablecer la contraseña:', error);
-        res.status(400).send('Error al restablecer la contraseña');
-    }
-});
-
 
 app.use(router);
 
