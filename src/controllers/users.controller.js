@@ -211,18 +211,24 @@ export class UserController {
     postPasswordReset = async (req, res) => {
         const { token, newPassword } = req.body;
         try {
+            // Verificar el token
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             const user = await this.usersService.findById(decoded.userId);
-
+    
+            if (!user) {
+                return res.status(404).send('Usuario no encontrado');
+            }
+    
             if (await user.isPasswordSame(newPassword)) {
                 return res.status(400).send('La nueva contraseña no puede ser igual a la anterior');
             }
-
+    
             user.password = await user.hashPassword(newPassword);
             await user.save();
             
             res.send('Contraseña actualizada');
         } catch (error) {
+            console.error(`Error al restablecer la contraseña: ${error.message}`);
             res.status(400).send('Error al restablecer la contraseña');
         }
     }

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { CartManagerMongo } from '../services/managers/CartManagerMongo.js';
+import bcrypt from 'bcrypt';
 
 const userSchema = new mongoose.Schema({
     first_name: {
@@ -44,6 +45,16 @@ userSchema.post('save', async function (doc, next) {
         next(error);
     }
 });
+
+userSchema.methods.isPasswordSame = async function(newPassword) {
+    return await bcrypt.compare(newPassword, this.password);
+}
+
+userSchema.methods.hashPassword = async function(newPassword) {
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(newPassword, salt);
+}
+
 
 const User = mongoose.model('User', userSchema);
 
