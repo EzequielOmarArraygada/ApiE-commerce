@@ -218,7 +218,7 @@ export class UserController {
                 return res.status(400).send('La nueva contraseña no puede ser igual a la anterior');
             }
 
-            user.password = user.password === newPassword;
+            user.password = await user.hashPassword(newPassword);
             await user.save();
             
             res.send('Contraseña actualizada');
