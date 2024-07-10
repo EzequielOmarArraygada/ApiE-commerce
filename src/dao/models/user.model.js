@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
         name: String,
         reference: String
     }],
-    last_connection: Date,
+    last_connection:{ type: Date, }
 });
 
 userSchema.post('save', async function (doc, next) {

@@ -51,7 +51,8 @@ export class UserController {
                 role: user.role,
                 cart: user.cart,
             };
-    
+            user.last_connection = new Date();
+            await user.save();
             const token = jwt.sign(tokenUser, process.env.JWT_SECRET, { expiresIn: '1d' });
             req.logger.debug(`Token JWT generado exitosamente: ${token}, ${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`);
     
