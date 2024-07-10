@@ -19,10 +19,6 @@ import errorHandler from './middlewares/errors/index.js';
 import { addLogger } from './utils/logger.js';
 import swaggerConfig from './config/swagger.js';
 
-
-
-
-
 dotenv.config();
 
 const { passportCall } = utils;

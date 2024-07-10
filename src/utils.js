@@ -67,4 +67,5 @@ const passportCall = (strategy, role) => {
     };
 };
 
+
 export default { createHash, isValidatePassword, passportCall, requirePremium, requireOwnershipOrAdmin };

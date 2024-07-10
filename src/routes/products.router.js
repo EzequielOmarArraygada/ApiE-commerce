@@ -2,7 +2,7 @@ import express from 'express';
 import { ProductController } from '../controllers/products.controller.js';
 import utils from '../utils.js';
 
-const { passportCall, requireOwnershipOrAdmin,requirePremium } = utils;
+const { passportCall, requireOwnershipOrAdmin, requirePremium, ensureAuthenticated } = utils;
 const ProductsRouter = express.Router()
 
 const {
