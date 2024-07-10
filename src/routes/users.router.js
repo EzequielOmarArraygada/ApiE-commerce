@@ -244,8 +244,6 @@ UsersRouter.delete('/', deleteInactiveUsers);
 
 UsersRouter.post('/password-reset-request', passportCall('login', 'user'), requestPasswordReset);
 
-UsersRouter.get('/reset-password', getPasswordReset);
-
 /**
  * @swagger
  * /api/sessions/reset-password:
@@ -275,6 +273,8 @@ UsersRouter.get('/reset-password', getPasswordReset);
  *         description: Error interno del servidor
  */
 
-UsersRouter.post('/reset-password', postPasswordReset);
+UsersRouter.post('/reset-password', postPasswordReset);getPasswordReset
+
+UsersRouter.get('/reset-password', getPasswordReset);
 
 export default UsersRouter;
