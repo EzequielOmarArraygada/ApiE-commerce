@@ -1,6 +1,6 @@
 <h1>Lista Productos</h1>
 <button id='goToCartButton'>Ir al Carrito</button>
-<a href="/logout">Logout</a>
+<a href="/logout">Desconectarse</a>
 
 <table>
     <tr>
@@ -9,10 +9,8 @@
         <th>Descripción:</th>
         <th>Código:</th>
         <th>Precio:</th>
-        <th>Estado:</th>
         <th>Stock:</th>
         <th>Categoría:</th>
-        <th>Imágenes:</th>
     </tr>
 
     {{#each products}}
@@ -22,10 +20,8 @@
             <td>{{description}}</td>
             <td>{{code}}</td>
             <td>${{price}}</td>
-            <td>{{status}}</td>
             <td>{{stock}}</td>
             <td>{{category}}</td>
-            <td>{{thumbnail}}</td>
             <td>
                 <button class='addToCartButton' data-productid='{{_id}}'>Agregar al Carrito</button> 
             </td>
