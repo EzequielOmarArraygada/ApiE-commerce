@@ -1,8 +1,17 @@
+<div class='center'>
+  <div class='form'>
 <form method='POST' action='/api/sessions/login'>
-    <label for='email'>Email</label>
-    <input type='email' name='email' required>
-    <label for='password'>Password</label>
-    <input type='password' name='password' required>
-    <button type='submit'>Login</button>
-</form>
-
+      <label for='email'>Email:</label>
+      <input type='email' name='email' id='email' required />
+      <label for='password'>Contraseña:</label>
+      <input type='password' name='password' id='password' required />
+      <button type='submit'>Ingresar</button>
+    </form>
+    <div class='restore-psw'>
+      <p>Olvidate tu contraseña? <a href='/api/sessions/password-reset-request'>Restaurar contraseña</a></p>
+    </div>
+    <div class='create-account'>
+      <p>No tienes cuenta de usuario? <a href='/signup'>Registrate!</a></p>
+    </div>
+  </div>
+</div>
