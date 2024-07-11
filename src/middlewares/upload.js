@@ -14,13 +14,12 @@ const storage = multer.diskStorage({
         }
         const dir = path.join(process.cwd(), `uploads/${folder}`);
 
-        // Crear la carpeta si no existe
         fs.mkdirSync(dir, { recursive: true });
 
         cb(null, dir);
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname); // Mantener el nombre original del archivo
+        cb(null, file.originalname); 
     }
 });
 

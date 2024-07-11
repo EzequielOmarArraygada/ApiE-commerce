@@ -1,12 +1,10 @@
 import EError from '../../services/errors/enums.js';
 
 export default (error, req, res, next) => {
-    // Registrar el error principal
     req.logger.error(
         `Error recibido en ${req.method} ${req.url}: ${error.message} - ${new Date().toLocaleString()}`
     );
 
-    // Manejar diferentes tipos de errores
     switch (error.code) {
         case EError.INVALID_TYPES_ERROR:
             req.logger.error(
