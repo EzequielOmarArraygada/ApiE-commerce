@@ -7,7 +7,6 @@ const customLevelOptions = {
         warning: 2,
         info: 3,
         debug: 4,
-        
     },
     colors: {
        fatal: 'red',
@@ -16,11 +15,11 @@ const customLevelOptions = {
        info: 'blue',
        debug: 'white',
     }
-}
+};
 
-export const prodLogger = winston.createLogger ({
+export const prodLogger = winston.createLogger({
     levels: customLevelOptions.levels,
-    transports : [
+    transports: [
         new winston.transports.Console({
             level: 'info',
             format: winston.format.combine(
@@ -29,13 +28,12 @@ export const prodLogger = winston.createLogger ({
             ),
         }),
         new winston.transports.File({
-            filename: './errors.log', level: 'warning',
-        },
-            winston.format.simple()
-        )
-    ]
-})
-
+            filename: './errors.log', 
+            level: 'warning',
+            format: winston.format.simple()
+        }),
+    ],
+});
 
 winston.addColors(customLevelOptions.colors);
 
@@ -44,4 +42,3 @@ Object.keys(customLevelOptions.levels).forEach((level) => {
         prodLogger.log({ level: level, message: message });
     };
 });
-

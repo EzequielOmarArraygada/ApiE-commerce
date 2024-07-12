@@ -4,12 +4,14 @@ import { prodLogger } from './logger-prod.js';
 
 dotenv.config();
 
-export const addLogger = async (req, res, next) => {
+export const addLogger = (req, res, next) => {
     const environment = process.env.NODE_ENV || 'development';
     const logger = environment === 'production' ? prodLogger : devLogger;
     
-    req.logger = logger;
+    req.logger = {
+        ...logger,
+        warn: logger.warning,  // Asegurando que 'warn' esté disponible como 'warning'
+    };
     
     next();
 };
-

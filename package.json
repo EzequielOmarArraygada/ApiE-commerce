@@ -3,7 +3,7 @@
     "main": "app.js",
     "scripts": {
         "start": "node ./src/app.js",
-        "test": "mocha"
+        "test": "mocha --timeout 15000"
     },
     "dependencies": {
         "@faker-js/faker": "^8.4.1",

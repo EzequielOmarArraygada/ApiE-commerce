@@ -30,8 +30,6 @@ const app = express();
 const PORT = process.env.PORT || 8080
 
 app.use(addLogger)
-
-
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views') 
 app.set('view engine', 'handlebars')
