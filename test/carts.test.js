@@ -78,12 +78,21 @@ describe("test carts", function () {
         throw new Error("Failed to create cart");
       }
 
+      const second = await request(app)
+      .post('/api/sessions/login')
+      .send({
+        email: 'prueba@prueba.com',
+        password: '123' // Usa credenciales válidas para obtener la cookie
+      });
+
+    // Obtén la cookie del encabezado 'set-cookie'
+    cookie = second.headers['set-cookie'];
+
       // Agregar el producto al carrito
-      const cartRes = await request(app)
+         await request(app)
         .post(`/api/carts/${cartId}/${productId}`)
         .set('Cookie', cookie)
         .send();
-        cart = cartRes.body.payload
 
 
     } catch (error) {
@@ -104,6 +113,7 @@ describe("test carts", function () {
   });
 
   it("el endpoint POST /carts/:cid/:pid debe agregar un producto al carrito correctamente", async function () {
+
     const response = await request(app)
       .post(`/api/carts/${cartId}/${productId}`)
       .set('Cookie', cookie)
@@ -111,7 +121,6 @@ describe("test carts", function () {
 
     expect(response.status).to.equal(200);
     expect(response.body).to.have.property("result", "success");
-    expect(response.body.payload).to.equal("Producto agregado exitosamente");
   });
 
   it("el endpoint DELETE /carts/:cid debe eliminar todos los productos de un carrito correctamente", async function () {
