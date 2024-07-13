@@ -4,11 +4,85 @@
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Ecommerce</title>
+    <!-- Incluyendo Font Awesome para los iconos -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos para la barra de navegación */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #D9FFFF; /* Color de fondo de la barra de navegación */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 3%;
+        }
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+        .navbar-logo {
+            margin-right: auto;
+        }
+        .navbar-item {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .navbar-item:last-child {
+            margin-right: 0;
+        }
+        .cart-icon {
+            font-size: 24px;
+            color: #333;
+            margin-left: auto;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="navbar-logo">
+            {{!-- Logo --}}
+            </div>
+            <a href="/" class="navbar-item">Inicio</a>
+            <a href="/products" class="navbar-item">Productos</a>
+            <a href="/about" class="navbar-item">Proximamente</a>
+            <a href="/contact" class="navbar-item">Desconectarse</a>
+        </div>
+        <div class="navbar-right">
+            <a id='goToCartButton'>
+            <i class="fas fa-shopping-cart"></i>
+            </a>
+        </div>
+    </div>
 
     {{{body}}}
 
 </body>
 </html>
-    
+
+
+<script>
+    document.getElementById('goToCartButton').addEventListener('click', () => {
+    const cartId = '{{user.cart}}';
+    if (cartId) {
+        window.location.href = `/api/carts/${cartId}`;
+    } else {
+        console.error('No se encontró cartId para redirigir al carrito.');
+        window.location.href = '/'; 
+    }
+});
+</script>

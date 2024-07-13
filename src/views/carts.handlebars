@@ -1,53 +1,98 @@
-<h1>Carrito</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <style>
+        /* Estilos CSS para la página de carrito */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #D9FFDF; /* Color de fondo */
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .cart-items {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .cart-item {
+            background-color: #FFDDDD; /* Color de fondo del item del carrito */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        .cart-item h2 {
+            color: #333;
+            font-size: 1.2em; /* Tamaño de fuente aumentado */
+            margin-bottom: 5px;
+        }
+        .cart-item p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .checkoutButton {
+            background-color: #FFFFCF; /* Color de botón */
+            color: #333;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 4px;
+            display: block;
+            margin: 20px auto;
+        }
+        .checkoutButton:hover {
+            background-color: #FFF0CF; /* Color de botón al pasar el mouse */
+        }
+    </style>
+</head>
+<body>
+    <ul class="cart-items">
+        {{#each productsDetails}}
+        <li class="cart-item">
+            <h2>{{this.title}}</h2>
+            <p>Precio: ${{this.price}}</p>
+            <p>Cantidad: {{this.quantity}}</p>
+        </li>
+        {{/each}}
+    </ul>
+    <div >
+        <strong>Total:</strong> ${{totalPrice}}
+    </div>
+    <button class="checkoutButton" id="checkoutButton">Finalizar Compra</button>
+    <script>
+        document.getElementById('checkoutButton').addEventListener('click', async function() {
+            try {
+                const cartId = '{{cartId}}'; 
 
-<table>
-    <tr>
-        <th>Producto</th>
-        <th>Precio</th>
-        <th>Cantidad</th>
-    </tr>
+                const response = await fetch(`/api/carts/${cartId}`, { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-    {{#each productsDetails}}
-        <tr>
-            <td>{{this.title}}</td>
-            <td>{{this.price}}</td>
-            <td>{{this.quantity}}</td>
-        </tr>
-    {{/each}}
+                const data = await response.json();
 
-    <tr>
-        <td colspan='2'><strong>Total:</strong></td>
-        <td>${{totalPrice}}</td>
-    </tr>
-</table>
-
-<button id='checkoutButton'>Finalizar Compra</button>
-
-<script>
-    document.getElementById('checkoutButton').addEventListener('click', async function() {
-        try {
-            const cartId = '{{cartId}}'; 
-
-            const response = await fetch(`/api/carts/${cartId}`, { 
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
+                if (response.ok) {
+                    console.log('Compra exitosa:', data.message);
+                    window.location.href = `/api/carts/${cartId}/purchase`;
+                } else {
+                    console.error('Error al procesar la compra:', data.error);
+                    alert('Error al procesar la compra. Por favor, inténtelo de nuevo más tarde.');
                 }
-            });
-            
-            const data = await response.json();
 
-            if (response.ok) {
-                console.log('Compra exitosa:', data.message);
-                window.location.href = `/api/carts/${cartId}/purchase`;
-            } else {
-                console.error('Error al procesar la compra:', data.error);
+            } catch (error) {
+                console.error('Error al procesar la compra:', error);
                 alert('Error al procesar la compra. Por favor, inténtelo de nuevo más tarde.');
             }
-
-        } catch (error) {
-            console.error('Error al procesar la compra:', error);
-            alert('Error al procesar la compra. Por favor, inténtelo de nuevo más tarde.');
-        }
-    });
-</script>
+        });
+    </script>
+</body>
+</html>
