@@ -35,6 +35,7 @@ app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 app.use(express.static(__dirname + '/views'))
 app.use(express.static(path.join(__dirname, 'public')))
+app.use('/uploads', express.static('uploads'));
 
 app.use(express.json());
 app.use(cookieParser())

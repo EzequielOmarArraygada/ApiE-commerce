@@ -64,10 +64,11 @@
     </style>
 </head>
 <body>
+    <h1>Lista de Productos</h1>
     <div class="container">
         {{#each products}}
         <div class="card">
-            <img src="{{image}}" alt="Imagen del producto">
+            <img src="/uploads/Assets/{{thumbnail}}" alt="Imagen del producto">
             <h2>{{title}}</h2>
             <p>{{description}}</p>
             <p>Precio: ${{price}}</p>
@@ -79,11 +80,11 @@
 
     <div>
         {{#if hasPrevPage}}
-        <a href={{this.prevLink}}>&lt;&lt; Anterior</a>
+        <a href="{{this.prevLink}}">&lt;&lt; Anterior</a>
         {{/if}}
         &nbsp; {{this.page}} &nbsp;
         {{#if hasNextPage}}
-        <a href={{this.nextLink}}>Siguiente &gt;&gt;</a>
+        <a href="{{this.nextLink}}">Siguiente &gt;&gt;</a>
         {{/if}}
     </div>
 
