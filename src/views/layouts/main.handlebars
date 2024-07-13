@@ -5,7 +5,7 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Ecommerce</title>
     <!-- Incluyendo Font Awesome para los iconos -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Estilos para la barra de navegación */
         body {
@@ -47,6 +47,11 @@
             color: #333;
             margin-left: auto;
             cursor: pointer;
+            /* Estilo cuando se pasa el mouse */
+            transition: transform 0.3s ease;
+        }
+        .cart-icon:hover {
+            transform: scale(1.1); /* Efecto de escala al pasar el mouse */
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -65,8 +70,8 @@
         </div>
         <div class="navbar-right">
             <a href="/logout" class="navbar-item">Desconectarse</a>
-            <a id='goToCartButton'>
-            <i class="fas fa-shopping-cart"></i>
+            <a id='goToCartButton' class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
             </a>
         </div>
     </div>
@@ -75,16 +80,3 @@
 
 </body>
 </html>
-
-
-<script>
-    document.getElementById('goToCartButton').addEventListener('click', () => {
-    const cartId = '{{user.cart}}';
-    if (cartId) {
-        window.location.href = `/api/carts/${cartId}`;
-    } else {
-        console.error('No se encontró cartId para redirigir al carrito.');
-        window.location.href = '/'; 
-    }
-});
-</script>
