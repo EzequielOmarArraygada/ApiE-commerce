@@ -64,7 +64,6 @@
     </style>
 </head>
 <body>
-    <h1>Lista de Productos</h1>
     <div class="container">
         {{#each products}}
         <div class="card">
@@ -102,14 +101,14 @@
                 })
                 .then(response => {
                     if (response.ok) {
-                        alert('Producto agregado exitosamente');
+                    Swal.fire('', 'Producto agregado al carrito', 'success');
                     } else {
-                        alert('Error al agregar el producto');
+                    Swal.fire('¡Error!', 'Error al agregar el producto', 'error');
                     }
                 })
                 .catch(error => {
                     console.error('Error al agregar el producto', error);
-                    alert('Error interno del servidor');
+                    Swal.fire('Error interno', 'Error interno del servidor', 'error');
                 });
             });
         });

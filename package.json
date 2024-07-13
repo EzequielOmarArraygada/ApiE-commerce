@@ -33,7 +33,7 @@
         "socket.io": "^4.7.4",
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^5.0.1",
-        "sweetalert2": "^11.10.6",
+        "sweetalert2": "^11.12.2",
         "winston": "^3.13.0"
     },
     "devDependencies": {

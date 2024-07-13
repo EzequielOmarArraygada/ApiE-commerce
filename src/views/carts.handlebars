@@ -81,11 +81,11 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    console.log('Compra exitosa:', data.message);
+                    Swal.fire('', 'Producto agregado al carrito', 'success');
                     window.location.href = `/api/carts/${cartId}/purchase`;
                 } else {
                     console.error('Error al procesar la compra:', data.error);
-                    alert('Error al procesar la compra. Por favor, inténtelo de nuevo más tarde.');
+                    Swal.fire('', 'Error al procesar la compra', 'error');
                 }
 
             } catch (error) {
