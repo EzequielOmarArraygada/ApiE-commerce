@@ -18,14 +18,15 @@
         .container {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
+            gap: 36px;
+            justify-content:space-between;
+            margin-top: 2%;
         }
         .card {
             background-color: #FFFFCF; 
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            width: 300px;
+            width: 250px;
             padding: 20px;
             text-align: center;
             transition: transform 0.3s ease;
@@ -87,11 +88,47 @@
             margin-top: 10px;
         }
         .addToCartButton:hover {
-            background-color: #f8d0d0; /* Color de botón al pasar el mouse */
+            background-color: #f8d0d0; 
+        }
+        .carousel-item img {
+            width: 80%;
+            height: 230px;
+            object-fit: cover;
+        }
+        .carousel-container {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 16px; 
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
+    <div id="productCarousel" class="carousel slide carousel-container" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/uploads/assets/publicidad_1.jpg" class="d-block w-100" alt="Imagen 1">
+            </div>
+            <div class="carousel-item">
+                <img src="/uploads/assets/publicidad_2.jpg" class="d-block w-100" alt="Imagen 2">
+            </div>
+            <div class="carousel-item">
+                <img src="/uploads/assets/publicidad_3.jpg" class="d-block w-100" alt="Imagen 3">
+            </div>
+            <div class="carousel-item">
+                <img src="/uploads/assets/publicidad_4.jpg" class="d-block w-100" alt="Imagen 4">
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Anterior</span>
+        </a>
+        <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Siguiente</span>
+        </a>
+    </div>
+    
     <div class="container">
     {{#each products}}
     <div class="card">
@@ -119,7 +156,9 @@
         <a href="{{this.nextLink}}">Siguiente &gt;&gt;</a>
         {{/if}}
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
     function updateQuantity(id, change) {
         const input = document.getElementById(`quantityInput-${id}`);
