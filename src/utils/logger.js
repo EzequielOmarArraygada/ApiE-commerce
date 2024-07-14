@@ -10,7 +10,7 @@ export const addLogger = (req, res, next) => {
     
     req.logger = {
         ...logger,
-        warn: logger.warning,  // Asegurando que 'warn' esté disponible como 'warning'
+        warn: logger.warning,
     };
     
     next();

@@ -79,7 +79,6 @@ export class CartController {
                 return res.status(400).send({ error: 'La cantidad solicitada supera el stock disponible.' });
             }
     
-            // Resto de la lógica para agregar al carrito con la cantidad
             const result = await this.cartsService.addToCart(cid, pid, quantity);
             req.logger.debug(`Producto agregado al carrito: ${result}`);
             res.send({ result: 'success', payload: result });
