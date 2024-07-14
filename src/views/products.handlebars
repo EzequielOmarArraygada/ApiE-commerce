@@ -5,103 +5,144 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Productos</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #D9FFFF; 
-            padding: 20px;
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 36px;
-            justify-content:space-between;
-            margin-top: 2%;
-        }
-        .card {
-            background-color: #FFFFCF; 
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            width: 250px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-5px); 
-        }
-        .card img {
-            max-width: 100%;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .card h2 {
-            color: #333;
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        .card p {
-            color: #666;
-            line-height: 1.4;
-        }
-        .quantityWrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-        .quantityButton {
-            background-color: #f5aeae; /* Color de botón */
-            color: #333;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-        }
-        .quantityButton:hover {
-            background-color: #f8d0d0; 
-        }
-        .quantityInput {
-            width: 25px;
-            text-align: center;
-            -moz-appearance: textfield; /* Firefox */
-        }
-        .quantityInput::-webkit-outer-spin-button,
-        .quantityInput::-webkit-inner-spin-button {
-            -webkit-appearance: none; /* Chrome, Safari, Edge, Opera */
-            margin: 0;
-        }
-        .addToCartButton {
-            background-color: #f5aeae; /* Color de botón */
-            color: #333;
-            border: none;
-            padding: 8px 16px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-            margin-top: 10px;
-        }
-        .addToCartButton:hover {
-            background-color: #f8d0d0; 
-        }
-        .carousel-item img {
-            width: 80%;
-            height: 230px;
-            object-fit: cover;
-        }
-        .carousel-container {
-            width: 100%;
-            overflow: hidden;
-            border-radius: 16px; 
-            margin-bottom: 20px;
-        }
-    </style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #D9FFFF; 
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 36px;
+        justify-content: space-between;
+        margin-top: 2%;
+    }
+
+    .card {
+        background-color: #FFFFCF; 
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        width: 250px;
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px); 
+    }
+
+    .card img {
+        max-width: 100%;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+        color: #333;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        color: #666;
+        line-height: 1.4;
+    }
+
+    .quantityWrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .quantityButton {
+        background-color: #f5aeae; /* Color de botón */
+        color: #333;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+    .quantityButton:hover {
+        background-color: #f8d0d0; 
+    }
+
+    .quantityInput {
+        width: 25px;
+        text-align: center;
+        -moz-appearance: textfield; /* Firefox */
+    }
+
+    .quantityInput::-webkit-outer-spin-button,
+    .quantityInput::-webkit-inner-spin-button {
+        -webkit-appearance: none; /* Chrome, Safari, Edge, Opera */
+        margin: 0;
+    }
+
+    .addToCartButton {
+        background-color: #f5aeae; /* Color de botón */
+        color: #333;
+        border: none;
+        padding: 8px 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .addToCartButton:hover {
+        background-color: #f8d0d0; 
+    }
+
+    .carousel-item img {
+        width: 80%;
+        height: 230px;
+        object-fit: cover;
+    }
+
+    .carousel-container {
+        width: 100%;
+        overflow: hidden;
+        border-radius: 16px; 
+        margin-bottom: 20px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .pagination a {
+        color: #333;
+        padding: 8px 16px;
+        text-decoration: none;
+        border: 1px solid #ccc;
+        margin: 0 5px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .pagination a:hover {
+        background-color: #ff6456;
+        color: #fff;
+    }
+</style>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -222,14 +263,14 @@
     {{/each}}
     </div>
 
-    <div>
-        {{#if hasPrevPage}}
-        <a href="{{this.prevLink}}">&lt;&lt; Anterior</a>
-        {{/if}}
-        &nbsp; {{this.page}} &nbsp;
-        {{#if hasNextPage}}
-        <a href="{{this.nextLink}}">Siguiente &gt;&gt;</a>
-        {{/if}}
-    </div>
+    <div class="pagination">
+    {{#if hasPrevPage}}
+    <a href="{{this.prevLink}}">&lt;&lt; Anterior</a>
+    {{/if}}
+    &nbsp; {{this.page}} &nbsp;
+    {{#if hasNextPage}}
+    <a href="{{this.nextLink}}">Siguiente &gt;&gt;</a>
+    {{/if}}
+</div>
 </body>
 </html>
