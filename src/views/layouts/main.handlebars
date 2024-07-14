@@ -8,12 +8,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Arial', sans-serif;
         margin: 0;
         padding: 0;
         display: flex;
         flex-direction: column;
         min-height: 100vh;
+        background-color: #f4f4f9;
     }
 
     .navbar {
@@ -26,12 +27,7 @@
         margin-bottom: 1%;
     }
 
-    .navbar-left {
-        display: flex;
-        align-items: center;
-    }
-
-    .navbar-right {
+    .navbar-left, .navbar-right {
         display: flex;
         align-items: center;
     }
@@ -66,7 +62,7 @@
 
     #cart-count {
         background-color: #ff6456;
-        color: rgb(255, 255, 255);
+        color: #fff;
         border-radius: 50%;
         padding: 1px 6px;
         font-size: 12px;
@@ -80,7 +76,7 @@
         background-color: #b9ffff;
         text-align: center;
         padding: 20px;
-        margin-top: 3%;
+        margin-top: auto;
         box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
     }
 
@@ -100,10 +96,8 @@
     }
 </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
 </head>
 <body>
-
     <div class="navbar">
         <div class="navbar-left">
             <div class="navbar-logo">
@@ -118,15 +112,15 @@
             <a href="/logout" class="navbar-item">Desconectarse</a>
             <a id='goToCartButton' class="cart-icon">
                 <i class="fas fa-shopping-cart"></i>
-<span id="cart-count" {{#if cartCountGreaterThanZero}}style="display: inline-block;"{{/if}}>
-    {{cartCount}}
-</span>            </a>
+                <span id="cart-count" {{#if cartCountGreaterThanZero}}style="display: inline-block;"{{/if}}>
+                    {{cartCount}}
+                </span>
+            </a>
         </div>
     </div>
 
     {{{body}}}
-</body>
-<footer class="footer">
+    <footer class="footer">
         <div class="social-icons">
             <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
             <a href="https://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
@@ -139,4 +133,5 @@
             <p>&copy; 2024 DTweb - Dante Terrenator Web. Todos los derechos reservados.</p>
         </div>
     </footer>
+</body>
 </html>
