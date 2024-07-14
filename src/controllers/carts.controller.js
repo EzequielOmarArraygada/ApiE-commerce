@@ -97,6 +97,13 @@ export class CartController {
                 return res.status(404).send({ error: 'Producto no encontrado.' });
             }
             
+            if (product.owner.toString() === userId) {
+                req.logger.warning(
+                    `El usuario intentó agregar su propio producto al carrito: ${product._id}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+                );
+                return res.status(400).send({ error: 'No puedes agregar tu propio producto al carrito.' });
+            }
+
             if (product.stock < quantity) {
                 req.logger.warning(
                     `Cantidad solicitada mayor que el stock disponible: ${product._id}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
