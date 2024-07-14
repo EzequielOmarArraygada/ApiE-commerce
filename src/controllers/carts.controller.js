@@ -25,23 +25,48 @@ export class CartController {
         try {
             const { cid } = req.params;
             const cart = await this.cartsService.getCartById(cid);
-
             const productsDetails = [];
             let totalPrice = 0;
-
+    
             for (const product of cart.products) {
                 const productDetails = await this.productsService.getProduct(product.productId);
                 const productWithQuantity = { ...productDetails, quantity: product.quantity }; 
                 productsDetails.push(productWithQuantity);
-                
+    
                 const subtotal = productDetails.price * product.quantity;
                 totalPrice += subtotal;
             }
-            req.logger.debug(
-                `${productsDetails}, Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
-            );
-            
             res.render('carts', { cart, productsDetails, totalPrice, cartId: cart._id });
+        } catch (error) {
+            req.logger.error(
+                `Error al recuperar el carrito por ID: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
+            );
+            res.status(500).send({ error: 'Ocurrió un error al obtener el carrito.' });
+        }
+    }
+
+    getCartByIdCount = async (req, res) => {
+        try {
+            const { cid } = req.params;
+            console.log("CID: ", cid); // Agrega este log
+            const cartCount = await this.cartsService.getCartByIdCount(cid);
+            console.log("Cart Count: ", cartCount); // Agrega este log
+            if (!cartCount) {
+                return res.status(404).send({ error: 'Carrito no encontrado.' });
+            }
+    
+            const productsDetailsCount = [];
+            let totalPriceCount = 0;
+    
+            for (const product of cartCount.products) {
+                const productDetailsCount = await this.productsService.getProduct(product.productId);
+                const productWithQuantityCount = { ...productDetailsCount, quantity: product.quantity }; 
+                productsDetailsCount.push(productWithQuantityCount);
+    
+                const subtotalCount = productDetailsCount.price * product.quantity;
+                totalPriceCount += subtotalCount;
+            }
+            res.send({ result: 'success', cart: cartCount, productsDetailsCount, totalPriceCount });
         } catch (error) {
             req.logger.error(
                 `Error al recuperar el carrito por ID: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`

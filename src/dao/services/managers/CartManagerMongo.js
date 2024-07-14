@@ -24,6 +24,15 @@ export class CartManagerMongo {
         }
     }
 
+    async getCartByIdCount(cid) {
+        try {
+            return await this.cartRepository.getCartByIdCount(cid);
+        } catch (error) {
+            logger.error(`Error al obtener el carrito con ID ${cid}: ${error.message}`, { cid, error });
+            throw new Error('No se pudo obtener el carrito especificado. Por favor, verifique el ID y vuelva a intentarlo.');
+        }
+    }
+
     async addCart() {
         try {
             return await this.cartRepository.addCart();

@@ -102,6 +102,81 @@
             margin-bottom: 20px;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+    function updateQuantity(id, change) {
+        const input = document.getElementById(`quantityInput-${id}`);
+        const newValue = parseInt(input.value) + change;
+        if (newValue >= 1 && newValue <= parseInt(input.max)) {
+            input.value = newValue;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.quantityButton').forEach(button => {
+            button.addEventListener('click', () => {
+                const id = button.getAttribute('data-id');
+                const change = parseInt(button.getAttribute('data-change'));
+                updateQuantity(id, change);
+            });
+        });
+
+        const cartId = '{{user.cart}}';
+        document.querySelectorAll('.addToCartButton').forEach(button => {
+            button.addEventListener('click', async () => {
+                const productId = button.getAttribute('data-productid');
+                const quantity = document.getElementById(`quantityInput-${productId}`).value;
+
+                try {
+                    const response = await fetch(`/api/carts/${cartId}/${productId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ quantity })
+                    });
+
+                    if (response.ok) {
+                        Swal.fire('', 'Producto agregado al carrito', 'success');
+                        updateCartCount(); // Actualiza el contador del carrito
+                    } else {
+                        Swal.fire('¡Error!', 'Error al agregar el producto', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error al agregar el producto', error);
+                    Swal.fire('Error interno', 'Error interno del servidor', 'error');
+                }
+            });
+        });
+
+        async function updateCartCount() {
+            try {
+                const response = await fetch(`/api/carts/${cartId}/count`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+                if (response.ok) {
+                    const cart = await response.json();
+                    const cartCount = cart.cart.products.reduce((total, product) => total + product.quantity, 0);
+                    document.getElementById('cart-count').innerText = cartCount;
+                }
+            } catch (error) {
+                console.error('Error al obtener el conteo del carrito', error);
+            }
+        }
+
+        document.getElementById('goToCartButton').addEventListener('click', () => {
+            const cartId = '{{user.cart}}';
+            window.location.href = `/api/carts/${cartId}`;
+        });
+
+        updateCartCount();
+    });
+    </script>
 </head>
 <body>
     <div id="productCarousel" class="carousel slide carousel-container" data-ride="carousel">
@@ -156,58 +231,5 @@
         <a href="{{this.nextLink}}">Siguiente &gt;&gt;</a>
         {{/if}}
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-    function updateQuantity(id, change) {
-        const input = document.getElementById(`quantityInput-${id}`);
-        const newValue = parseInt(input.value) + change;
-        if (newValue >= 1 && newValue <= parseInt(input.max)) {
-            input.value = newValue;
-        }
-    }
-
-    document.querySelectorAll('.quantityButton').forEach(button => {
-        button.addEventListener('click', () => {
-            const id = button.getAttribute('data-id');
-            const change = parseInt(button.getAttribute('data-change'));
-            updateQuantity(id, change);
-        });
-    });
-
-    const cartId = '{{user.cart}}';
-    document.querySelectorAll('.addToCartButton').forEach(button => {
-        button.addEventListener('click', async () => {
-            const productId = button.dataset.productid;
-            const quantity = document.getElementById(`quantityInput-${productId}`).value;
-            
-            try {
-                const response = await fetch(`/api/carts/${cartId}/${productId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ quantity })
-                });
-
-                if (response.ok) {
-                    Swal.fire('', 'Producto agregado al carrito', 'success');
-                } else {
-                    Swal.fire('¡Error!', 'Error al agregar el producto', 'error');
-                }
-            } catch (error) {
-                console.error('Error al agregar el producto', error);
-                Swal.fire('Error interno', 'Error interno del servidor', 'error');
-            }
-        });
-    });
-    </script>
-    <script>
-        document.getElementById('goToCartButton').addEventListener('click', () => {
-            const cartId = '{{user.cart}}'; 
-            window.location.href = `/api/carts/${cartId}`;
-        });
-    </script>
 </body>
 </html>

@@ -28,7 +28,15 @@ export class CartRepository {
             throw error;
         }
     }
-    
+
+    async getCartByIdCount(cid) {
+        try {
+            return await this.model.findById(cid).populate('products');
+        } catch (error) {
+            console.error(`Error al obtener el carrito con ID ${cid}:`, error);
+            throw error;
+        }
+    }    
     async addCart(userEmail) {
         const newCart = {
             products: [],

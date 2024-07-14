@@ -13,7 +13,8 @@ const {
     deleteProduct,
     deleteAllProducts,
     getPurchase,
-    checkout
+    checkout,
+    getCartByIdCount
 } = new CartController();
 
 /**
@@ -35,6 +36,7 @@ const {
  */
 cartRouter.get('/', getCarts);
 
+
 /**
  * @swagger
  * /api/carts/{cid}:
@@ -53,6 +55,9 @@ cartRouter.get('/', getCarts);
  *         description: Carrito obtenido exitosamente
  */
 cartRouter.get('/:cid', getCartById);
+
+cartRouter.get('/:cid/count', getCartByIdCount);
+
 
 /**
  * @swagger
