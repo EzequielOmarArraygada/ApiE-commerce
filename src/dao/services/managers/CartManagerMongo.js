@@ -33,14 +33,19 @@ export class CartManagerMongo {
         }
     }
 
-    async addToCart(cid, pid) {
-        try {
-            return await this.cartRepository.addToCart(cid, pid);
-        } catch (error) {
-            logger.error(`Error al agregar el producto con ID ${pid} al carrito con ID ${cid}: ${error.message}`, { cid, pid, error });
-            throw new Error('No se pudo agregar el producto al carrito. Por favor, verifique los IDs e inténtelo de nuevo.');
+    async addToCart(cartId, productId, quantity) {
+        const cart = await this.getCartById(cartId);
+        const productIndex = cart.products.findIndex(p => p.productId.toString() === productId);
+    
+        if (productIndex > -1) {
+            cart.products[productIndex].quantity += quantity;
+        } else {
+            cart.products.push({ productId, quantity });
         }
+    
+        return await cart.save();
     }
+    
 
     async updateCart(cart) {
         try {

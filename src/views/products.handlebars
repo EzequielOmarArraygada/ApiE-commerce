@@ -49,6 +49,34 @@
             color: #666;
             line-height: 1.4;
         }
+        .quantityWrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .quantityButton {
+            background-color: #f5aeae; /* Color de botón */
+            color: #333;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        .quantityButton:hover {
+            background-color: #f8d0d0; /* Color de botón al pasar el mouse */
+        }
+        .quantityInput {
+            width: 25px;
+            text-align: center;
+            -moz-appearance: textfield; /* Firefox */
+        }
+        .quantityInput::-webkit-outer-spin-button,
+        .quantityInput::-webkit-inner-spin-button {
+            -webkit-appearance: none; /* Chrome, Safari, Edge, Opera */
+            margin: 0;
+        }
         .addToCartButton {
             background-color: #f5aeae; /* Color de botón */
             color: #333;
@@ -57,6 +85,7 @@
             cursor: pointer;
             border-radius: 4px;
             transition: background-color 0.3s ease;
+            margin-top: 10px;
         }
         .addToCartButton:hover {
             background-color: #f8d0d0; /* Color de botón al pasar el mouse */
@@ -65,16 +94,21 @@
 </head>
 <body>
     <div class="container">
-        {{#each products}}
-        <div class="card">
-            <img src="/uploads/assets/{{thumbnail}}" alt="Imagen del producto">
-            <h2>{{title}}</h2>
-            <p>{{description}}</p>
-            <p>Precio: ${{price}}</p>
-            <p>Stock: {{stock}}</p>
-            <button class="addToCartButton" data-productid="{{_id}}">Agregar al Carrito</button>
+    {{#each products}}
+    <div class="card">
+        <img src="/uploads/assets/{{thumbnail}}" alt="Imagen del producto">
+        <h2>{{title}}</h2>
+        <p>{{description}}</p>
+        <p>Precio: ${{price}}</p>
+        <p>Stock: {{stock}}</p>
+        <div class="quantityWrapper">
+            <button class="quantityButton" data-id="{{_id}}" data-change="-1">-</button>
+            <input type="number" class="quantityInput" id="quantityInput-{{_id}}" value="1" min="1" max="{{stock}}">
+            <button class="quantityButton" data-id="{{_id}}" data-change="1">+</button>
         </div>
-        {{/each}}
+        <button class="addToCartButton" data-productid="{{_id}}">Agregar al Carrito</button>
+    </div>
+    {{/each}}
     </div>
 
     <div>
@@ -88,30 +122,48 @@
     </div>
 
     <script>
-        const cartId = '{{user.cart}}';
-        document.querySelectorAll('.addToCartButton').forEach(button => {
-            button.addEventListener('click', () => {
-                const productId = button.dataset.productid;
+    function updateQuantity(id, change) {
+        const input = document.getElementById(`quantityInput-${id}`);
+        const newValue = parseInt(input.value) + change;
+        if (newValue >= 1 && newValue <= parseInt(input.max)) {
+            input.value = newValue;
+        }
+    }
 
-                fetch(`/api/carts/${cartId}/${productId}`, {
+    document.querySelectorAll('.quantityButton').forEach(button => {
+        button.addEventListener('click', () => {
+            const id = button.getAttribute('data-id');
+            const change = parseInt(button.getAttribute('data-change'));
+            updateQuantity(id, change);
+        });
+    });
+
+    const cartId = '{{user.cart}}';
+    document.querySelectorAll('.addToCartButton').forEach(button => {
+        button.addEventListener('click', async () => {
+            const productId = button.dataset.productid;
+            const quantity = document.getElementById(`quantityInput-${productId}`).value;
+            
+            try {
+                const response = await fetch(`/api/carts/${cartId}/${productId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (response.ok) {
-                    Swal.fire('', 'Producto agregado al carrito', 'success');
-                    } else {
-                    Swal.fire('¡Error!', 'Error al agregar el producto', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al agregar el producto', error);
-                    Swal.fire('Error interno', 'Error interno del servidor', 'error');
+                    },
+                    body: JSON.stringify({ quantity })
                 });
-            });
+
+                if (response.ok) {
+                    Swal.fire('', 'Producto agregado al carrito', 'success');
+                } else {
+                    Swal.fire('¡Error!', 'Error al agregar el producto', 'error');
+                }
+            } catch (error) {
+                console.error('Error al agregar el producto', error);
+                Swal.fire('Error interno', 'Error interno del servidor', 'error');
+            }
         });
+    });
     </script>
     <script>
         document.getElementById('goToCartButton').addEventListener('click', () => {
