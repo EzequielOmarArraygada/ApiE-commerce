@@ -118,8 +118,9 @@
             <a href="/logout" class="navbar-item">Desconectarse</a>
             <a id='goToCartButton' class="cart-icon">
                 <i class="fas fa-shopping-cart"></i>
-                <span id="cart-count">0</span>
-            </a>
+<span id="cart-count" {{#if cartCountGreaterThanZero}}style="display: inline-block;"{{/if}}>
+    {{cartCount}}
+</span>            </a>
         </div>
     </div>
 
