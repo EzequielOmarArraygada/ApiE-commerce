@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { CartController } from '../controllers/carts.controller.js';
+import utils from '../utils.js';
 
+const { passportCall } = utils;
 const cartRouter = Router()
 
 const {
@@ -220,6 +222,6 @@ cartRouter.get('/:cid/purchase', getPurchase);
  *       200:
  *         description: Compra finalizada exitosamente
  */
-cartRouter.post('/:cid', checkout);
+cartRouter.post('/:cid', passportCall('login', 'user'), checkout);
 
 export default cartRouter;

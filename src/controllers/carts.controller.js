@@ -1,6 +1,7 @@
 import { ProductManagerMongo } from '../dao/services/managers/ProductManagerMongo.js';
 import { CartManagerMongo } from '../dao/services/managers/CartManagerMongo.js';
 import { UserRepository } from '../repositories/user.repository.js';
+import Ticket from '../dao/models/ticket.model.js';
 
 export class CartController {
     constructor(){
@@ -169,27 +170,65 @@ export class CartController {
         }
     }
 
-    checkout = async(req, res) => {
+    checkout = async (req, res) => {
         try {
-            const { cid } = req.params;
-            req.logger.debug(
-                `ID del carrito: ${cid}, Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
-            );
-
+            const { cid } = req.params
             const cart = await this.cartsService.getCartById(cid);
-            req.logger.debug(
-                `Detalles del carrito: ${cart}, Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
-            );
+            const productsDetails = [];
+            const productsTicket = [];
+            let totalAmount = 0;
 
-            const ticket = await this.cartsService.checkout(cart);
-            res.redirect(`${cid}/purchase`);
+    
+            if (!cart || cart.products.length === 0) {
+                return res.status(400).json({ message: 'Cart is empty' });
+            }
+    
+            // Generar el ticket
+            let uid = req.user._id;
+            const comprador = await this.userService.findById(uid);
+            for (const product of cart.products) {
+                const productDetails = await this.productsService.getProduct(product.productId);
+                const productWithQuantity = { ...productDetails, quantity: product.quantity }; 
+                productsDetails.push(productWithQuantity);
+    
+                const subtotal = productDetails.price * product.quantity;
+                totalAmount += subtotal;
+
+                productsTicket.push({ ...productDetails, quantity: product.quantity, productId: product.productId }); 
+
+                
+                await this.productsService.updateProduct(product.productId, {
+                    stock: productDetails.stock - product.quantity
+                });
+            }
+
+            
+
+            const ticket = new Ticket({
+                code: "prueba",
+                purchaser: comprador,
+                products: productsTicket,
+                totalAmount: totalAmount,
+                purchase_datetime: new Date()
+            });
+    
+            // Guardar el ticket
+            await ticket.save();
+    
+            // Vaciar el carrito
+            cart.products = [];
+            await cart.save();
+    
+            // Devolver una respuesta exitosa con el ticket generado
+            return res.status(200).json({ message: 'Purchase successful', ticket });
+            
         } catch (error) {
-            req.logger.error(
-                `Error al procesar la compra: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`
-            );
-            res.status(500).send({ error: 'Ocurrió un error al procesar la compra.' });
+            // Capturar y manejar errores
+            console.error('Error al procesar la compra:', error);
+            req.logger.error(`Error al procesar la compra: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`);
+            return res.status(500).json({ message: 'Server error', error });
         }
-    }
+    };
     
     getPurchase = async (req, res) => {
         try {
