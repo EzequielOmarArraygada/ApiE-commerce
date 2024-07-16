@@ -8,7 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
-            background-color: #D9FFDF; 
+            background-color: #D9FFDF;
             padding: 20px;
         }
         h1 {
@@ -21,15 +21,15 @@
             margin: 0;
         }
         .cart-item {
-            background-color: #FFDDDD; 
+            background-color: #FFDDDD;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 10px;
             margin-bottom: 15px;
         }
         .cart-item h2 {
             color: #333;
-            font-size: 1.2em; 
+            font-size: 1.2em;
             margin-bottom: 5px;
         }
         .cart-item p {
@@ -37,7 +37,7 @@
             margin-bottom: 5px;
         }
         .checkoutButton {
-            background-color: #FFFFCF; 
+            background-color: #FFFFCF;
             color: #333;
             border: none;
             padding: 12px 24px;
@@ -45,9 +45,10 @@
             border-radius: 4px;
             display: block;
             margin: 20px auto;
+            transition: background-color 0.3s ease;
         }
         .checkoutButton:hover {
-            background-color: #FFF0CF; 
+            background-color: #FFF0CF;
         }
         .modal {
             display: none;
@@ -58,30 +59,65 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(0, 0, 0, 0.4);
             padding-top: 60px;
+            transition: opacity 0.3s ease;
         }
         .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
+            background-color: #D9FFFF;
+            margin: auto;
             padding: 20px;
-            border: 1px solid #888;
+            border: none;
             width: 80%;
             max-width: 600px;
             border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            text-align: center;
+            animation: modalShow 0.5s ease-out;
+        }
+        @keyframes modalShow {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         .close {
             color: #aaa;
-            float: right;
             font-size: 28px;
             font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            transition: color 0.3s ease;
         }
         .close:hover,
         .close:focus {
-            color: black;
+            color: #333;
             text-decoration: none;
-            cursor: pointer;
+        }
+        .modal-content h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .modal-content p {
+            color: #666;
+        }
+        .modal-content ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+        }
+        .modal-content ul li {
+            margin-bottom: 10px;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        .modal-content ul li img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -102,8 +138,8 @@
     <div id="ticketModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Ticket de Compra</h2>
-            <p>Detalles del Ticket:</p>
+            <h2>¡Gracias por comprar con nosotros!</h2>
+            <p>Detalles de la compra:</p>
             <ul id="ticketDetails"></ul>
             <p>Total: <span id="ticketTotal"></span></p>
         </div>
@@ -132,7 +168,11 @@
                     ticketDetails.innerHTML = '';
                     data.ticket.products.forEach(product => {
                         const li = document.createElement('li');
-                        li.textContent = `${product.quantity} x ${product.title} - $${product.price}`;
+                        const img = document.createElement('img');
+                        img.src = `/uploads/assets/${product.thumbnail}`;
+                        img.alt = product.title;
+                        li.appendChild(img);
+                        li.appendChild(document.createTextNode(`${product.quantity} x ${product.title} - $${product.price}`));
                         ticketDetails.appendChild(li);
                     });
 
