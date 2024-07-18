@@ -149,12 +149,16 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
     function updateQuantity(id, change) {
-        const input = document.getElementById(`quantityInput-${id}`);
-        const newValue = parseInt(input.value) + change;
-        if (newValue >= 1 && newValue <= parseInt(input.max)) {
-            input.value = newValue;
+    const input = document.getElementById(`quantityInput-${id}`);
+    let currentValue = parseInt(input.value);  // Convertir el valor actual a número
+
+    if (!isNaN(currentValue)) {  // Verificar si es un número válido
+        currentValue += change;  // Sumar el cambio deseado
+        if (currentValue >= 1 && currentValue <= parseInt(input.max)) {
+            input.value = currentValue;  // Actualizar el valor del input
         }
     }
+}
 
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.quantityButton').forEach(button => {

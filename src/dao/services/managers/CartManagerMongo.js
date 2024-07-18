@@ -47,14 +47,15 @@ export class CartManagerMongo {
         const productIndex = cart.products.findIndex(p => p.productId.toString() === productId);
     
         if (productIndex > -1) {
-            cart.products[productIndex].quantity += quantity;
+            // Si el producto ya existe en el carrito, sumar la cantidad nueva a la existente
+            cart.products[productIndex].quantity = parseInt(cart.products[productIndex].quantity) + parseInt(quantity);
         } else {
+            // Si el producto no está en el carrito, agregarlo con la cantidad especificada
             cart.products.push({ productId, quantity });
         }
     
         return await cart.save();
     }
-    
 
     async updateCart(cart) {
         try {
