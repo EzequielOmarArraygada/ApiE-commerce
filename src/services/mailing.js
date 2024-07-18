@@ -33,9 +33,18 @@ export function sendMailCompra(email, ticket) {
         to: email,
         subject: '¡Gracias por comprar con nosotros!',
         html: `
-            <h1>¡Gracias por tu compra!</h1>
-            <p>Hemos recibido tu pedido con el código <strong>${ticket.code}</strong> el día ${new Date(ticket.purchase_datetime).toLocaleString()}.</p>
-            
+            <h1>¡Gracias por tu compra, ${ticket.purchaser.first_name} ${ticket.purchaser.last_name}!</h1>
+                <p>Hemos recibido tu pedido con el código <strong>${ticket.code}</strong> el día ${new Date(ticket.purchase_datetime).toLocaleString()}.</p>
+                
+                <h2>Detalles del Comprador:</h2>
+                <ul>
+                    <li><strong>Nombre:</strong> ${ticket.purchaser.first_name} ${ticket.purchaser.last_name}</li>
+                    <li><strong>Email:</strong> ${ticket.purchaser.email}</li>
+                    <li><strong>Edad:</strong> ${ticket.purchaser.age}</li>
+                    <li><strong>Rol:</strong> ${ticket.purchaser.role}</li>
+                </ul>
+
+
             <h2>Productos Comprados:</h2>
             <table border="1" cellpadding="10" cellspacing="0">
                 <thead>

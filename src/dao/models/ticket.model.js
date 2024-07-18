@@ -18,7 +18,7 @@ const productSchema = new mongoose.Schema({
 const ticketSchema = new mongoose.Schema({
     code: { type: String },
     purchase_datetime: { type: Date, default: Date.now },
-    purchaser: { type: String },
+    purchaser: { type: Object },
     products: [productSchema],
     totalAmount: { type: Number } 
 });
