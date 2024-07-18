@@ -93,7 +93,7 @@
         const pid = document.getElementById('deleteProductId').value;
         
         try {
-            const response = await fetch(`http://localhost:8080/${pid}`, {
+            const response = await fetch(`http://localhost:3000/${pid}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -126,7 +126,7 @@
         const pid = document.getElementById('editProductId').value;
         
         try {
-            const response = await fetch(`http://localhost:8080/${pid}`, {
+            const response = await fetch(`http://localhost:3000/${pid}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -162,7 +162,7 @@
         });
         
         try {
-            const response = await fetch('http://localhost:8080/products', {
+            const response = await fetch('http://localhost:3000/products', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

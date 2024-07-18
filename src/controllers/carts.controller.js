@@ -2,6 +2,7 @@ import { ProductManagerMongo } from '../dao/services/managers/ProductManagerMong
 import { CartManagerMongo } from '../dao/services/managers/CartManagerMongo.js';
 import { UserRepository } from '../repositories/user.repository.js';
 import Ticket from '../dao/models/ticket.model.js';
+import { sendMailCompra } from '../services/mailing.js'
 
 export class CartController {
     constructor(){
@@ -178,6 +179,21 @@ export class CartController {
             const productsTicket = [];
             let totalAmount = 0;
 
+            function generateRandomCode(length) {
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let result = '';
+                for (let i = 0; i < length; i++) {
+                    result += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                return result;
+            }
+            
+            function generateTicketCode() {
+                const timestamp = Date.now().toString();
+                const randomNum = generateRandomCode(6); // Genera un código aleatorio de 6 caracteres
+                return `${timestamp}-${randomNum}`;
+            }
+
     
             if (!cart || cart.products.length === 0) {
                 return res.status(400).json({ message: 'Cart is empty' });
@@ -186,6 +202,8 @@ export class CartController {
             // Generar el ticket
             let uid = req.user._id;
             const comprador = await this.userService.findById(uid);
+            const code = generateTicketCode();
+
             for (const product of cart.products) {
                 const productDetails = await this.productsService.getProduct(product.productId);
                 const productWithQuantity = { ...productDetails, quantity: product.quantity }; 
@@ -205,7 +223,7 @@ export class CartController {
             
 
             const ticket = new Ticket({
-                code: "prueba",
+                code: code,
                 purchaser: comprador,
                 products: productsTicket,
                 totalAmount: totalAmount,
@@ -218,6 +236,8 @@ export class CartController {
             // Vaciar el carrito
             cart.products = [];
             await cart.save();
+
+            sendMailCompra(comprador.email, ticket)
     
             // Devolver una respuesta exitosa con el ticket generado
             return res.status(200).json({ message: 'Purchase successful', ticket });

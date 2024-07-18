@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export function sendPasswordResetEmail(email, token) {
-    const resetLink = `http://localhost:8080/api/sessions/reset-password?token=${token}`;
+    const resetLink = `http://localhost:3000/api/sessions/reset-password?token=${token}`;
     const mailOptions = {
         from: config.mailing.USER,
         to: email,
@@ -26,6 +26,57 @@ export function sendPasswordResetEmail(email, token) {
         }
     });
 }
+
+export function sendMailCompra(email, ticket) {
+    const mailCompra = {
+        from: config.mailing.USER,
+        to: email,
+        subject: '¡Gracias por comprar con nosotros!',
+        html: `
+            <h1>¡Gracias por tu compra!</h1>
+            <p>Hemos recibido tu pedido con el código <strong>${ticket.code}</strong> el día ${new Date(ticket.purchase_datetime).toLocaleString()}.</p>
+            
+            <h2>Productos Comprados:</h2>
+            <table border="1" cellpadding="10" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Descripción</th>
+                        <th>Código</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${ticket.products.map(product => `
+                        <tr>
+                            <td>${product.title}</td>
+                            <td>${product.description}</td>
+                            <td>${product.code}</td>
+                            <td>${product.price}</td>
+                            <td>${product.quantity}</td>
+                            <td>${product.price * product.quantity}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            
+            <h2>Total a Pagar: $${ticket.totalAmount}</h2>
+            
+            <p>¡Gracias por confiar en nosotros! Esperamos verte pronto.</p>
+        `
+    };
+    transporter.sendMail(mailCompra, (error, info) => {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Correo enviado: ' + info.response);
+        }
+    });
+}
+
+
 
 export async function sendEmail(emailDetails) {
     const mailOptions = {
