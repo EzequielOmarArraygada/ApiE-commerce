@@ -34,7 +34,8 @@
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^5.0.1",
         "sweetalert2": "^11.12.2",
-        "winston": "^3.13.0"
+        "winston": "^3.13.0",
+        "ws": "^8.18.0"
     },
     "devDependencies": {
         "chai": "^5.1.1",
