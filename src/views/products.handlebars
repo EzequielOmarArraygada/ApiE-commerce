@@ -51,8 +51,11 @@
 
     .card h2 {
         color: #333;
-        font-size: 1.5rem;
+        font-size: clamp(1rem, 1.5vw, 1.5rem);
         margin-bottom: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .card p {
@@ -255,29 +258,26 @@
     <div class="container">
     {{#each products}}
     <div class="card">
-        <img src="/uploads/assets/{{thumbnail}}" alt="Imagen del producto">
+        <img src="/uploads/assets/{{thumbnail}}" alt="Imagen de producto">
         <h2>{{title}}</h2>
         <p>{{description}}</p>
-        <p>Precio: ${{price}}</p>
-        <p>Stock: {{stock}}</p>
         <div class="quantityWrapper">
             <button class="quantityButton" data-id="{{_id}}" data-change="-1">-</button>
-            <input type="number" class="quantityInput" id="quantityInput-{{_id}}" value="1" min="1" max="{{stock}}">
+            <input id="quantityInput-{{_id}}" class="quantityInput" type="number" value="1" min="1" max="99">
             <button class="quantityButton" data-id="{{_id}}" data-change="1">+</button>
         </div>
-        <button class="addToCartButton" data-productid="{{_id}}">Agregar al Carrito</button>
+        <button class="addToCartButton" data-productid="{{_id}}">Añadir al carrito</button>
     </div>
     {{/each}}
     </div>
 
     <div class="pagination">
-    {{#if hasPrevPage}}
-    <a href="{{this.prevLink}}">&lt;&lt; Anterior</a>
-    {{/if}}
-    &nbsp; {{this.page}} &nbsp;
-    {{#if hasNextPage}}
-    <a href="{{this.nextLink}}">Siguiente &gt;&gt;</a>
-    {{/if}}
-</div>
+        {{#if hasPrevPage}}
+        <a href="?page={{prevPage}}">Anterior</a>
+        {{/if}}
+        {{#if hasNextPage}}
+        <a href="?page={{nextPage}}">Siguiente</a>
+        {{/if}}
+    </div>
 </body>
 </html>
