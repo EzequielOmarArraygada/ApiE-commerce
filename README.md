@@ -52,18 +52,31 @@ npm start
 Rutas Principales
 
 •	Usuarios:
+
 o	POST /api/users/register: Registro de nuevo usuario.
+
 o	POST /api/users/login: Inicio de sesión.
+
 •	Productos:
+
 o	GET /api/products: Obtener todos los productos.
+
 o	POST /api/products: Crear un nuevo producto.
+
 o	PUT /api/products/:id: Actualizar un producto.
+
 o	DELETE /api/products/:id: Eliminar un producto.
+
 •	Carritos:
+
 o	GET /api/carts/:id: Obtener el carrito de un usuario.
+
 o	POST /api/carts/:id/products: Agregar producto al carrito.
+
 o	PUT /api/carts/:id/products/:productId: Actualizar cantidad de producto en el carrito.
+
 o	DELETE /api/carts/:id/products/:productId: Eliminar producto del carrito.
+
 
 Contacto
 

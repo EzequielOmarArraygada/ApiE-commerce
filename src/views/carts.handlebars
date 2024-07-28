@@ -26,6 +26,12 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 10px;
             margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-item-details {
+            flex-grow: 1;
         }
         .cart-item h2 {
             color: #333;
@@ -36,6 +42,12 @@
             color: #666;
             margin-bottom: 5px;
         }
+        .checkout-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
         .checkoutButton {
             background-color: #FFFFCF;
             color: #333;
@@ -43,11 +55,20 @@
             padding: 12px 24px;
             cursor: pointer;
             border-radius: 4px;
-            display: block;
-            margin: 20px auto;
             transition: background-color 0.3s ease;
         }
         .checkoutButton:hover {
+            background-color: #FFF0CF;
+        }
+        .remove-item {
+            background-color: #f03232;
+            color: #070707;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        .remove-item:hover {
             background-color: #FFF0CF;
         }
         .modal {
@@ -125,16 +146,22 @@
     <ul class="cart-items">
         {{#each productsDetails}}
         <li class="cart-item">
-            <h2>{{this.title}}</h2>
-            <p>Precio: ${{this.price}}</p>
-            <p>Cantidad: {{this.quantity}}</p>
+            <div class="cart-item-details">
+                <h2>{{this.title}}</h2>
+                <p>Precio: ${{this.price}}</p>
+                <p>Cantidad: {{this.quantity}}</p>
+            </div>
+            <button class="remove-item" data-product-id="{{this._id}}">X</button>
         </li>
         {{/each}}
     </ul>
     <div>
         <strong>Total:</strong> ${{totalPrice}}
     </div>
-    <button class="checkoutButton" id="checkoutButton">Finalizar Compra</button>
+    <div class="checkout-buttons">
+        <button class="checkoutButton" id="empty-cart">Vaciar Carrito</button>
+        <button class="checkoutButton" id="checkoutButton">Finalizar Compra</button>
+    </div>
     <div id="ticketModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -142,7 +169,7 @@
             <p>Detalles de la compra:</p>
             <ul id="ticketDetails"></ul>
             <p>Total: <span id="ticketTotal"></span></p>
-            <h5>Recibiras un email a tu correo con los datos de la compra</h5>
+            <h5>Recibirás un email a tu correo con los datos de la compra</h5>
         </div>
     </div>
     <script>
@@ -197,6 +224,45 @@
                 console.error('Error al procesar la compra:', error);
                 Swal.fire('', 'Error al procesar la compra', 'error');
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Eliminar un artículo del carrito
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const productId = event.target.dataset.productId;
+                    const cartId = '{{cartId}}'; // Reemplaza con la lógica para obtener el ID del carrito
+                    try {
+                        const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+                            method: 'DELETE'
+                        });
+                        if (response.ok) {
+                            location.reload(); // Recarga la página para actualizar el carrito
+                        } else {
+                            console.error('Error al eliminar el artículo del carrito');
+                        }
+                    } catch (error) {
+                        console.error('Error al comunicarse con el servidor', error);
+                    }
+                });
+            });
+
+            // Vaciar el carrito
+            document.getElementById('empty-cart').addEventListener('click', async () => {
+                const cartId = '{{cartId}}'; // Reemplaza con la lógica para obtener el ID del carrito
+                try {
+                    const response = await fetch(`/api/carts/${cartId}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        location.reload(); // Recarga la página para actualizar el carrito
+                    } else {
+                        console.error('Error al vaciar el carrito');
+                    }
+                } catch (error) {
+                    console.error('Error al comunicarse con el servidor', error);
+                }
+            });
         });
     </script>
 </body>
