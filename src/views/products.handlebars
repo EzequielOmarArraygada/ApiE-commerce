@@ -56,11 +56,16 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        text-decoration: none;
     }
 
     .card p {
         color: #666;
         line-height: 1.4;
+    }
+
+    .card a {
+        text-decoration: none;
     }
 
     .quantityWrapper {
@@ -258,9 +263,12 @@
     <div class="container">
     {{#each products}}
     <div class="card">
+        <a href="/products/details/{{this._id}}">
         <img src="/uploads/assets/{{thumbnail}}" alt="Imagen de producto">
         <h2>{{title}}</h2>
         <p>{{description}}</p>
+        <h3>$ {{price}}</h3>
+        </a>
         <div class="quantityWrapper">
             <button class="quantityButton" data-id="{{_id}}" data-change="-1">-</button>
             <input id="quantityInput-{{_id}}" class="quantityInput" type="number" value="1" min="1" max="99">

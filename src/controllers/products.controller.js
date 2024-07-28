@@ -64,6 +64,22 @@ export class ProductController {
             res.status(500).send({ error: 'Ocurrió un error al obtener el producto.' });
         }
     }
+
+    getProductDetails = async (req, res) => {
+        try {
+            let cartId = null;
+            if (req.isAuthenticated()) {
+                const user = req.user;
+                cartId = user.cart ? user.cart : null;
+            }
+            let { pid } = req.params;
+            let product = await this.productsService.getProduct(pid);
+            res.render('productDetails', { product, user: req.user, cartId });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error al obtener los detalles del producto');
+        }
+    };
     
     addProduct = async (req, res, next) => {
         try {

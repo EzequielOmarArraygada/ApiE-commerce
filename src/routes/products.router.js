@@ -13,7 +13,8 @@ const {
     getProductById,
     addProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getProductDetails
 } = new ProductController();
 
 /**
@@ -70,6 +71,9 @@ ProductsRouter.get('/signup', getSignup);
  *         description: Lista de productos obtenida exitosamente
  */
 ProductsRouter.get('/products', passportCall('login', 'user'), getProducts);
+
+ProductsRouter.get('/products/details/:pid', passportCall('login', 'user'), getProductDetails);
+
 
 /**
  * @swagger
