@@ -50,9 +50,9 @@ export class CartController {
     getCartByIdCount = async (req, res) => {
         try {
             const { cid } = req.params;
-            console.log("CID: ", cid); // Agrega este log
+            console.log("CID: ", cid); 
             const cartCount = await this.cartsService.getCartByIdCount(cid);
-            console.log("Cart Count: ", cartCount); // Agrega este log
+            console.log("Cart Count: ", cartCount); 
             if (!cartCount) {
                 return res.status(404).send({ error: 'Carrito no encontrado.' });
             }
@@ -190,7 +190,7 @@ export class CartController {
             
             function generateTicketCode() {
                 const timestamp = Date.now().toString();
-                const randomNum = generateRandomCode(6); // Genera un código aleatorio de 6 caracteres
+                const randomNum = generateRandomCode(6); 
                 return `${timestamp}-${randomNum}`;
             }
 
@@ -230,20 +230,16 @@ export class CartController {
                 purchase_datetime: new Date()
             });
     
-            // Guardar el ticket
             await ticket.save();
     
-            // Vaciar el carrito
             cart.products = [];
             await cart.save();
 
             sendMailCompra(comprador.email, ticket)
     
-            // Devolver una respuesta exitosa con el ticket generado
             return res.status(200).json({ message: 'Purchase successful', ticket });
             
         } catch (error) {
-            // Capturar y manejar errores
             console.error('Error al procesar la compra:', error);
             req.logger.error(`Error al procesar la compra: ${error.message}. Método: ${req.method}, URL: ${req.url} - ${new Date().toLocaleDateString()}`);
             return res.status(500).json({ message: 'Server error', error });

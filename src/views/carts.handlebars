@@ -187,11 +187,9 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Mostrar modal con los detalles del ticket
                     const modal = document.getElementById('ticketModal');
                     modal.style.display = 'block';
 
-                    // Llenar detalles del ticket en el modal
                     const ticketDetails = document.getElementById('ticketDetails');
                     ticketDetails.innerHTML = '';
                     data.ticket.products.forEach(product => {
@@ -204,11 +202,9 @@
                         ticketDetails.appendChild(li);
                     });
 
-                    // Mostrar total del ticket
                     const ticketTotal = document.getElementById('ticketTotal');
                     ticketTotal.textContent = `$${data.ticket.totalAmount}`;
 
-                    // Cerrar modal al hacer clic en la X
                     const closeBtn = document.querySelector('.close');
                     closeBtn.addEventListener('click', function() {
                         modal.style.display = 'none';
@@ -227,17 +223,16 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Eliminar un artículo del carrito
             document.querySelectorAll('.remove-item').forEach(button => {
                 button.addEventListener('click', async (event) => {
                     const productId = event.target.dataset.productId;
-                    const cartId = '{{cartId}}'; // Reemplaza con la lógica para obtener el ID del carrito
+                    const cartId = '{{cartId}}'; 
                     try {
                         const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
                             method: 'DELETE'
                         });
                         if (response.ok) {
-                            location.reload(); // Recarga la página para actualizar el carrito
+                            location.reload(); 
                         } else {
                             console.error('Error al eliminar el artículo del carrito');
                         }
@@ -247,15 +242,14 @@
                 });
             });
 
-            // Vaciar el carrito
             document.getElementById('empty-cart').addEventListener('click', async () => {
-                const cartId = '{{cartId}}'; // Reemplaza con la lógica para obtener el ID del carrito
+                const cartId = '{{cartId}}'; 
                 try {
                     const response = await fetch(`/api/carts/${cartId}`, {
                         method: 'DELETE'
                     });
                     if (response.ok) {
-                        location.reload(); // Recarga la página para actualizar el carrito
+                        location.reload(); 
                     } else {
                         console.error('Error al vaciar el carrito');
                     }
