@@ -117,13 +117,13 @@
     }
 
     .carousel-item img {
-        width: 80%;
+        width: auto;
         height: 230px;
         object-fit: cover;
     }
 
     .carousel-container {
-        width: 100%;
+        width: auto;
         overflow: hidden;
         border-radius: 16px; 
         margin-bottom: 20px;
@@ -158,12 +158,12 @@
     <script>
     function updateQuantity(id, change) {
     const input = document.getElementById(`quantityInput-${id}`);
-    let currentValue = parseInt(input.value);  // Convertir el valor actual a número
+    let currentValue = parseInt(input.value);  
 
-    if (!isNaN(currentValue)) {  // Verificar si es un número válido
-        currentValue += change;  // Sumar el cambio deseado
+    if (!isNaN(currentValue)) {  
+        currentValue += change;  
         if (currentValue >= 1 && currentValue <= parseInt(input.max)) {
-            input.value = currentValue;  // Actualizar el valor del input
+            input.value = currentValue; 
         }
     }
 }
@@ -194,7 +194,7 @@
 
                     if (response.ok) {
                         Swal.fire('', 'Producto agregado al carrito', 'success');
-                        updateCartCount(); // Actualiza el contador del carrito
+                        updateCartCount(); 
                     } else {
                         Swal.fire('¡Error!', 'Error al agregar el producto', 'error');
                     }
